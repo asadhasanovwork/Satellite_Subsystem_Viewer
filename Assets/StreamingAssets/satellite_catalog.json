@@ -1,0 +1,12 @@
+{
+  "satellites": [
+    {
+      "id": "sat_6u_v2",
+      "displayName": "6U V2 CubeSat",
+      "prefabPath": "Satellites/6U_V2",
+      "metadataFile": "6u_v2.json",
+      "thumbnail": "",
+      "defaultCameraDistance": 6.0
+    }
+  ]
+}

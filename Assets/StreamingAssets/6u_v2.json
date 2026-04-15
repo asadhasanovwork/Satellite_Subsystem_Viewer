@@ -1,0 +1,358 @@
+{
+  "satelliteId": "sat_6u_v2",
+  "satelliteName": "6U_V2",
+  "modelRootName": "6U_V2",
+  "defaultCameraDistance": 6.0,
+  "subsystems": [
+    {
+      "id": "STRUCT",
+      "name": "Structure",
+      "canIsolate": true,
+      "defaultOperationalState": "Standby",
+      "parts": [
+        {
+          "partId": "6UHalf1",
+          "unityName": "_6UHalf1",
+          "displayName": "6U Half 1",
+          "type": "Structure",
+          "description": "Primary structure panel (Half 1).",
+          "image": "",
+          "canToggle": false,
+          "defaultState": "Standby",
+          "statusText": "Structure nominal"
+        },
+        {
+          "partId": "6UHalf2",
+          "unityName": "_6UHalf2",
+          "displayName": "6U Half 2",
+          "type": "Structure",
+          "description": "Primary structure panel (Half 2).",
+          "image": "",
+          "canToggle": false,
+          "defaultState": "Standby",
+          "statusText": "Structure nominal"
+        }
+      ]
+    },
+    {
+      "id": "MECH",
+      "name": "Mechanical Assemblies",
+      "canIsolate": true,
+      "defaultOperationalState": "Standby",
+      "parts": [
+        {
+          "partId": "Assembly1",
+          "unityName": "Assembly1",
+          "displayName": "Assembly 1",
+          "type": "Mechanical",
+          "description": "Mechanical assembly group.",
+          "image": "",
+          "canToggle": false,
+          "defaultState": "Standby",
+          "statusText": "Mechanical nominal"
+        },
+        {
+          "partId": "Assembly168",
+          "unityName": "Assembly168",
+          "displayName": "Assembly 168",
+          "type": "Mechanical",
+          "description": "Mechanical assembly group.",
+          "image": "",
+          "canToggle": false,
+          "defaultState": "Standby",
+          "statusText": "Mechanical nominal"
+        },
+        {
+          "partId": "Assembly181",
+          "unityName": "Assembly181",
+          "displayName": "Assembly 181",
+          "type": "Mechanical",
+          "description": "Mechanical assembly group.",
+          "image": "",
+          "canToggle": false,
+          "defaultState": "Standby",
+          "statusText": "Mechanical nominal"
+        },
+        {
+          "partId": "Sat2x3Assembly1",
+          "unityName": "Sat2x3Assembly1",
+          "displayName": "Satellite 2x3 Assembly",
+          "type": "Mechanical",
+          "description": "Main satellite assembly group.",
+          "image": "",
+          "canToggle": false,
+          "defaultState": "Standby",
+          "statusText": "Mechanical nominal"
+        }
+      ]
+    },
+    {
+      "id": "EPS",
+      "name": "Electrical Power System",
+      "canIsolate": true,
+      "defaultOperationalState": "Standby",
+      "parts": [
+        {
+          "partId": "EPS1",
+          "unityName": "EPS1",
+          "displayName": "EPS Board",
+          "type": "Electronics",
+          "description": "Power conditioning and distribution unit.",
+          "image": "Images/EPS1.png",
+          "canToggle": true,
+          "defaultState": "Standby",
+          "statusText": "EPS standby"
+        }
+      ]
+    },
+    {
+      "id": "OBC",
+      "name": "On-Board Computer",
+      "canIsolate": true,
+      "defaultOperationalState": "Standby",
+      "parts": [
+        {
+          "partId": "OBC1",
+          "unityName": "OBC1",
+          "displayName": "OBC",
+          "type": "Electronics",
+          "description": "Main on-board computer for command and data handling.",
+          "image": "Images/OBC1.png",
+          "canToggle": true,
+          "defaultState": "Active",
+          "statusText": "OBC active"
+        }
+      ]
+    },
+    {
+      "id": "ADCS",
+      "name": "Attitude Determination & Control",
+      "canIsolate": true,
+      "defaultOperationalState": "Standby",
+      "parts": [
+        {
+          "partId": "ControlUnit1",
+          "unityName": "ControlUnit1",
+          "displayName": "ADCS Control Unit",
+          "type": "Electronics",
+          "description": "Attitude control processing/control unit.",
+          "image": "",
+          "canToggle": true,
+          "defaultState": "Standby",
+          "statusText": "ADCS control standby"
+        },
+        {
+          "partId": "ReactionWheel1",
+          "unityName": "ReactionWheel1",
+          "displayName": "Reaction Wheel 1",
+          "type": "Actuator",
+          "description": "Reaction wheel used for attitude control torque.",
+          "image": "",
+          "canToggle": true,
+          "defaultState": "Standby",
+          "statusText": "Reaction wheel standby"
+        },
+        {
+          "partId": "ReactionWheel2",
+          "unityName": "ReactionWheel2",
+          "displayName": "Reaction Wheel 2",
+          "type": "Actuator",
+          "description": "Reaction wheel used for attitude control torque.",
+          "image": "",
+          "canToggle": true,
+          "defaultState": "Standby",
+          "statusText": "Reaction wheel standby"
+        },
+        {
+          "partId": "ReactionWheel3",
+          "unityName": "ReactionWheel3",
+          "displayName": "Reaction Wheel 3",
+          "type": "Actuator",
+          "description": "Reaction wheel used for attitude control torque.",
+          "image": "",
+          "canToggle": true,
+          "defaultState": "Standby",
+          "statusText": "Reaction wheel standby"
+        },
+        {
+          "partId": "Magnetorquer1",
+          "unityName": "Magnetorquer1",
+          "displayName": "Magnetorquer 1",
+          "type": "Actuator",
+          "description": "Magnetic torque rod for attitude control.",
+          "image": "",
+          "canToggle": true,
+          "defaultState": "Standby",
+          "statusText": "Magnetorquer standby"
+        },
+        {
+          "partId": "Magnetorquer2",
+          "unityName": "Magnetorquer2",
+          "displayName": "Magnetorquer 2",
+          "type": "Actuator",
+          "description": "Magnetic torque rod for attitude control.",
+          "image": "",
+          "canToggle": true,
+          "defaultState": "Standby",
+          "statusText": "Magnetorquer standby"
+        },
+        {
+          "partId": "Magnetorquer3",
+          "unityName": "Magnetorquer3",
+          "displayName": "Magnetorquer 3",
+          "type": "Actuator",
+          "description": "Magnetic torque rod for attitude control.",
+          "image": "",
+          "canToggle": true,
+          "defaultState": "Standby",
+          "statusText": "Magnetorquer standby"
+        },
+        {
+          "partId": "StarTracker1",
+          "unityName": "StarTracker1",
+          "displayName": "Star Tracker",
+          "type": "Sensor",
+          "description": "Star tracker for precise attitude determination.",
+          "image": "Images/StarTracker1.png",
+          "canToggle": true,
+          "defaultState": "Active",
+          "statusText": "Star tracker active"
+        },
+        {
+          "partId": "SunSensor1",
+          "unityName": "SunSensor1",
+          "displayName": "Sun Sensor 1",
+          "type": "Sensor",
+          "description": "Sun sensor for coarse attitude determination.",
+          "image": "",
+          "canToggle": true,
+          "defaultState": "Active",
+          "statusText": "Sun sensor active"
+        },
+        {
+          "partId": "SunSensor2",
+          "unityName": "SunSensor2",
+          "displayName": "Sun Sensor 2",
+          "type": "Sensor",
+          "description": "Sun sensor for coarse attitude determination.",
+          "image": "",
+          "canToggle": true,
+          "defaultState": "Active",
+          "statusText": "Sun sensor active"
+        },
+        {
+          "partId": "SunSensor3",
+          "unityName": "SunSensor3",
+          "displayName": "Sun Sensor 3",
+          "type": "Sensor",
+          "description": "Sun sensor for coarse attitude determination.",
+          "image": "",
+          "canToggle": true,
+          "defaultState": "Active",
+          "statusText": "Sun sensor active"
+        },
+        {
+          "partId": "SunSensor4",
+          "unityName": "SunSensor4",
+          "displayName": "Sun Sensor 4",
+          "type": "Sensor",
+          "description": "Sun sensor for coarse attitude determination.",
+          "image": "",
+          "canToggle": true,
+          "defaultState": "Active",
+          "statusText": "Sun sensor active"
+        },
+        {
+          "partId": "SunSensor5",
+          "unityName": "SunSensor5",
+          "displayName": "Sun Sensor 5",
+          "type": "Sensor",
+          "description": "Sun sensor for coarse attitude determination.",
+          "image": "",
+          "canToggle": true,
+          "defaultState": "Active",
+          "statusText": "Sun sensor active"
+        },
+        {
+          "partId": "SunSensor6",
+          "unityName": "SunSensor6",
+          "displayName": "Sun Sensor 6",
+          "type": "Sensor",
+          "description": "Sun sensor for coarse attitude determination.",
+          "image": "",
+          "canToggle": true,
+          "defaultState": "Active",
+          "statusText": "Sun sensor active"
+        }
+      ]
+    },
+    {
+      "id": "COMMS",
+      "name": "Communications",
+      "canIsolate": true,
+      "defaultOperationalState": "Standby",
+      "parts": [
+        {
+          "partId": "GPSpatchAntenna1",
+          "unityName": "GPSpatchAntenna1",
+          "displayName": "GPS Patch Antenna",
+          "type": "Antenna",
+          "description": "GNSS patch antenna for positioning and timing.",
+          "image": "",
+          "canToggle": true,
+          "defaultState": "Active",
+          "statusText": "GPS antenna active"
+        },
+        {
+          "partId": "Transceiver1",
+          "unityName": "Transceiver1",
+          "displayName": "Transceiver",
+          "type": "RF",
+          "description": "RF transceiver unit for communications.",
+          "image": "",
+          "canToggle": true,
+          "defaultState": "Standby",
+          "statusText": "Transceiver standby"
+        }
+      ]
+    },
+    {
+      "id": "PROP",
+      "name": "Propulsion",
+      "canIsolate": true,
+      "defaultOperationalState": "Off",
+      "parts": [
+        {
+          "partId": "FuelBrick1",
+          "unityName": "FuelBrick1",
+          "displayName": "Fuel Brick",
+          "type": "Propellant",
+          "description": "Propellant storage element (fuel brick).",
+          "image": "",
+          "canToggle": false,
+          "defaultState": "Off",
+          "statusText": "Propulsion off"
+        }
+      ]
+    },
+    {
+      "id": "PAYLOAD",
+      "name": "Payload / Capture System",
+      "canIsolate": true,
+      "defaultOperationalState": "Standby",
+      "parts": [
+        {
+          "partId": "CaptureSystemAssembly1",
+          "unityName": "capture_system_assembly1",
+          "displayName": "Capture System Assembly",
+          "type": "Payload",
+          "description": "Capture/payload system assembly.",
+          "image": "",
+          "canToggle": true,
+          "defaultState": "Standby",
+          "statusText": "Payload standby"
+        }
+      ]
+    }
+  ]
+}

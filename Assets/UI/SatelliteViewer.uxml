@@ -1,0 +1,301 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
+    <ui:VisualElement
+        name="Root"
+        style="
+            flex-grow: 1;
+            flex-direction: row;
+            background-color: rgba(0,0,0,0.10);
+            color: rgb(235,240,248);
+            padding-left: 14px;
+            padding-right: 14px;
+            padding-top: 14px;
+            padding-bottom: 14px;
+        ">
+
+        <!-- LEFT: SUBSYSTEMS -->
+        <ui:VisualElement
+            name="LeftPanel"
+            style="
+                width: 250px;
+                min-width: 230px;
+                max-width: 250px;
+                flex-shrink: 0;
+                background-color: rgba(18,22,30,0.78);
+                border-top-left-radius: 12px;
+                border-top-right-radius: 12px;
+                border-bottom-left-radius: 12px;
+                border-bottom-right-radius: 12px;
+                border-left-width: 1px;
+                border-right-width: 1px;
+                border-top-width: 1px;
+                border-bottom-width: 1px;
+                border-left-color: rgba(255,255,255,0.06);
+                border-right-color: rgba(255,255,255,0.06);
+                border-top-color: rgba(255,255,255,0.06);
+                border-bottom-color: rgba(255,255,255,0.06);
+                padding-left: 12px;
+                padding-right: 12px;
+                padding-top: 12px;
+                padding-bottom: 12px;
+                margin-right: 12px;
+            ">
+            <ui:Label
+                text="Subsystems"
+                style="
+                    font-size: 20px;
+                    unity-font-style: bold;
+                    color: white;
+                    margin-bottom: 10px;
+                " />
+
+            <ui:TextField
+                name="SearchInput"
+                label="Search"
+                style="margin-bottom: 10px;" />
+
+            <ui:ListView
+                name="SubsystemsList"
+                style="
+                    flex-grow: 1;
+                    min-height: 400px;
+                    background-color: rgba(255,255,255,0.02);
+                    border-top-left-radius: 8px;
+                    border-top-right-radius: 8px;
+                    border-bottom-left-radius: 8px;
+                    border-bottom-right-radius: 8px;
+                    border-left-width: 1px;
+                    border-right-width: 1px;
+                    border-top-width: 1px;
+                    border-bottom-width: 1px;
+                    border-left-color: rgba(255,255,255,0.04);
+                    border-right-color: rgba(255,255,255,0.04);
+                    border-top-color: rgba(255,255,255,0.04);
+                    border-bottom-color: rgba(255,255,255,0.04);
+                " />
+        </ui:VisualElement>
+
+        <!-- LEFT-CENTER: PARTS -->
+        <ui:VisualElement
+            name="RightPanel"
+            style="
+                width: 270px;
+                min-width: 240px;
+                max-width: 270px;
+                flex-shrink: 0;
+                background-color: rgba(18,22,30,0.78);
+                border-top-left-radius: 12px;
+                border-top-right-radius: 12px;
+                border-bottom-left-radius: 12px;
+                border-bottom-right-radius: 12px;
+                border-left-width: 1px;
+                border-right-width: 1px;
+                border-top-width: 1px;
+                border-bottom-width: 1px;
+                border-left-color: rgba(255,255,255,0.06);
+                border-right-color: rgba(255,255,255,0.06);
+                border-top-color: rgba(255,255,255,0.06);
+                border-bottom-color: rgba(255,255,255,0.06);
+                padding-left: 12px;
+                padding-right: 12px;
+                padding-top: 12px;
+                padding-bottom: 12px;
+                margin-right: 12px;
+            ">
+            <ui:Label
+                text="Parts"
+                style="
+                    font-size: 20px;
+                    unity-font-style: bold;
+                    color: white;
+                    margin-bottom: 10px;
+                " />
+
+            <ui:ListView
+                name="PartsList"
+                style="
+                    flex-grow: 1;
+                    min-height: 400px;
+                    background-color: rgba(255,255,255,0.02);
+                    border-top-left-radius: 8px;
+                    border-top-right-radius: 8px;
+                    border-bottom-left-radius: 8px;
+                    border-bottom-right-radius: 8px;
+                    border-left-width: 1px;
+                    border-right-width: 1px;
+                    border-top-width: 1px;
+                    border-bottom-width: 1px;
+                    border-left-color: rgba(255,255,255,0.04);
+                    border-right-color: rgba(255,255,255,0.04);
+                    border-top-color: rgba(255,255,255,0.04);
+                    border-bottom-color: rgba(255,255,255,0.04);
+                " />
+        </ui:VisualElement>
+
+        <!-- CENTER SPACE FOR SATELLITE -->
+        <ui:VisualElement
+            name="CenterSpacer"
+            style="
+                flex-grow: 1;
+                background-color: rgba(0,0,0,0.0);
+            " />
+
+        <!-- RIGHT: COMPACT INFO PANEL -->
+        <ui:VisualElement
+            name="MainPanel"
+            style="
+                width: 430px;
+                min-width: 390px;
+                max-width: 430px;
+                flex-shrink: 0;
+                flex-direction: column;
+                background-color: rgba(18,22,30,0.76);
+                border-top-left-radius: 12px;
+                border-top-right-radius: 12px;
+                border-bottom-left-radius: 12px;
+                border-bottom-right-radius: 12px;
+                border-left-width: 1px;
+                border-right-width: 1px;
+                border-top-width: 1px;
+                border-bottom-width: 1px;
+                border-left-color: rgba(255,255,255,0.06);
+                border-right-color: rgba(255,255,255,0.06);
+                border-top-color: rgba(255,255,255,0.06);
+                border-bottom-color: rgba(255,255,255,0.06);
+                padding-left: 14px;
+                padding-right: 14px;
+                padding-top: 14px;
+                padding-bottom: 14px;
+            ">
+
+            <ui:Label
+                name="SatelliteTitleText"
+                text="Satellite Viewer"
+                style="
+                    font-size: 26px;
+                    unity-font-style: bold;
+                    color: rgb(250,252,255);
+                    margin-bottom: 12px;
+                " />
+
+            <!-- COMMANDS -->
+            <ui:VisualElement
+                name="CommandsCard"
+                style="
+                    background-color: rgba(255,255,255,0.03);
+                    border-top-left-radius: 10px;
+                    border-top-right-radius: 10px;
+                    border-bottom-left-radius: 10px;
+                    border-bottom-right-radius: 10px;
+                    padding-left: 12px;
+                    padding-right: 12px;
+                    padding-top: 12px;
+                    padding-bottom: 12px;
+                    margin-bottom: 12px;
+                ">
+                <ui:Label
+                    text="Commands"
+                    style="
+                        font-size: 17px;
+                        unity-font-style: bold;
+                        color: white;
+                        margin-bottom: 10px;
+                    " />
+
+                <ui:VisualElement
+                    style="
+                        flex-direction: row;
+                        flex-wrap: wrap;
+                    ">
+                    <ui:Button name="ActivateButton" text="Activate"
+                        style="width: 122px; height: 34px; margin-right: 8px; margin-bottom: 8px; background-color: rgb(37,99,235); color: white; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;" />
+                    <ui:Button name="StandbyButton" text="Standby"
+                        style="width: 122px; height: 34px; margin-right: 8px; margin-bottom: 8px; background-color: rgb(42,52,67); color: white; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;" />
+                    <ui:Button name="DeactivateButton" text="Deactivate"
+                        style="width: 122px; height: 34px; margin-bottom: 8px; background-color: rgb(42,52,67); color: white; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;" />
+                    <ui:Button name="FaultButton" text="Fault"
+                        style="width: 122px; height: 34px; margin-right: 8px; margin-bottom: 8px; background-color: rgb(185,28,28); color: white; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;" />
+                    <ui:Button name="ShowAllButton" text="Show All"
+                        style="width: 122px; height: 34px; margin-right: 8px; margin-bottom: 8px; background-color: rgb(60,68,80); color: white; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;" />
+                    <ui:Button name="NormalButton" text="Normal"
+                        style="width: 122px; height: 34px; margin-bottom: 8px; background-color: rgb(60,68,80); color: white; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;" />
+                    <ui:Button name="AssembleButton" text="Assemble"
+                        style="width: 122px; height: 34px; background-color: rgb(60,68,80); color: white; border-top-left-radius: 8px; border-top-right-radius: 8px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+            <!-- TELEMETRY -->
+            <ui:VisualElement
+                name="TelemetryCard"
+                style="
+                    background-color: rgba(255,255,255,0.03);
+                    border-top-left-radius: 10px;
+                    border-top-right-radius: 10px;
+                    border-bottom-left-radius: 10px;
+                    border-bottom-right-radius: 10px;
+                    padding-left: 12px;
+                    padding-right: 12px;
+                    padding-top: 12px;
+                    padding-bottom: 12px;
+                    margin-bottom: 12px;
+                ">
+                <ui:Label
+                    text="Telemetry"
+                    style="
+                        font-size: 17px;
+                        unity-font-style: bold;
+                        color: white;
+                        margin-bottom: 10px;
+                    " />
+
+                <ui:Label name="BatteryText" text="Battery: -" style="color: white; margin-bottom: 6px;" />
+                <ui:Label name="TempText" text="Temp: -" style="color: white; margin-bottom: 6px;" />
+                <ui:Label name="AttitudeText" text="Attitude Error: -" style="color: white; margin-bottom: 6px;" />
+                <ui:Label name="SignalText" text="Signal: -" style="color: white; margin-bottom: 6px;" />
+                <ui:Label name="FuelText" text="Fuel: -" style="color: white; margin-bottom: 6px;" />
+                <ui:Label name="PayloadText" text="Payload Data: -" style="color: white; margin-bottom: 6px;" />
+                <ui:Label name="LinkText" text="Cmd Link: -" style="color: white;" />
+            </ui:VisualElement>
+
+            <!-- DETAILS -->
+            <ui:VisualElement
+                name="BottomCard"
+                style="
+                    flex-grow: 1;
+                    background-color: rgba(255,255,255,0.03);
+                    border-top-left-radius: 10px;
+                    border-top-right-radius: 10px;
+                    border-bottom-left-radius: 10px;
+                    border-bottom-right-radius: 10px;
+                    padding-left: 12px;
+                    padding-right: 12px;
+                    padding-top: 12px;
+                    padding-bottom: 12px;
+                ">
+                <ui:Label text="Details"
+                    style="font-size: 17px; unity-font-style: bold; color: white; margin-bottom: 10px;" />
+
+                <ui:Label name="SelectedPartText" text="Select a part"
+                    style="font-size: 20px; unity-font-style: bold; color: white; margin-bottom: 8px;" />
+
+                <ui:Label name="SelectedSubsystemText" text="Subsystem: -" style="color: white; margin-bottom: 6px;" />
+                <ui:Label name="TypeText" text="Type: -" style="color: white; margin-bottom: 6px;" />
+                <ui:Label name="SelectedSubsystemStateText" text="Status: -" style="color: white; margin-bottom: 6px;" />
+                <ui:Label name="StatusText" text="Status: -" style="color: white; margin-bottom: 6px;" />
+                <ui:Label name="SelectedReasonText" text="Reason: -" style="color: white; margin-bottom: 10px;" />
+
+                <ui:Label text="Description"
+                    style="font-size: 13px; unity-font-style: bold; color: rgba(255,255,255,0.70); margin-bottom: 6px;" />
+                <ui:Label name="DescriptionText" text=""
+                    style="white-space: normal; color: rgb(232,238,246); margin-bottom: 10px;" />
+
+                <ui:Foldout name="RawInfoFoldout" text="Debug / Raw Info" value="false"
+                    style="color: rgba(255,255,255,0.72);">
+                    <ui:Label name="RawInfoText" text=""
+                        style="white-space: normal; font-size: 13px; color: rgba(255,255,255,0.80); margin-top: 6px;" />
+                </ui:Foldout>
+
+                <ui:Label name="SelectedPartStateText" text="Type: -" style="display: none;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
