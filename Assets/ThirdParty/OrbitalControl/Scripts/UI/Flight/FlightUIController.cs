@@ -1,0 +1,152 @@
+using System;
+using TMPro;
+
+public class FlightUIController
+{
+    public enum ThrustUiMode
+    {
+        FreeThrust,
+        ManeuverNodes
+    }
+
+    private readonly UIReferences refs;
+    private readonly ManeuverNodeManager maneuverNodeManager;
+    private readonly ThrustController thrustController;
+    private readonly EnginePanelUIController enginePanel;
+    private readonly RendezvousPanelUIController rendezvousPanel;
+    public RendezvousPanelUIController Rendezvous => rendezvousPanel;
+
+    private ThrustUiMode thrustUiMode = ThrustUiMode.FreeThrust;
+
+    public ThrustUiMode CurrentMode => thrustUiMode;
+    public bool IsFreeThrustMode => thrustUiMode == ThrustUiMode.FreeThrust;
+
+    public FlightUIController(UIReferences refs, SimContext ctx, Action onRendezvousModeChanged)
+    {
+        this.refs = refs;
+        maneuverNodeManager = ctx != null ? ctx.ManeuverNodeManager : null;
+        thrustController = ctx != null ? ctx.ThrustController : null;
+        enginePanel = new EnginePanelUIController(refs, ctx?.CameraTracker, maneuverNodeManager);
+        rendezvousPanel = new RendezvousPanelUIController(refs, ctx?.CameraTracker, ctx?.BodyService,
+            ctx?.CameraMovement, ctx?.TrajectoryRenderer, ctx?.BodyRuntimeCoordinator,
+            maneuverNodeManager, onRendezvousModeChanged);
+    }
+
+    public void Initialize()
+    {
+        RefreshButtonLabel();
+        enginePanel.Initialize();
+        rendezvousPanel.Initialize();
+    }
+
+    public void Dispose()
+    {
+        enginePanel.Dispose();
+        rendezvousPanel.Dispose();
+    }
+    public void Tick()
+    {
+        enginePanel.Tick();
+        rendezvousPanel.Tick();
+    }
+    public void SetGameplayVisible(bool visible)
+    {
+        enginePanel.SetGameplayVisible(visible);
+        rendezvousPanel.SetGameplayVisible(visible);
+    }
+
+    public void ToggleBurnMode()
+    {
+        if (ShouldLockBurnMode())
+        {
+            RefreshButtonLabel();
+            return;
+        }
+
+        thrustUiMode = thrustUiMode == ThrustUiMode.FreeThrust
+            ? ThrustUiMode.ManeuverNodes
+            : ThrustUiMode.FreeThrust;
+
+        // Leaving node editing cancels its draft and both prediction visuals.
+        // Use the manager's lifecycle so pending preview callbacks are invalidated too.
+        if (thrustUiMode == ThrustUiMode.FreeThrust)
+            maneuverNodeManager?.ClearNode();
+
+        RefreshButtonLabel();
+    }
+
+    public void Apply(CameraMode cameraMode)
+    {
+        enginePanel.RefreshSelection();
+        rendezvousPanel.RefreshSelection();
+        bool isFreeCam = cameraMode == CameraMode.Free;
+        ShowThrustPanels(!isFreeCam);
+    }
+
+    public void ShowThrustPanels(bool show)
+    {
+        bool forceManeuverMode = ShouldForceManeuverMode();
+        if (forceManeuverMode)
+            thrustUiMode = ThrustUiMode.ManeuverNodes;
+
+        if (refs.burnControlButton != null)
+            refs.burnControlButton.interactable = !ShouldLockBurnMode();
+
+        RefreshButtonLabel();
+
+        if (refs.burnControlsPanel != null)
+            refs.burnControlsPanel.SetActive(show);
+
+        if (!show)
+        {
+            if (refs.thrustButtons != null) refs.thrustButtons.SetActive(false);
+            if (refs.maneuverNodePanel != null) refs.maneuverNodePanel.SetActive(false);
+            if (refs.attitudeControlPanel != null) refs.attitudeControlPanel.SetActive(false);
+            return;
+        }
+
+        if (thrustUiMode == ThrustUiMode.FreeThrust)
+        {
+            if (refs.thrustButtons != null) refs.thrustButtons.SetActive(true);
+            if (refs.attitudeControlPanel != null) refs.attitudeControlPanel.SetActive(true);
+            if (refs.maneuverNodePanel != null) refs.maneuverNodePanel.SetActive(false);
+        }
+        else
+        {
+            if (refs.thrustButtons != null) refs.thrustButtons.SetActive(false);
+            if (refs.attitudeControlPanel != null) refs.attitudeControlPanel.SetActive(false);
+            if (refs.maneuverNodePanel != null) refs.maneuverNodePanel.SetActive(true);
+        }
+    }
+
+    public void RefreshButtonLabel()
+    {
+        TMP_Text txt = refs.burnControlButton != null
+            ? refs.burnControlButton.GetComponentInChildren<TMP_Text>()
+            : null;
+
+        if (txt == null) return;
+
+        txt.text = thrustUiMode == ThrustUiMode.FreeThrust
+            ? "Use Maneuver Nodes"
+            : "Use Free Thrust";
+    }
+
+    private bool ShouldForceManeuverMode()
+    {
+        if (thrustController != null && thrustController.IsNodeBurnActive)
+            return true;
+
+        ManeuverNode node = maneuverNodeManager != null ? maneuverNodeManager.CurrentNode : null;
+        return node != null && node.isFinalized && !maneuverNodeManager.HasRendezvousPlan;
+    }
+
+    private bool ShouldLockBurnMode()
+    {
+        if (thrustController != null && thrustController.IsNodeBurnActive)
+            return true;
+
+        ManeuverNode node = maneuverNodeManager != null ? maneuverNodeManager.CurrentNode : null;
+        return node != null && node.isFinalized;
+    }
+}

@@ -1,0 +1,70 @@
+using UnityEngine;
+
+/// <summary>
+/// Provides UI button event hooks that control camera modes by proxy.
+/// Bridges Unity UI buttons to the camera tracking system, enabling switching
+/// between Earth, Free, and Tracking camera modes without direct scene references.
+/// </summary>
+public class CameraButtonProxy : MonoBehaviour
+{
+    private ICameraTracker cameraTracker;
+    private SimContext ctx;
+    private ConstellationNavigationController constellationNavigation;
+
+    /// <summary>
+    /// Initializes the proxy with the active simulation context and retrieves camera tracker reference.
+    /// </summary>
+    public void Initialize(SimContext ctx)
+    {
+        this.ctx = ctx;
+        this.cameraTracker = ctx.CameraTracker;
+        constellationNavigation = new ConstellationNavigationController(ctx);
+    }
+
+    /// <summary>
+    /// Switches the camera to Earth-centered mode.
+    /// </summary>
+    public void EarthCam()
+    {
+        if (ctx?.CameraController != null)
+            ctx.CameraController.SwitchToEarthCam();
+        else
+            cameraTracker?.SwitchToEarthCam();
+
+        ctx?.UIRoot?.RefreshAllUi();
+    }
+
+    /// <summary>
+    /// Switches to Earth-centered mode with a custom starting distance.
+    /// </summary>
+    public void EarthCam(float defaultDistanceOverride)
+    {
+        if (ctx?.CameraController != null)
+            ctx.CameraController.SwitchToEarthCam(defaultDistanceOverride);
+        else
+            cameraTracker?.SwitchToEarthCam();
+
+        ctx?.UIRoot?.RefreshAllUi();
+    }
+
+    /// <summary>
+    /// Switches the camera to free-fly mode.
+    /// </summary>
+    public void FreeCam()
+    {
+        cameraTracker.BreakToFreeCam();
+    }
+
+    /// <summary>Tracks the next surviving member of the current constellation plane.</summary>
+    public void TrackNextSatellite() => constellationNavigation?.TrackNextSatellite();
+
+    /// <summary>Tracks the previous surviving member of the current constellation plane.</summary>
+    public void TrackPreviousSatellite() => constellationNavigation?.TrackPreviousSatellite();
+
+    /// <summary>Returns the camera to tracking its current target body.</summary>
+    public void ReturnToTracking()
+    {
+        cameraTracker.ReturnToTracking();
+    }
+}
+

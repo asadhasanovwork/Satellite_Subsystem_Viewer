@@ -1,0 +1,160 @@
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+/// <summary>
+/// Inspector wiring bucket for shared UI objects. Controllers read from this
+/// single place so gameplay classes do not each serialize duplicate UI fields.
+/// </summary>
+public class UIReferences : MonoBehaviour
+{
+    [Header("Buttons")]
+    public Button freeCamButton;
+    public Button trackCamButton;
+    public Button instructionsButton;
+    public Button placeObjectButton;
+    public Button placeKeplerObjectButton;
+    public Button placeTleObjectButton;
+    public Button placeConstellationObjectButton;
+    public Button placementModeButton;
+    public Button randomSatelliteButton;
+    public Button burnControlButton;
+    public Button removePreManeuverLineButton;
+    public Button vectorToggleButton;
+    public Button earthView;
+    public Button removeSatellite;
+    public Button skipButton;
+    public Button pauseButton;
+
+    [Header("Panels")]
+    public GameObject objectPlacementPanel;
+    public GameObject objectInfoPanel;
+    public GameObject thrustButtons;
+    public GameObject maneuverNodePanel;
+    public GameObject burnControlsPanel;
+    public GameObject apogeePerigeePanel;
+    public GameObject timeControlsPanel;
+    public GameObject instructionsPanel;
+    public GameObject toggleOptionsPanel;
+    public GameObject dropdown;
+    public GameObject placeTLEPanel;
+    public GameObject placementSelectPanel;
+    public GameObject randomPlacementPanel;
+    public GameObject cameraControls;
+    [Tooltip("Parent object containing the constellation plane next/previous buttons.")]
+    public GameObject constellationNavigationPanel;
+    public GameObject placeKeplerPanel;
+    public GameObject placeConstellationPanel;
+    public GameObject confirmRemoveSatPanel;
+    public GameObject attitudeControlPanel;
+    public GameObject tutorialPanel;
+
+    [Header("Input Fields")]
+    public TMP_InputField nameInputField;
+    public TMP_InputField positionInputField;
+    public TMP_InputField massInputField;
+    public TMP_InputField fuelMassInputField;
+    public TMP_InputField radiusInputField;
+    public TMP_InputField velocityInputField;
+    public TMP_InputField kepNameInputField;
+    public TMP_InputField kepMassInputField;
+    public TMP_InputField kepFuelMassInputField;
+    public TMP_InputField kepADegOrMetersInputField;
+    public TMP_InputField kepEccInputField;
+    public TMP_InputField kepIncDegInputField;
+    public TMP_InputField kepRAANDegInputField;
+    public TMP_InputField kepArgPDegInputField;
+    public TMP_InputField kepTrueAnomDegInputField;
+    public TMP_InputField tleNameInputField;
+    public TMP_InputField tleMassInputField;
+    public TMP_InputField tleFuelMassInputField;
+    public TMP_InputField tleLine1InputField;
+    public TMP_InputField tleLine2InputField;
+    public TMP_InputField constellationNamePrefixInputField;
+    public TMP_InputField constellationMassInputField;
+    public TMP_InputField constellationFuelMassInputField;
+    public TMP_InputField constellationSemiMajorAxisInputField;
+    public TMP_InputField constellationEccInputField;
+    public TMP_InputField constellationIncDegInputField;
+    public TMP_InputField constellationArgPDegInputField;
+    public TMP_InputField constellationRAANStartDegInputField;
+    public TMP_InputField constellationRAANSpreadDegInputField;
+    public TMP_InputField constellationPlanesInputField;
+    public TMP_InputField constellationSatellitesPerPlaneInputField;
+    public TMP_InputField constellationWalkerPhaseInputField;
+    public TMP_InputField constellationTrueAnomalyOffsetDegInputField;
+
+    [Header("Dropdowns")]
+    public TMP_Dropdown trackedSatellites;
+
+    [Header("Text")]
+    public TMP_Text earthCamButtonText;
+    public TextMeshProUGUI instructionText;
+    public TextMeshProUGUI feedbackText;
+    public TextMeshProUGUI apogeeText;
+    public TextMeshProUGUI perigeeText;
+    public TextMeshProUGUI semiMajorAxisText;
+    public TextMeshProUGUI eccentricityText;
+    public TextMeshProUGUI orbitalPeriodText;
+    public TextMeshProUGUI inclinationText;
+    public TextMeshProUGUI raanText;
+    public TextMeshProUGUI meanAnomalyText;
+    public TextMeshProUGUI deltaVText;
+    public TextMeshProUGUI timeToPerigeeText;
+    public TextMeshProUGUI timeToApogeeText;
+    public TextMeshProUGUI vectorToggleButtonText;
+    public TextMeshProUGUI timeScaleText;
+    public TextMeshProUGUI pauseButtonText;
+
+    [Header("Sliders")]
+    public Slider timeSlider;
+
+    [Header("Engine Panel")]
+    public Button enginePanelButton;
+    public GameObject enginePanel;
+    public TMP_Dropdown enginePresetDropdown;
+    public TMP_InputField engineThrustInputField;
+    public TMP_InputField engineIspInputField;
+    public TMP_InputField engineMassInputField;
+    public TMP_InputField engineFuelMassInputField;
+    [Tooltip("Checked = Unlimited (default); unchecked = Finite. Code binds the event.")]
+    public Toggle engineUnlimitedFuelToggle;
+    public TMP_Text engineTargetText;
+    public TMP_Text engineReadoutText;
+    public TMP_Text engineStatusText;
+
+    [Header("Rendezvous Mode")]
+    [Tooltip("Mode button outside the swappable rendezvous content root.")]
+    public Button rendezvousPanelButton;
+    [Tooltip("Parent containing rendezvous controls only. Assign the new empty UI root after moving them out of the old panel.")]
+    public GameObject rendezvousPanel;
+    public TMP_Dropdown rendezvousTargetDropdown;
+    public Button rendezvousCancelTargetButton;
+    public TMP_Text rendezvousSelectionText;
+    public TMP_Text rendezvousReadoutText;
+    public Button rendezvousViewTargetButton;
+    [Tooltip("Screen-space marker root, outside the rendezvous content root, under a Canvas.")]
+    public RectTransform rendezvousTargetMarker;
+    public TMP_Text rendezvousTargetMarkerText;
+    [Tooltip("Canvas dropdown for Safe rendezvous, Waypoint, and Intercept. Options and events are configured by code.")]
+    public TMP_Dropdown rendezvousArrivalModeDropdown;
+    [Tooltip("Canvas dropdown for waypoint direction. Visible only in Waypoint mode; options and events are configured by code.")]
+    public TMP_Dropdown rendezvousWaypointDirectionDropdown;
+    [Tooltip("Canvas input for waypoint distance from target center in meters. Visible only in Waypoint mode.")]
+    public TMP_InputField rendezvousWaypointDistanceInput;
+    public TMP_Text rendezvousEncounterText;
+    public RectTransform rendezvousControlledEncounterMarker;
+    public RectTransform rendezvousTargetEncounterMarker;
+    [Tooltip("Optional. Options are populated automatically: Auto, 2, 3, 4 burns.")]
+    public TMP_Dropdown rendezvousBurnCountDropdown;
+    [Tooltip("Optional. Planner preference: Save fuel (default), Balanced, Start sooner. Options are populated automatically.")]
+    public TMP_Dropdown rendezvousTimingPreferenceDropdown;
+    [Tooltip("Optional. Choose among independently validated plans. Options are populated after Build Plan.")]
+    public TMP_Dropdown rendezvousPlanChoiceDropdown;
+    public Button rendezvousBuildPlanButton;
+    public Button rendezvousSchedulePlanButton;
+    public Button rendezvousCancelPlanButton;
+    public TMP_Text rendezvousPlanText;
+    [Tooltip("Optional planner policy asset. Built-in defaults are used when unassigned.")]
+    public RendezvousPlannerSettings rendezvousPlannerSettings;
+}

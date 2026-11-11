@@ -8,6 +8,9 @@ TagManager:
   - CinemachineTarget
   - ScreenCamera
   - cockpit_capitalLaser
+  - Planet
+  - CentralBody
+  - Satellite
   layers:
   - Default
   - TransparentFX
