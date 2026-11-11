@@ -76,6 +76,7 @@ namespace Academy.OpsLink
             string dir = Path.Combine(PluginRoot, target.ToLowerInvariant());
             string gem = Oc3PluginWriter.Write(Dictionary, dir, new Oc3PluginWriter.Options { LinkPort = entry.port });
             File.WriteAllText(Path.Combine(dir, "dictionary.json"), JsonUtility.ToJson(Dictionary, true));
+            Oc3Procedures.Write(Dictionary, Path.Combine(dir, "targets", target, "procedures"));
             WriteManeuverProcedure(simulation.Sim, dir, target);
             if (design != null)
             {
