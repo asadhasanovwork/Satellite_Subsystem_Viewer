@@ -320,7 +320,9 @@ namespace Academy.OpsLink
             _ackOk = ok ? 1 : 0;
             _ackCmd = line;
             _ackRes = result ?? "";
-            _ackPending = true;
+            // One CMD_ACK per command (a burst of commands used to collapse into the last one)
+            if (Connected) SendPacket(dictionary.TlmById(Oc3Dictionary.IdCmdAck));
+            else _ackPending = true;
             Debug.Log($"[OpsLink] {(ok ? "OK " : "NOK")} {line} -> {_ackRes}");
         }
 

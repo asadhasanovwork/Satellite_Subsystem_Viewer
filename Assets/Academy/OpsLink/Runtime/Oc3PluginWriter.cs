@@ -93,6 +93,8 @@ IGNORE_ITEM TIMEUS
             foreach (Oc3Command c in d.Commands)
             {
                 sb.Append($"COMMAND {d.TargetName} {c.Name} BIG_ENDIAN \"{Q(c.Description)}\"\n");
+                string hazard = HazardFor(c);
+                if (hazard != null) sb.Append($"  HAZARDOUS \"{Q(hazard)}\"\n");
                 sb.Append("  APPEND_PARAMETER LENGTH 32 UINT MIN MAX 0 \"Packet length (filled by the link)\"\n");
                 sb.Append($"  APPEND_ID_PARAMETER CMD_ID 16 UINT MIN MAX {c.Id} \"Command id\"\n");
                 foreach (Oc3Param p in c.Params)
@@ -109,8 +111,10 @@ IGNORE_ITEM TIMEUS
                             if (c.SimTarget != null) sb.Append("    REQUIRED\n");
                             break;
                         default:
-                            double def = c.Id == Oc3Dictionary.IdSimWarp ? 1 : 0;
-                            sb.Append($"  APPEND_PARAMETER {p.Name} 64 FLOAT MIN MAX {Oc3Dictionary.FormatNumber(def)} \"{Q(p.Description)}\"\n");
+                            double def = c.Id == Oc3Dictionary.IdSimWarp ? 1 : (!double.IsNaN(p.Min) ? p.Min : 0);
+                            string min = !double.IsNaN(p.Min) ? Oc3Dictionary.FormatNumber(p.Min) : c.Id == Oc3Dictionary.IdSimWarp ? "1" : "MIN";
+                            string max = !double.IsNaN(p.Max) ? Oc3Dictionary.FormatNumber(p.Max) : c.Id == Oc3Dictionary.IdSimWarp ? "1000" : "MAX";
+                            sb.Append($"  APPEND_PARAMETER {p.Name} 64 FLOAT {min} {max} {Oc3Dictionary.FormatNumber(def)} \"{Q(p.Description)}\"\n");
                             if (c.SimTarget != null) sb.Append("    REQUIRED\n");
                             break;
                     }
@@ -118,6 +122,20 @@ IGNORE_ITEM TIMEUS
                 sb.Append('\n');
             }
             return sb.ToString();
+        }
+
+        /// <summary>Commands that can lose the satellite or its data ask for confirmation in OpenC3.</summary>
+        static string HazardFor(Oc3Command c)
+        {
+            string cmd = (c.SimCommand ?? "").ToUpperInvariant();
+            string target = (c.SimTarget ?? "").ToLowerInvariant();
+            if (cmd == "RESET") return "Reboots the computer; the satellite comes back in safe mode.";
+            if (cmd == "CLEAR" && target.Contains("storage")) return "Deletes all stored data.";
+            if (cmd == "CLEAR_SCHEDULE") return "Deletes every stored (time-tagged) command.";
+            if (cmd == "DEPLOY") return "Fires the release mechanism; this cannot be undone.";
+            if (cmd == "OFF" && (target.StartsWith("ttc") || target.Contains("radio") || target.StartsWith("obc"))) return "Switching this unit off can end contact with the satellite.";
+            if (cmd == "SAFE") return "Puts the satellite in safe mode (payload and non-essential loads off).";
+            return null;
         }
 
         static string TlmTxt(Oc3Dictionary d)
@@ -130,8 +148,10 @@ IGNORE_ITEM TIMEUS
                 sb.Append($"  APPEND_ID_ITEM PKT_ID 16 UINT {p.Id} \"Packet id\"\n");
                 sb.Append("  APPEND_ITEM TIMESEC 32 UINT \"Simulation time, Unix seconds\"\n");
                 sb.Append("  APPEND_ITEM TIMEUS 32 UINT \"Simulation time, microseconds\"\n");
-                sb.Append("  ITEM PACKET_TIME 0 0 DERIVED \"Simulation time\"\n");
-                sb.Append("    READ_CONVERSION unix_time_conversion.rb TIMESEC TIMEUS\n");
+                // Packet time stays the real (received) time so Grapher, Data Extractor and history work in
+                // today's time range; the satellite's own clock is the SIM_UTC item.
+                sb.Append("  ITEM SIM_UTC 0 0 DERIVED \"Simulation time (UTC)\"\n");
+                sb.Append("    READ_CONVERSION unix_time_formatted_conversion.rb TIMESEC TIMEUS\n");
                 foreach (Oc3Item i in p.Items)
                 {
                     if (i.Type == Oc3Type.String)
@@ -145,9 +165,13 @@ IGNORE_ITEM TIMEUS
                     sb.Append($"    FORMAT_STRING \"%.{Math.Min(i.Decimals, 6)}f\"\n");
                     if (!double.IsNaN(i.Low) || !double.IsNaN(i.High))
                     {
-                        string lo = double.IsNaN(i.Low) ? "-1e30" : Oc3Dictionary.FormatNumber(i.Low);
-                        string hi = double.IsNaN(i.High) ? "1e30" : Oc3Dictionary.FormatNumber(i.High);
-                        sb.Append($"    LIMITS DEFAULT 1 ENABLED {lo} {lo} {hi} {hi}\n");
+                        // Red at the simulator's limit, yellow 10 % before it (a warning band)
+                        string rl = double.IsNaN(i.Low) ? "-1e30" : Oc3Dictionary.FormatNumber(i.Low);
+                        string yl = double.IsNaN(i.Low) ? "-1e30" : Oc3Dictionary.FormatNumber(i.Low + 0.1 * Math.Abs(i.Low));
+                        string rh = double.IsNaN(i.High) ? "1e30" : Oc3Dictionary.FormatNumber(i.High);
+                        string yh = double.IsNaN(i.High) ? "1e30" : Oc3Dictionary.FormatNumber(i.High - 0.1 * Math.Abs(i.High));
+                        if (i.Key == "#evsev") { yh = "0.5"; rh = "1.5"; } // 1 = warning (yellow), 2 = alarm (red)
+                        sb.Append($"    LIMITS DEFAULT 1 ENABLED {rl} {yl} {yh} {rh}\n");
                     }
                 }
                 sb.Append('\n');
@@ -161,7 +185,8 @@ IGNORE_ITEM TIMEUS
             sb.Append("SCREEN AUTO AUTO 1.0\n");
             sb.Append($"TITLE \"{Q(d.SatelliteName)} - {Q(p.Description)}\"\n");
             sb.Append("VERTICAL\n");
-            sb.Append($"  LABELVALUE {d.TargetName} {p.Name} PACKET_TIMEFORMATTED WITH_UNITS 28\n");
+            sb.Append($"  LABELVALUE {d.TargetName} {p.Name} SIM_UTC WITH_UNITS 28\n");
+            sb.Append($"  LABELVALUE {d.TargetName} {p.Name} RECEIVED_TIMEFORMATTED WITH_UNITS 28\n");
             foreach (Oc3Item i in p.Items)
                 sb.Append($"  LABELVALUE {d.TargetName} {p.Name} {i.Name} WITH_UNITS {(i.Type == Oc3Type.String ? 40 : 16)}\n");
             sb.Append("END\n");

@@ -62,6 +62,9 @@ namespace Academy.Operations
 
         private void Awake()
         {
+            // Event and command texts go to OpenC3 and scripts: always "0.001", never "0,001"
+            System.Globalization.CultureInfo.DefaultThreadCurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
+            System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
             Templates = OperationsData.LoadTemplates();
             Models = OperationsData.LoadModels();
             Scenarios = OperationsData.LoadScenarios();

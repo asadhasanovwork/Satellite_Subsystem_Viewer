@@ -40,6 +40,7 @@ namespace Academy.OpsLink
         public Oc3Type Type;
         public string[] States;    // for UInt8Enum
         public int StringBytes;    // for String
+        public double Min = double.NaN, Max = double.NaN; // numeric range from the label, e.g. "wheel 1-3"
     }
 
     [Serializable]
@@ -174,6 +175,14 @@ namespace Academy.OpsLink
                         SimTarget = target, SimCommand = spec.Name,
                     };
                     ParseArgs(spec.Args, cmd);
+                    if (target.Equals("OBSW", StringComparison.OrdinalIgnoreCase) && spec.Name == "RULE")
+                    {
+                        // Rule ids as a list to pick from (there is no way to discover them in OpenC3 otherwise)
+                        string[] ids = sim.Obsw.Rules.Select(r => r.Def.id).Where(x => !string.IsNullOrEmpty(x)).ToArray();
+                        if (ids.Length == 0) { usedNames.Remove(cmd.Name); continue; } // no rules on board: nothing to switch
+                        Oc3Param idParam = cmd.Params.FirstOrDefault(x => x.Type == Oc3Type.String);
+                        if (idParam != null) { idParam.Type = Oc3Type.UInt8Enum; idParam.States = ids; idParam.Description = "Rule: " + string.Join(" | ", ids); }
+                    }
                     Commands.Add(cmd);
                 }
             }
@@ -206,13 +215,20 @@ namespace Academy.OpsLink
                     string label = tok.Trim('<', '>').Trim();
                     string lower = label.ToLowerInvariant();
                     bool isText = lower.Contains("command") || lower == "id" || lower.Contains("name") || lower.Contains("text");
-                    cmd.Params.Add(new Oc3Param
+                    var prm = new Oc3Param
                     {
                         Name = Unique(ParamName(label, n), used),
                         Description = label,
                         Type = isText ? Oc3Type.String : Oc3Type.Float64,
                         StringBytes = lower.Contains("command") ? LongString : ShortString,
-                    });
+                    };
+                    Match range = Regex.Match(label, @"(-?\d+(?:\.\d+)?)\s*-\s*(-?\d+(?:\.\d+)?)");
+                    if (!isText && range.Success)
+                    {
+                        prm.Min = double.Parse(range.Groups[1].Value, CultureInfo.InvariantCulture);
+                        prm.Max = double.Parse(range.Groups[2].Value, CultureInfo.InvariantCulture);
+                    }
+                    cmd.Params.Add(prm);
                 }
                 else
                 {
@@ -230,6 +246,9 @@ namespace Academy.OpsLink
 
         static string ParamName(string label, int position)
         {
+            string l = label.Trim().ToLowerInvariant();
+            if (l == "m/s") return "DELTA_V";
+            if (l == "s" || l == "sec") return "SECONDS";
             string first = label.Split(new[] { ' ', '/', '-' }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault() ?? "";
             string s = Sanitize(first, "");
             return string.IsNullOrEmpty(s) || char.IsDigit(s[0]) ? "ARG" + position : s;
