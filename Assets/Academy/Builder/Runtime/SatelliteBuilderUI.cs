@@ -673,7 +673,7 @@ namespace Academy.Builder
             nameField.textEdition.placeholder = "e.g. AzCube-1";
             nameField.RegisterValueChangedCallback(e => _design.DesignName = e.newValue);
             _detail.Add(nameField);
-            _detail.Add(MakeLabel("This is your satellite's name in Mission Operations (OpenC3 target ACADEMY_<NAME>).", 11, false, Muted));
+            _detail.Add(MakeLabel("This is your satellite's name in Mission Operations (OpenC3 target and interface use this name).", 11, false, Muted));
 
             int missing = _design.MissingCount();
             DesignTotals totals = _design.ComputeTotals();
@@ -714,7 +714,8 @@ namespace Academy.Builder
             _detail.Add(MakeLabel("Simplified teaching budgets: average values, before margins for eclipse, battery charging and ageing.", 11, false, Muted));
 
             bool canLaunch = missing == 0 && powerOk;
-            if (canLaunch) LastDesignStore.Remember(_design.ToSave()); // Mission Operations Training flies this one
+            _detail.Add(OrbitSection(canLaunch));
+            if (canLaunch) LastDesignStore.Remember(_design.ToSave()); // Mission Operations Training and Orbit Simulation fly this one
             Button launch = MakeButton("Launch: watch the deployment", () =>
             {
                 if (view != null) view.PlayLaunchSequence();
@@ -747,6 +748,93 @@ namespace Academy.Builder
             _detail.Add(save);
             if (!string.IsNullOrEmpty(_lastSavedPath))
                 _detail.Add(MakeLabel("Saved: " + _lastSavedPath, 11, false, Muted));
+        }
+
+        /// <summary>
+        /// Orbit choice: altitude and inclination inside the template's orbit class (GEO: inclination and slot longitude).
+        /// Used by Mission Operations, OpenC3 and the Orbit Simulation.
+        /// </summary>
+        private VisualElement OrbitSection(bool canLaunch)
+        {
+            string cls = _design.Template.orbitClass;
+            if (_design.Orbit == null) _design.Orbit = DesignOrbit.DefaultFor(cls);
+            DesignOrbit orbit = _design.Orbit;
+            bool geo = DesignOrbit.IsGeo(cls);
+
+            var box = new VisualElement();
+            box.style.marginTop = 16;
+            box.Add(MakeLabel("Orbit (" + cls + ")", 15, true, TextColor));
+            box.Add(MakeLabel(geo ? "Geostationary altitude is fixed at 35 786 km. Choose the orbital slot and a small inclination."
+                                  : "Choose a circular orbit. The satellite type fixes the orbit class.", 11, false, Muted));
+
+            Label info = MakeLabel(string.Empty, 12, false, TextColor);
+            Label sso = MakeLabel(string.Empty, 11, false, Muted);
+
+            System.Action changed = () =>
+            {
+                info.text = "Period " + orbit.PeriodMinutes.ToString("0.0") + " min  ·  speed " + orbit.SpeedKmS.ToString("0.00") + " km/s" +
+                            (geo ? string.Empty : "  ·  " + (orbit.SemiMajorAxisKm).ToString("0") + " km from Earth's centre");
+                float ssoInc = orbit.SunSynchronousInclinationDeg;
+                sso.text = geo || float.IsNaN(ssoInc) ? string.Empty
+                         : "Sun-synchronous at this altitude: " + ssoInc.ToString("0.0") + "°" +
+                           (Mathf.Abs(ssoInc - orbit.inclinationDeg) < 0.15f ? "  ✓ (your orbit is Sun-synchronous)" : string.Empty);
+                if (canLaunch) LastDesignStore.Remember(_design.ToSave());
+            };
+
+            if (!geo)
+            {
+                Vector2 r = DesignOrbit.AltitudeRange(cls);
+                var alt = new SliderInt("Altitude (km)", Mathf.RoundToInt(r.x), Mathf.RoundToInt(r.y));
+                alt.value = Mathf.RoundToInt(orbit.altitudeKm);
+                alt.showInputField = true;
+                alt.style.color = TextColor;
+                alt.style.marginTop = 6;
+                alt.RegisterValueChangedCallback(e => { orbit.altitudeKm = e.newValue; orbit.ClampTo(cls); changed(); });
+                box.Add(alt);
+            }
+
+            Vector2 ir = DesignOrbit.InclinationRange(cls);
+            var inc = new Slider("Inclination (°)", ir.x, ir.y);
+            inc.value = orbit.inclinationDeg;
+            inc.showInputField = true;
+            inc.style.color = TextColor;
+            inc.style.marginTop = 6;
+            inc.RegisterValueChangedCallback(e => { orbit.inclinationDeg = Mathf.Round(e.newValue * 100f) / 100f; changed(); });
+            box.Add(inc);
+
+            if (geo)
+            {
+                var lon = new Slider("Slot longitude (° E)", -180f, 180f);
+                lon.value = orbit.geoLongitudeDeg;
+                lon.showInputField = true;
+                lon.style.color = TextColor;
+                lon.style.marginTop = 6;
+                lon.RegisterValueChangedCallback(e => { orbit.geoLongitudeDeg = Mathf.Round(e.newValue * 10f) / 10f; changed(); });
+                box.Add(lon);
+            }
+            else
+            {
+                Button ssoButton = MakeButton("Make it Sun-synchronous", () =>
+                {
+                    float i = orbit.SunSynchronousInclinationDeg;
+                    if (float.IsNaN(i)) return;
+                    inc.value = Mathf.Clamp(Mathf.Round(i * 10f) / 10f, ir.x, ir.y);
+                }, 0);
+                ssoButton.style.marginTop = 6;
+                ssoButton.style.alignSelf = Align.FlexStart;
+                box.Add(ssoButton);
+            }
+
+            Button reset = MakeButton("Default orbit", () => { _design.Orbit = DesignOrbit.DefaultFor(cls); ShowReview(); }, 0);
+            reset.style.marginTop = 6;
+            reset.style.alignSelf = Align.FlexStart;
+            box.Add(reset);
+
+            info.style.marginTop = 6;
+            box.Add(info);
+            box.Add(sso);
+            changed();
+            return box;
         }
 
         /// <summary>Dark input box with light text, matching the builder cards (the default runtime theme is white).</summary>

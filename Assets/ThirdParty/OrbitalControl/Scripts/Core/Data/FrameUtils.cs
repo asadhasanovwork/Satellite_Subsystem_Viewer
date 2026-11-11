@@ -6,7 +6,7 @@ using System;
 /// Earth-Centered Inertial (ECI) coordinates and Unity's coordinate system.
 /// Ensures consistent axis mapping and scaling between simulation and Unity units.
 /// </summary>
-static class FrameUtils
+public static class FrameUtils
 {
     /// <summary>
     /// Converts an ECI position vector (in meters) to Unity world space coordinates.

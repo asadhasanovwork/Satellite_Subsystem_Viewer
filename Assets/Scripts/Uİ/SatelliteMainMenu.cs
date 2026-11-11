@@ -80,10 +80,8 @@ public sealed class SatelliteMainMenu : MonoBehaviour
         Add("Satellite Viewer", () => OpenWorkspace("Satellite Viewer", false, false));
         Add("Satellite Builder", ShowBuilder);
         Add("Mission Operations Training", OpenOperations);
-        var orbitButton = Add("Satellite Orbit Simulation",
-            () => OpenWorkspace("Satellite Orbit Simulation", true, false));
-        orbitButton.SetEnabled(orbit != null);
-        if (orbit == null) orbitButton.tooltip = "No orbital motion component is available in this scene.";
+        var orbitButton = Add("Satellite Orbit Simulation", OpenOrbitSimulation);
+        orbitButton.tooltip = "Fly the satellite built in the Builder in its chosen orbit: plan manoeuvres, burn the real engine and propellant.";
         var operationsButton = Add("Satellite Operations Simulation",
             () => OpenWorkspace("Satellite Operations Simulation", true, true));
         operationsButton.SetEnabled(physics != null);
@@ -147,6 +145,13 @@ public sealed class SatelliteMainMenu : MonoBehaviour
         // if it does not exist the builder scene is generated in code. No manual setup needed.
         RestoreControls();
         SatelliteBuilderSceneFactory.Open(panelSettings);
+    }
+
+    private void OpenOrbitSimulation()
+    {
+        // The orbital-control simulator (Assets/ThirdParty/OrbitalControl) with the Builder's satellite and orbit.
+        RestoreControls();
+        Academy.OrbitSim.OrbitSimBridge.Open();
     }
 
     private void OpenOperations()

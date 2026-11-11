@@ -15,6 +15,10 @@ public class BodyService : MonoBehaviour, IBodyService
     private int _bulkRegistrationDepth;
     private bool _membershipDirty;
 
+    /// <summary>Academy: when set before the scene loads, the scene's demo satellites are removed
+    /// instead of registered (the Academy spawns the learner's own satellite).</summary>
+    public static bool SkipSceneSatellites;
+
     // Retained here to preserve scene serialization and the existing fixed-update order.
     public bool DrivePhysics = true;
 
@@ -32,7 +36,15 @@ public class BodyService : MonoBehaviour, IBodyService
             .ThenBy(b => b.name, StringComparer.OrdinalIgnoreCase);
 
         foreach (var body in bodies)
+        {
+            if (SkipSceneSatellites && !body.isCentralBody)
+            {
+                body.gameObject.SetActive(false);
+                Destroy(body.gameObject);
+                continue;
+            }
             Register(body);
+        }
 
         physicsStepper = new BodyPhysicsStepper(this, ctx);
     }

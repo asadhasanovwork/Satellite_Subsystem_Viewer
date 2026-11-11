@@ -10,6 +10,11 @@ public sealed class SimulationBootstrap : MonoBehaviour
 
     private SimContext ctx;
 
+    /// <summary>Academy: context of the running simulation (null when the scene is not loaded).</summary>
+    public static SimContext Current { get; private set; }
+
+    private void OnDestroy() { if (Current == ctx) Current = null; }
+
     /// <summary>
     /// Creates the shared context and initializes all registered systems.
     /// </summary>
@@ -24,5 +29,6 @@ public sealed class SimulationBootstrap : MonoBehaviour
 
         ctx = SimContextFactory.Create(references);
         BootstrapSequence.Initialize(ctx, references, gameObject);
+        Current = ctx;
     }
 }

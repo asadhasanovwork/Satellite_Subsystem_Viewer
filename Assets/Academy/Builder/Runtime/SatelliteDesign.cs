@@ -45,6 +45,9 @@ namespace Academy.Builder
         public BuilderTemplate Template { get; private set; }
         public string DesignName;
 
+        /// <summary>Orbit chosen in the Builder (always set; starts at the template's default orbit).</summary>
+        public DesignOrbit Orbit;
+
         /// <summary>Raised after any selection or parameter change.</summary>
         public event Action Changed;
 
@@ -56,6 +59,7 @@ namespace Academy.Builder
         {
             Template = template;
             DesignName = string.IsNullOrEmpty(template.designName) ? template.displayName : template.designName;
+            Orbit = DesignOrbit.DefaultFor(template.orbitClass);
             foreach (BuilderSubsystem subsystem in template.subsystems)
                 foreach (BuilderSlot slot in subsystem.slots)
                     if (!string.IsNullOrEmpty(slot.id))
@@ -318,7 +322,7 @@ namespace Academy.Builder
 
         public DesignSave ToSave()
         {
-            var save = new DesignSave { templateId = Template.id, designName = DesignName };
+            var save = new DesignSave { templateId = Template.id, designName = DesignName, orbit = Orbit != null ? Orbit.Clone() : null };
             foreach (KeyValuePair<string, SlotSelection> kv in _selections)
             {
                 var saved = new SavedSlot { slot = kv.Key, variant = kv.Value.variantId };
@@ -339,6 +343,8 @@ namespace Academy.Builder
             }
             if (!string.IsNullOrEmpty(save.designName))
                 DesignName = save.designName;
+            Orbit = save.orbit != null && save.orbit.altitudeKm > 0 ? save.orbit.Clone() : DesignOrbit.DefaultFor(Template.orbitClass);
+            Orbit.ClampTo(Template.orbitClass);
             foreach (SavedSlot saved in save.slots)
             {
                 if (GetSlot(saved.slot) == null)
@@ -391,6 +397,86 @@ namespace Academy.Builder
         public string templateId;
         public string designName;
         public List<SavedSlot> slots = new List<SavedSlot>();
+        /// <summary>Circular orbit chosen in the Builder; null in designs saved before orbits were selectable.</summary>
+        public DesignOrbit orbit;
+    }
+
+    /// <summary>
+    /// Circular orbit the learner picks in the Builder (km and degrees). The orbit class (LEO / MEO / GEO)
+    /// is fixed by the satellite type; these values choose where inside that class it flies.
+    /// </summary>
+    [Serializable]
+    public class DesignOrbit
+    {
+        public float altitudeKm;
+        public float inclinationDeg;
+        public float raanDeg;
+        /// <summary>GEO only: longitude of the orbital slot (east positive). -999 = not used.</summary>
+        public float geoLongitudeDeg = -999f;
+
+        public const float EarthRadiusKm = 6378.137f;
+        public const float MuEarth = 398600.4418f;
+        public const float GeoAltitudeKm = 35786f;
+
+        public DesignOrbit Clone() { return (DesignOrbit)MemberwiseClone(); }
+
+        public static bool IsGeo(string orbitClass) { return string.Equals(orbitClass, "GEO", StringComparison.OrdinalIgnoreCase); }
+        public static bool IsMeo(string orbitClass) { return string.Equals(orbitClass, "MEO", StringComparison.OrdinalIgnoreCase); }
+
+        public static DesignOrbit DefaultFor(string orbitClass)
+        {
+            if (IsGeo(orbitClass)) return new DesignOrbit { altitudeKm = GeoAltitudeKm, inclinationDeg = 0.05f, geoLongitudeDeg = 46f };
+            if (IsMeo(orbitClass)) return new DesignOrbit { altitudeKm = 23222f, inclinationDeg = 56f };
+            return new DesignOrbit { altitudeKm = 500f, inclinationDeg = 97.4f };
+        }
+
+        /// <summary>Allowed altitude range for the class (GEO is fixed by physics).</summary>
+        public static Vector2 AltitudeRange(string orbitClass)
+        {
+            if (IsGeo(orbitClass)) return new Vector2(GeoAltitudeKm, GeoAltitudeKm);
+            if (IsMeo(orbitClass)) return new Vector2(2000f, 30000f);
+            return new Vector2(300f, 2000f);
+        }
+
+        public static Vector2 InclinationRange(string orbitClass)
+        {
+            if (IsGeo(orbitClass)) return new Vector2(0f, 10f);
+            if (IsMeo(orbitClass)) return new Vector2(0f, 90f);
+            return new Vector2(0f, 110f);
+        }
+
+        public void ClampTo(string orbitClass)
+        {
+            Vector2 a = AltitudeRange(orbitClass), i = InclinationRange(orbitClass);
+            altitudeKm = Mathf.Clamp(altitudeKm, a.x, a.y);
+            inclinationDeg = Mathf.Clamp(inclinationDeg, i.x, i.y);
+            if (IsGeo(orbitClass))
+            {
+                if (geoLongitudeDeg < -180f || geoLongitudeDeg > 180f) geoLongitudeDeg = 46f;
+            }
+            else geoLongitudeDeg = -999f;
+        }
+
+        public float SemiMajorAxisKm { get { return EarthRadiusKm + altitudeKm; } }
+
+        /// <summary>Orbital period in minutes (circular two-body).</summary>
+        public float PeriodMinutes
+        {
+            get { double a = SemiMajorAxisKm; return (float)(2.0 * Math.PI * Math.Sqrt(a * a * a / MuEarth) / 60.0); }
+        }
+
+        /// <summary>Circular orbital speed, km/s.</summary>
+        public float SpeedKmS { get { return (float)Math.Sqrt(MuEarth / SemiMajorAxisKm); } }
+
+        /// <summary>Inclination that makes a circular orbit at this altitude Sun-synchronous (J2), or NaN.</summary>
+        public float SunSynchronousInclinationDeg
+        {
+            get
+            {
+                double c = -Math.Pow(SemiMajorAxisKm / 12352.0, 3.5);
+                return c < -1 ? float.NaN : (float)(Math.Acos(c) * 180.0 / Math.PI);
+            }
+        }
     }
 
     [Serializable]

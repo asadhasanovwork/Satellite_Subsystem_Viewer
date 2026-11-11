@@ -128,32 +128,11 @@ namespace Academy.Operations
             else StartFreeFlight(Template, LastDesign);
         }
 
-        private static void FillMissing(SatelliteDesign design)
+        /// <summary>Simulation inputs for every built slot of a design (also used by the Orbit Simulation).</summary>
+        public static List<SlotInstance> BuildSlotInstances(BuilderTemplate template, SatelliteDesign design, out double totalMass)
         {
-            for (int pass = 0; pass < 3; pass++)
-                foreach (BuilderSubsystem s in design.Template.subsystems)
-                    design.FillRecommended(s);
-        }
-
-        private void Launch(BuilderTemplate template, SatelliteDesign design, ScenarioDef scenario)
-        {
-            Template = template;
-            Design = design;
-            Scenario = scenario;
-            LastDesign = design.ToSave();
-
-            // ---- 3D model, deployed (the solar models need the deployed geometry)
-            view.ClearAll();
-            view.SetExplodeDistance(template.explodeDistance);
-            foreach (BuilderSubsystem subsystem in template.subsystems)
-                foreach (BuilderSlot slot in subsystem.slots)
-                    if (design.IsBuilt(slot))
-                        view.RebuildSlot(slot.id, design.BuildParts(slot), false);
-            view.SetDeployImmediate(true);
-
-            // ---- simulation model
             var slots = new List<SlotInstance>();
-            double totalMass = 0;
+            totalMass = 0;
             foreach (BuilderSubsystem subsystem in template.subsystems)
             {
                 foreach (BuilderSlot slot in subsystem.slots)
@@ -198,8 +177,56 @@ namespace Academy.Operations
                     slots.Add(si);
                 }
             }
+            return slots;
+        }
+
+        /// <summary>Recommended hardware for every slot the learner left empty.</summary>
+        public static void FillMissingPublic(SatelliteDesign design) { FillMissing(design); }
+
+        /// <summary>Copy of the template data with the Builder's circular orbit in place of the default one.</summary>
+        public static TemplateModels WithDesignOrbit(TemplateModels models, DesignOrbit orbit)
+        {
+            TemplateModels copy = JsonUtility.FromJson<TemplateModels>(JsonUtility.ToJson(models));
+            OrbitSettings o = copy.orbit ?? new OrbitSettings();
+            o.periapsisAltKm = orbit.altitudeKm;
+            o.apoapsisAltKm = orbit.altitudeKm;
+            o.inclinationDeg = orbit.inclinationDeg;
+            o.raanDeg = orbit.raanDeg;
+            o.geoLongitudeDeg = orbit.geoLongitudeDeg >= -180f && orbit.geoLongitudeDeg <= 180f ? orbit.geoLongitudeDeg : -999;
+            copy.orbit = o;
+            return copy;
+        }
+
+        private static void FillMissing(SatelliteDesign design)
+        {
+            for (int pass = 0; pass < 3; pass++)
+                foreach (BuilderSubsystem s in design.Template.subsystems)
+                    design.FillRecommended(s);
+        }
+
+        private void Launch(BuilderTemplate template, SatelliteDesign design, ScenarioDef scenario)
+        {
+            Template = template;
+            Design = design;
+            Scenario = scenario;
+            LastDesign = design.ToSave();
+
+            // ---- 3D model, deployed (the solar models need the deployed geometry)
+            view.ClearAll();
+            view.SetExplodeDistance(template.explodeDistance);
+            foreach (BuilderSubsystem subsystem in template.subsystems)
+                foreach (BuilderSlot slot in subsystem.slots)
+                    if (design.IsBuilt(slot))
+                        view.RebuildSlot(slot.id, design.BuildParts(slot), false);
+            view.SetDeployImmediate(true);
+
+            // ---- simulation model
+            double totalMass;
+            List<SlotInstance> slots = BuildSlotInstances(template, design, out totalMass);
 
             TemplateModels models = ModelsFor(template.id);
+            if (scenario == null && design.Orbit != null)
+                models = WithDesignOrbit(models, design.Orbit); // free flight: the orbit chosen in the Builder
             Sim = MissionSetup.Create(models, slots, totalMass, template.orbitClass, scenario, RefreshSolarGeometry);
             Sim.SatelliteName = string.IsNullOrEmpty(design.DesignName) ? template.designName : design.DesignName;
 
