@@ -179,10 +179,32 @@ namespace Academy.OpsLink
             PrototypeOrbitCamera.PointerOverUi = OpsBrowserScreen.IsOpen ? (Func<Vector2, bool>)(_ => true) : null;
             if (_cam != null) { _cam.targetTexture = null; _cam.farClipPlane = _defaultFar; }
             if (_orbit != null) _orbit.Frame(_baseDistance);
+            if (_screenCam != null) { Destroy(_screenCam.gameObject); _screenCam = null; }
+        }
+
+        Camera _screenCam;
+
+        /// <summary>
+        /// The Main Camera now draws into the window's texture, so nothing would draw to the screen
+        /// (Unity shows "No cameras rendering"). A camera that only clears the screen keeps it valid;
+        /// the OpenC3 canvas is an overlay and draws on top of it.
+        /// </summary>
+        void EnsureScreenCamera()
+        {
+            if (_screenCam != null) return;
+            var go = new GameObject("Ops3D Screen Camera");
+            go.hideFlags = HideFlags.DontSave;
+            _screenCam = go.AddComponent<Camera>();
+            _screenCam.cullingMask = 0;
+            _screenCam.clearFlags = CameraClearFlags.SolidColor;
+            _screenCam.backgroundColor = Color.black;
+            _screenCam.depth = -100;
+            _screenCam.useOcclusionCulling = false;
         }
 
         void OnDestroy()
         {
+            if (_screenCam != null) Destroy(_screenCam.gameObject);
             if (_rt != null) { _rt.Release(); Destroy(_rt); }
             if (_current == this) _current = null;
         }
@@ -218,6 +240,7 @@ namespace Academy.OpsLink
                 _image.texture = _rt;
             }
             if (_cam.targetTexture != _rt) _cam.targetTexture = _rt;
+            EnsureScreenCamera();
 
             ApplyMode();
             _status.text = StatusText(_ops.Sim);
