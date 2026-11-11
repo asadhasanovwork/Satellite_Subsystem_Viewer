@@ -668,10 +668,12 @@ namespace Academy.Builder
 
             var nameField = new TextField("Design name");
             nameField.value = _design.DesignName;
-            nameField.style.color = TextColor;
             nameField.style.marginTop = 8;
+            StyleTextField(nameField);
+            nameField.textEdition.placeholder = "e.g. AzCube-1";
             nameField.RegisterValueChangedCallback(e => _design.DesignName = e.newValue);
             _detail.Add(nameField);
+            _detail.Add(MakeLabel("This is your satellite's name in Mission Operations (OpenC3 target ACADEMY_<NAME>).", 11, false, Muted));
 
             int missing = _design.MissingCount();
             DesignTotals totals = _design.ComputeTotals();
@@ -745,6 +747,31 @@ namespace Academy.Builder
             _detail.Add(save);
             if (!string.IsNullOrEmpty(_lastSavedPath))
                 _detail.Add(MakeLabel("Saved: " + _lastSavedPath, 11, false, Muted));
+        }
+
+        /// <summary>Dark input box with light text, matching the builder cards (the default runtime theme is white).</summary>
+        private static void StyleTextField(TextField field)
+        {
+            field.labelElement.style.color = Muted;
+            field.labelElement.style.unityFontStyleAndWeight = FontStyle.Bold;
+            VisualElement input = field.Q(className: TextField.inputUssClassName);
+            if (input != null)
+            {
+                input.style.backgroundColor = CardBg;
+                input.style.color = TextColor;
+                input.style.borderTopColor = input.style.borderBottomColor = input.style.borderLeftColor = input.style.borderRightColor = Grey;
+                input.style.borderTopWidth = input.style.borderBottomWidth = input.style.borderLeftWidth = input.style.borderRightWidth = 1;
+                input.style.borderTopLeftRadius = input.style.borderTopRightRadius = input.style.borderBottomLeftRadius = input.style.borderBottomRightRadius = 4;
+                input.style.paddingLeft = 8;
+                input.style.minHeight = 28;
+                input.style.fontSize = 14;
+            }
+            VisualElement text = field.Q<TextElement>(className: "unity-text-element");
+            if (text != null) text.style.color = TextColor;
+            field.textSelection.cursorColor = Amber;
+            field.textSelection.selectionColor = new Color(0.949f, 0.710f, 0.267f, 0.35f);
+            field.RegisterCallback<FocusInEvent>(_ => { if (input != null) input.style.borderTopColor = input.style.borderBottomColor = input.style.borderLeftColor = input.style.borderRightColor = Amber; });
+            field.RegisterCallback<FocusOutEvent>(_ => { if (input != null) input.style.borderTopColor = input.style.borderBottomColor = input.style.borderLeftColor = input.style.borderRightColor = Grey; });
         }
 
         private void SaveDesign()
