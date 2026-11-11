@@ -102,6 +102,16 @@ public class ManeuverNodeManager : MonoBehaviour
     }
 
     internal double RendezvousArrivalTime => HasRendezvousPlan ? rendezvousEpoch + rendezvousPlan.ArrivalSeconds : double.PositiveInfinity;
+    /// <summary>Academy: the finalized manual burns in execution order (current node first).</summary>
+    public List<ManeuverNode> GetManualPlan()
+    {
+        var list = new List<ManeuverNode>();
+        if (HasRendezvousPlan) return list;
+        if (CurrentNode != null) list.Add(CurrentNode);
+        list.AddRange(manualQueue);
+        return list;
+    }
+
     public int RendezvousBurnsRemaining => HasRendezvousPlan ? rendezvousQueue.Count + (HasNode ? 1 : 0) : 0;
 
     public ManeuverNode[] GetRendezvousSchedule()

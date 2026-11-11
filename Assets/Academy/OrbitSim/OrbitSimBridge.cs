@@ -96,6 +96,11 @@ namespace Academy.OrbitSim
         public NBody Body { get; private set; }
         public SatelliteSim Sim { get; private set; }
         public ThrusterSet MainEngine { get; private set; }
+        /// <summary>Simulator time (s) when the satellite was placed at the start of its orbit.</summary>
+        public double SpawnTime { get; private set; }
+
+        private Text _status;
+        private DesignOrbit _orbit;
 
         private static readonly Color BtnC = new Color(0.263f, 0.627f, 0.278f, 0.92f);
 
@@ -154,6 +159,8 @@ namespace Academy.OrbitSim
 
             string name = string.IsNullOrEmpty(Design.DesignName) ? Template.displayName : Design.DesignName;
             Body = spawner.SpawnSatellite(name, pos, (float)dry, vel, true, false, fuel);
+            SpawnTime = ctx.BodyRuntimeCoordinator != null ? ctx.BodyRuntimeCoordinator.SimulationTimeSeconds : 0.0;
+            _orbit = orbit;
 
             // ---- propulsion: the real main engine, finite propellant (no engine = no thrust)
             if (MainEngine != null)
@@ -236,37 +243,140 @@ namespace Academy.OrbitSim
             scaler.matchWidthOrHeight = 0.5f;
             canvasGo.AddComponent<GraphicRaycaster>();
 
-            var btnGo = new GameObject("Back To Academy");
-            btnGo.transform.SetParent(canvasGo.transform, false);
-            var rt = btnGo.AddComponent<RectTransform>();
-            rt.anchorMin = rt.anchorMax = rt.pivot = new Vector2(0.5f, 1f);
-            rt.anchoredPosition = new Vector2(0f, -10f);
-            rt.sizeDelta = new Vector2(150f, 34f);
-            var img = btnGo.AddComponent<Image>();
-            img.color = BtnC;
-            var btn = btnGo.AddComponent<Button>();
-            var colors = btn.colors;
-            colors.highlightedColor = new Color(1.15f, 1.15f, 1.15f, 1f);
-            btn.colors = colors;
-            btn.onClick.AddListener(OrbitSimBridge.Close);
+            MakeButton(canvasGo.transform, "← Academy", new Vector2(-90f, -10f), new Vector2(150f, 34f), OrbitSimBridge.Close);
+            MakeButton(canvasGo.transform, "Send plan to Mission Ops", new Vector2(110f, -10f), new Vector2(230f, 34f), SendPlan);
 
-            var textGo = new GameObject("Text");
-            textGo.transform.SetParent(btnGo.transform, false);
-            var trt = textGo.AddComponent<RectTransform>();
-            trt.anchorMin = Vector2.zero; trt.anchorMax = Vector2.one; trt.offsetMin = trt.offsetMax = Vector2.zero;
-            var text = textGo.AddComponent<Text>();
-            text.text = "← Academy";
-            text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-            text.fontSize = 17;
-            text.fontStyle = FontStyle.Bold;
-            text.alignment = TextAnchor.MiddleCenter;
-            text.color = Color.white;
+            var statusGo = new GameObject("Plan Status");
+            statusGo.transform.SetParent(canvasGo.transform, false);
+            var srt = statusGo.AddComponent<RectTransform>();
+            srt.anchorMin = srt.anchorMax = srt.pivot = new Vector2(0.5f, 1f);
+            srt.anchoredPosition = new Vector2(0f, -50f);
+            srt.sizeDelta = new Vector2(900f, 48f);
+            _status = statusGo.AddComponent<Text>();
+            _status.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            _status.fontSize = 15;
+            _status.alignment = TextAnchor.UpperCenter;
+            _status.color = new Color(0.85f, 0.95f, 0.85f);
+            _status.raycastTarget = false;
 
             if (FindFirstObjectByType<EventSystem>() == null)
             {
                 var es = new GameObject("EventSystem");
                 es.AddComponent<EventSystem>();
                 es.AddComponent<InputSystemUIInputModule>();
+            }
+        }
+
+        private static void MakeButton(Transform parent, string label, Vector2 pos, Vector2 size, UnityEngine.Events.UnityAction onClick)
+        {
+            var btnGo = new GameObject(label);
+            btnGo.transform.SetParent(parent, false);
+            var rt = btnGo.AddComponent<RectTransform>();
+            rt.anchorMin = rt.anchorMax = rt.pivot = new Vector2(0.5f, 1f);
+            rt.anchoredPosition = pos;
+            rt.sizeDelta = size;
+            var img = btnGo.AddComponent<Image>();
+            img.color = BtnC;
+            var btn = btnGo.AddComponent<Button>();
+            var colors = btn.colors;
+            colors.highlightedColor = new Color(1.15f, 1.15f, 1.15f, 1f);
+            btn.colors = colors;
+            btn.onClick.AddListener(onClick);
+
+            var textGo = new GameObject("Text");
+            textGo.transform.SetParent(btnGo.transform, false);
+            var trt = textGo.AddComponent<RectTransform>();
+            trt.anchorMin = Vector2.zero; trt.anchorMax = Vector2.one; trt.offsetMin = trt.offsetMax = Vector2.zero;
+            var text = textGo.AddComponent<Text>();
+            text.text = label;
+            text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            text.fontSize = 17;
+            text.fontStyle = FontStyle.Bold;
+            text.alignment = TextAnchor.MiddleCenter;
+            text.color = Color.white;
+        }
+
+        private void SetStatus(string message)
+        {
+            if (_status != null) _status.text = message;
+            Debug.Log("[OrbitSim] " + message);
+        }
+
+        /// <summary>
+        /// Saves the finalized manoeuvre nodes of the learner's satellite as a plan for Mission Operations: in OpenC3
+        /// it becomes the Script Runner procedure <c>maneuver_plan.rb</c> of the satellite's target.
+        /// </summary>
+        public void SendPlan()
+        {
+            try
+            {
+                ManeuverPlan plan = BuildPlan(out string problem);
+                if (plan == null) { SetStatus(problem); return; }
+                ManeuverPlanStore.Save(plan);
+                SetStatus(plan.burns.Count + " burn" + (plan.burns.Count > 1 ? "s" : "") + " (" + plan.TotalDvMps.ToString("0.###") +
+                          " m/s) saved for " + plan.designName + ". Open Mission Operations Training: in OpenC3 run Script Runner → " +
+                          ManeuverPlanProcedure.FileName + ".");
+            }
+            catch (Exception e)
+            {
+                SetStatus("Could not save the plan: " + e.Message);
+            }
+        }
+
+        public ManeuverPlan BuildPlan(out string problem)
+        {
+            problem = null;
+            SimContext ctx = SimulationBootstrap.Current;
+            if (Body == null || ctx == null || ctx.ManeuverNodeManager == null) { problem = "The satellite is not in orbit yet."; return null; }
+            if (MainEngine == null) { problem = "This satellite has no propulsion: add an engine and propellant tank in the Builder to fly manoeuvres."; return null; }
+
+            double now = ctx.BodyRuntimeCoordinator != null ? ctx.BodyRuntimeCoordinator.SimulationTimeSeconds : 0.0;
+            var plan = new ManeuverPlan
+            {
+                designName = Body.name,
+                templateId = Template.id,
+                savedUtc = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm 'UTC'"),
+                altitudeKm = _orbit != null ? _orbit.altitudeKm : 0,
+                inclinationDeg = _orbit != null ? _orbit.inclinationDeg : 0,
+                periodS = _orbit != null ? _orbit.PeriodMinutes * 60.0 : 0
+            };
+            foreach (ManeuverNode node in ctx.ManeuverNodeManager.GetManualPlan())
+            {
+                if (node == null || node.targetBody != Body || !node.isFinalized || node.burnTime < now) continue;
+                double dv = node.predictedPropulsiveDeltaVMetersPerSecond;
+                if (!(dv > 0)) dv = node.deltaV.magnitude * SimulationUnits.MetersPerUnit;
+                plan.burns.Add(new PlannedBurn
+                {
+                    tSec = node.burnTime - SpawnTime,
+                    direction = DirectionFor(node.burnType),
+                    dvMps = Math.Round(dv, 4),
+                    durationS = node.duration,
+                    fuelKg = node.predictedFuelUsedKg
+                });
+            }
+            if (plan.burns.Count == 0)
+            {
+                problem = "No manoeuvre planned yet: add a manoeuvre node, set its burn and press Place / Finalize, then send the plan.";
+                return null;
+            }
+            plan.burns.Sort((a, b) => a.tSec.CompareTo(b.tSec));
+            return plan;
+        }
+
+        /// <summary>
+        /// The simulator's Unity frame swaps the ECI y and z axes (a mirror), so its "Normal" (r × v in Unity space)
+        /// points along the physical anti-normal (-h). Directions are converted to the physical ECI frame used on board.
+        /// </summary>
+        public static string DirectionFor(BurnType type)
+        {
+            switch (type)
+            {
+                case BurnType.Retrograde: return "RETROGRADE";
+                case BurnType.RadialIn: return "RADIAL_IN";
+                case BurnType.RadialOut: return "RADIAL_OUT";
+                case BurnType.Normal: return "ANTINORMAL";
+                case BurnType.AntiNormal: return "NORMAL";
+                default: return "PROGRADE";
             }
         }
     }

@@ -74,6 +74,7 @@ namespace Academy.OpsLink
             string dir = Path.Combine(PluginRoot, target.ToLowerInvariant());
             string gem = Oc3PluginWriter.Write(Dictionary, dir, new Oc3PluginWriter.Options { LinkPort = entry.port });
             File.WriteAllText(Path.Combine(dir, "dictionary.json"), JsonUtility.ToJson(Dictionary, true));
+            WriteManeuverProcedure(simulation.Sim, dir, target);
             if (design != null)
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(OpsLinkSettings.DesignPath(target)));
@@ -228,6 +229,34 @@ namespace Academy.OpsLink
             foreach (Match m in Regex.Matches(body, "\"((?:[^\"\\\\]|\\\\.)*)\""))
                 list.Add(m.Groups[1].Value);
             return list;
+        }
+
+        /// <summary>
+        /// Manoeuvre plan from the Orbit Simulation → Script Runner procedure targets/&lt;T&gt;/procedures/maneuver_plan.rb
+        /// (removed again when the satellite has no plan).
+        /// </summary>
+        static void WriteManeuverProcedure(SatelliteSim sim, string dir, string target)
+        {
+            string path = Path.Combine(dir, "targets", target, "procedures", Academy.OrbitSim.ManeuverPlanProcedure.FileName);
+            Academy.OrbitSim.ManeuverPlan plan = Academy.OrbitSim.ManeuverPlanStore.Load(sim.SatelliteName);
+            ThrusterSet engine = null;
+            foreach (ThrusterSet t in sim.ThrusterSets)
+                if (t.Tank != null && (engine == null || t.ThrustN * Math.Max(1, t.Thrusters.Count) > engine.ThrustN * Math.Max(1, engine.Thrusters.Count))) engine = t;
+            try
+            {
+                if (plan == null || engine == null)
+                {
+                    if (File.Exists(path)) File.Delete(path);
+                    return;
+                }
+                Directory.CreateDirectory(Path.GetDirectoryName(path));
+                File.WriteAllText(path, Academy.OrbitSim.ManeuverPlanProcedure.Ruby(plan, target, engine.Id));
+                Debug.Log($"[OpsLink] {target}: manoeuvre plan with {plan.burns.Count} burn(s) → Script Runner {path}");
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("[OpsLink] Could not write the manoeuvre procedure: " + e.Message);
+            }
         }
 
         static string ContentHash(string dir)
