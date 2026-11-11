@@ -22,12 +22,20 @@ namespace Academy.OrbitSim
         internal static BuilderTemplate PendingTemplate;
         internal static SatelliteDesign PendingDesign;
         private static float _savedFixedDeltaTime = -1f;
+        /// <summary>UI Toolkit panel of the main menu, reused when going on to Mission Operations.</summary>
+        internal static UnityEngine.UIElements.PanelSettings MenuPanel;
 
         public static bool IsOpen { get { return SceneManager.GetActiveScene().name == SceneName; } }
 
         /// <summary>Fly the last design built in the Builder (or a recommended default satellite).</summary>
         public static bool Open()
         {
+            return Open(LastDesignStore.Load());
+        }
+
+        public static bool Open(UnityEngine.UIElements.PanelSettings menuPanel)
+        {
+            if (menuPanel != null) MenuPanel = menuPanel;
             return Open(LastDesignStore.Load());
         }
 
@@ -66,12 +74,38 @@ namespace Academy.OrbitSim
         /// <summary>Back to the Academy main menu; undoes the simulator's time warp.</summary>
         public static void Close()
         {
+            RestoreTime();
+            SatelliteBuilderSceneFactory.OpenMainMenu(null);
+        }
+
+        /// <summary>
+        /// Straight on to Mission Operations Training with this satellite: the same start-up screen as the main menu
+        /// (OpenC3 when available, the Unity console otherwise). The manoeuvre plan was saved just before.
+        /// </summary>
+        public static void GoToMissionOperations(DesignSave save)
+        {
+            RestoreTime();
+            if (save != null)
+            {
+                LastDesignStore.Remember(save);
+                OperationsSession.FlyDesign(save);
+            }
+            UnityEngine.UIElements.PanelSettings panel = MenuPanel;
+            if (panel == null)
+            {
+                var found = Resources.FindObjectsOfTypeAll<UnityEngine.UIElements.PanelSettings>();
+                if (found.Length > 0) panel = found[0];
+            }
+            Academy.OpsLink.OpsLinkFlow.Begin(panel);
+        }
+
+        private static void RestoreTime()
+        {
             Time.timeScale = 1f;
             if (_savedFixedDeltaTime > 0f) Time.fixedDeltaTime = _savedFixedDeltaTime;
             BodyService.SkipSceneSatellites = false;
             PendingDesign = null;
             PendingTemplate = null;
-            SatelliteBuilderSceneFactory.OpenMainMenu(null);
         }
 
         private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -243,8 +277,9 @@ namespace Academy.OrbitSim
             scaler.matchWidthOrHeight = 0.5f;
             canvasGo.AddComponent<GraphicRaycaster>();
 
-            MakeButton(canvasGo.transform, "← Academy", new Vector2(-90f, -10f), new Vector2(150f, 34f), OrbitSimBridge.Close);
-            MakeButton(canvasGo.transform, "Send plan to Mission Ops", new Vector2(110f, -10f), new Vector2(230f, 34f), SendPlan);
+            MakeButton(canvasGo.transform, "← Academy", new Vector2(-250f, -10f), new Vector2(150f, 34f), OrbitSimBridge.Close);
+            MakeButton(canvasGo.transform, "Send plan to Mission Ops", new Vector2(-40f, -10f), new Vector2(240f, 34f), SendPlan);
+            MakeButton(canvasGo.transform, "Fly it in OpenC3 →", new Vector2(190f, -10f), new Vector2(200f, 34f), FlyInMissionOps);
 
             var statusGo = new GameObject("Plan Status");
             statusGo.transform.SetParent(canvasGo.transform, false);
@@ -321,6 +356,20 @@ namespace Academy.OrbitSim
             {
                 SetStatus("Could not save the plan: " + e.Message);
             }
+        }
+
+        /// <summary>Saves the planned burns (if any) and opens Mission Operations Training / OpenC3 with this satellite.</summary>
+        public void FlyInMissionOps()
+        {
+            if (Design == null) { OrbitSimBridge.Close(); return; }
+            try
+            {
+                ManeuverPlan plan = BuildPlan(out string problem);
+                if (plan != null) ManeuverPlanStore.Save(plan);
+            }
+            catch (Exception e) { Debug.LogWarning("[OrbitSim] Plan not saved: " + e.Message); }
+            DesignSave save = Design.ToSave();
+            OrbitSimBridge.GoToMissionOperations(save);
         }
 
         public ManeuverPlan BuildPlan(out string problem)

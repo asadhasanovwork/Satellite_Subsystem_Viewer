@@ -151,7 +151,7 @@ public sealed class SatelliteMainMenu : MonoBehaviour
     {
         // The orbital-control simulator (Assets/ThirdParty/OrbitalControl) with the Builder's satellite and orbit.
         RestoreControls();
-        Academy.OrbitSim.OrbitSimBridge.Open();
+        Academy.OrbitSim.OrbitSimBridge.Open(panelSettings);
     }
 
     private void OpenOperations()
