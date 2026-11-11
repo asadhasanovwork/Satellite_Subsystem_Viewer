@@ -712,6 +712,7 @@ namespace Academy.Builder
             _detail.Add(MakeLabel("Simplified teaching budgets: average values, before margins for eclipse, battery charging and ageing.", 11, false, Muted));
 
             bool canLaunch = missing == 0 && powerOk;
+            if (canLaunch) LastDesignStore.Remember(_design.ToSave()); // Mission Operations Training flies this one
             Button launch = MakeButton("Launch: watch the deployment", () =>
             {
                 if (view != null) view.PlayLaunchSequence();
@@ -757,6 +758,7 @@ namespace Academy.Builder
                 string designPath = Path.Combine(folder, safeName + "_" + stamp + ".design.json");
                 string assemblyPath = Path.Combine(folder, safeName + "_" + stamp + ".assembly.json");
                 File.WriteAllText(designPath, JsonUtility.ToJson(_design.ToSave(), true));
+                LastDesignStore.Remember(_design.ToSave());
                 File.WriteAllText(assemblyPath, JsonUtility.ToJson(_design.ToAssembly(), true));
                 _lastSavedPath = designPath;
                 SetStatus("Design saved to " + folder);

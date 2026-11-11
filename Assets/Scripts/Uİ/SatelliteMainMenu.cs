@@ -151,10 +151,10 @@ public sealed class SatelliteMainMenu : MonoBehaviour
 
     private void OpenOperations()
     {
-        // Ground-station lessons (LEO, MEO, GEO) and free flight; the scene is generated in code.
+        // Flies the satellite built in the Builder inside OpenC3 COSMOS (full screen). If OpenC3 is not
+        // available the start-up screen offers the Unity ground-station console instead.
         RestoreControls();
-        Academy.Operations.OperationsSession.Clear();
-        Academy.Operations.OperationsSceneFactory.Open(panelSettings);
+        Academy.OpsLink.OpsLinkFlow.Begin(panelSettings);
     }
 
     private void Step(int number, string title, string description)

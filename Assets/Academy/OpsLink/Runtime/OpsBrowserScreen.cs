@@ -23,6 +23,10 @@ namespace Academy.OpsLink
         static OpsBrowserScreen _current;
         Action _onExit;
         WebBrowserUIFull _browser;
+        volatile bool _loginPending;
+
+        /// <summary>When set, the OpenC3 login form is filled in automatically after every page load.</summary>
+        public static string AutoLoginPassword;
 
         public static bool IsOpen => _current != null;
         public WebBrowserUIFull Browser => _browser;
@@ -88,6 +92,7 @@ namespace Academy.OpsLink
             client.cache = true;
             client.windowlessFrameRate = 60;
             _browser.inputHandler = Resources.Load<WebBrowserInputHandler>("Input System Handler");
+            client.OnLoadFinish += _ => _loginPending = true;   // raised off the main thread
 
             if (client.engine == null || client.communicationLayer == null || _browser.inputHandler == null)
                 Debug.LogError("[OpsBrowser] UnityWebBrowser resources missing (engine/communication/input).");
@@ -126,6 +131,29 @@ namespace Academy.OpsLink
             text.fontSize = 14;
             text.alignment = TextAnchor.MiddleCenter;
             text.color = new Color(0.95f, 0.78f, 0.36f); // sun-amber
+        }
+
+        void Update()
+        {
+            if (!_loginPending || string.IsNullOrEmpty(AutoLoginPassword) || _browser == null) return;
+            var client = _browser.browserClient;
+            if (client == null || !client.IsConnected || !client.ReadySignalReceived) return;
+            _loginPending = false;
+            try { client.ExecuteJs(LoginScript(AutoLoginPassword)); }
+            catch (Exception e) { Debug.LogWarning("[OpsBrowser] Auto-login script failed: " + e.Message); }
+        }
+
+        /// <summary>Polls for OpenC3's login form for a few seconds; fills the password and presses Login.</summary>
+        static string LoginScript(string password)
+        {
+            string pw = password.Replace("\\", "\\\\").Replace("'", "\\'");
+            return "(function(){var n=0;var t=setInterval(function(){n++;" +
+                   "var p=document.querySelector('input[type=password]');" +
+                   "var b=Array.from(document.querySelectorAll('button')).find(function(x){return x.textContent.trim().toLowerCase()==='login';});" +
+                   "if(p&&b&&!document.querySelectorAll('input[type=password]')[1]){" +
+                   "var set=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;set.call(p,'" + pw + "');" +
+                   "p.dispatchEvent(new Event('input',{bubbles:true}));setTimeout(function(){b.click();},150);clearInterval(t);}" +
+                   "if(n>40)clearInterval(t);},250);})();";
         }
 
         static void SetInitialResolution(WebBrowserClient client, uint w, uint h)
