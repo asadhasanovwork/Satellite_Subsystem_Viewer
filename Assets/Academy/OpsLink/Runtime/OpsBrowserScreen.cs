@@ -28,6 +28,18 @@ namespace Academy.OpsLink
         /// <summary>When set, the OpenC3 login form is filled in automatically after every page load.</summary>
         public static string AutoLoginPassword;
 
+        /// <summary>
+        /// Target of the satellite being flown. Every OpenC3 tool's target selector (Telemetry Viewer, Grapher,
+        /// Packet Viewer, Data Extractor, Command Sender, ...) starts on it; the learner can still pick another one.
+        /// </summary>
+        public static string AutoTarget
+        {
+            get => _autoTarget;
+            set { _autoTarget = value; if (_current != null) _current._targetPending = true; }
+        }
+        static string _autoTarget;
+        bool _targetPending;
+
         public static bool IsOpen => _current != null;
 
         /// <summary>Last page titles (diagnostics: pages can report through document.title).</summary>
@@ -148,13 +160,62 @@ namespace Academy.OpsLink
 
         void Update()
         {
-            if (!_loginPending || string.IsNullOrEmpty(AutoLoginPassword) || _browser == null) return;
+            if (_browser == null) return;
             var client = _browser.browserClient;
             if (client == null || !client.IsConnected || !client.ReadySignalReceived) return;
-            _loginPending = false;
-            try { client.ExecuteJs(LoginScript(AutoLoginPassword)); }
-            catch (Exception e) { Debug.LogWarning("[OpsBrowser] Auto-login script failed: " + e.Message); }
+            if (_loginPending)
+            {
+                _loginPending = false;
+                _targetPending = true; // every page load starts a fresh page: install the target selector again
+                if (!string.IsNullOrEmpty(AutoLoginPassword))
+                {
+                    try { client.ExecuteJs(LoginScript(AutoLoginPassword)); }
+                    catch (Exception e) { Debug.LogWarning("[OpsBrowser] Auto-login script failed: " + e.Message); }
+                }
+            }
+            if (_targetPending && !string.IsNullOrEmpty(_autoTarget))
+            {
+                _targetPending = false;
+                try { client.ExecuteJs(AutoTargetScript + "('" + _autoTarget.Replace("'", "") + "')"); }
+                catch (Exception e) { Debug.LogWarning("[OpsBrowser] Auto-target script failed: " + e.Message); }
+            }
         }
+
+        /// <summary>
+        /// Watches the OpenC3 single-page app (it switches tools without reloading) and sets each new target
+        /// selector to <see cref="AutoTarget"/> once, as soon as its target list contains it.
+        /// </summary>
+        const string AutoTargetScript = @"(function(T){
+  window.__academyTarget = T;
+  if (window.__academyAuto) return 'already';
+  window.__academyAuto = true;
+  var touched = new WeakSet();
+  function has(list, t){ if(!list) return false; for (var i=0;i<list.length;i++){ var x=list[i]; var v=(x&&typeof x==='object')?(x.value!==undefined?x.value:x.label):x; if(v===t) return true; } return false; }
+  function visit(v, f){ if(!v) return; if(v.component) walk(v.component, f); if(Array.isArray(v.children)) for (var i=0;i<v.children.length;i++) visit(v.children[i], f); if(v.suspense) visit(v.suspense.activeBranch, f); }
+  function walk(inst, f){ if(!inst || f.seen.has(inst)) return; f.seen.add(inst); f(inst); visit(inst.subTree, f); }
+  function tick(){
+    var t = window.__academyTarget; if(!t) return;
+    var f = function(inst){
+      if (touched.has(inst)) return;
+      var d = inst.data || {}, m = (inst.type && inst.type.methods) || {}, p = inst.proxy;
+      try {
+        if ('selectedTargetName' in d && m.targetNameChanged) {
+          if (!has(p.targetNames, t)) return;           // list not loaded yet: try again later
+          touched.add(inst);
+          if (p.selectedTargetName !== t) { p.selectedTargetName = t; p.targetNameChanged(t); }
+        } else if ('selectedTarget' in d && m.targetSelect) {
+          touched.add(inst);
+          if (p.selectedTarget !== t) p.targetSelect(t);
+        }
+      } catch (e) { touched.add(inst); }
+    };
+    f.seen = new Set();
+    var els = document.querySelectorAll('*');
+    for (var i=0;i<els.length;i++) if (els[i]._vnode) visit(els[i]._vnode, f);
+  }
+  setInterval(tick, 700);
+  return 'installed';
+})";
 
         /// <summary>Polls for OpenC3's login form for a few seconds; fills the password and presses Login.</summary>
         static string LoginScript(string password)

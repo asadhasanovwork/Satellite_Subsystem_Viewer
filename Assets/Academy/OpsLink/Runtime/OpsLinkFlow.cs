@@ -141,6 +141,7 @@ namespace Academy.OpsLink
             if (!linked) { Error(OpsLinkSession.LastError, retry: true, offline: true, builder: false); return; }
 
             OpsBrowserScreen.AutoLoginPassword = _settings.password;
+            OpsBrowserScreen.AutoTarget = OpsLinkSession.CurrentTarget;
             OpsBrowserScreen.Open(OpsLinkSession.CommandSenderUrl(_settings), ReturnToMenu);
             SetVisible(false);
         }
