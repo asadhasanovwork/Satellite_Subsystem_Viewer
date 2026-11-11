@@ -330,6 +330,11 @@ namespace Academy.OrbitSim
             if (Body == null || ctx == null || ctx.ManeuverNodeManager == null) { problem = "The satellite is not in orbit yet."; return null; }
             if (MainEngine == null) { problem = "This satellite has no propulsion: add an engine and propellant tank in the Builder to fly manoeuvres."; return null; }
 
+            // A node still being edited (Setup pressed, Place not yet): place it for the learner
+            ManeuverNodeManager nodes = ctx.ManeuverNodeManager;
+            if (nodes.EditingNode != null && !nodes.EditingNode.isFinalized && nodes.EditingNode.targetBody == Body)
+                nodes.FinalizeManeuver();
+
             double now = ctx.BodyRuntimeCoordinator != null ? ctx.BodyRuntimeCoordinator.SimulationTimeSeconds : 0.0;
             var plan = new ManeuverPlan
             {
@@ -356,7 +361,7 @@ namespace Academy.OrbitSim
             }
             if (plan.burns.Count == 0)
             {
-                problem = "No manoeuvre planned yet: add a manoeuvre node, set its burn and press Place / Finalize, then send the plan.";
+                problem = "No manoeuvre planned yet. In Burn Controls press Setup, choose the burn direction, drag the node to the burn point, press Place, then Send plan.";
                 return null;
             }
             plan.burns.Sort((a, b) => a.tSec.CompareTo(b.tSec));

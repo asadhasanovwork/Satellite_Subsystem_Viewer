@@ -165,6 +165,7 @@ namespace Academy.OpsLink
         void ReturnToMenu()
         {
             _cts?.Cancel();
+            OpsLinkSession.Park(_settings);
             var ops = FindFirstObjectByType<OperationsSimulation>();
             if (ops != null)
             {

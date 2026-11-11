@@ -36,6 +36,8 @@ namespace Academy.OpsLink
         public static Oc3Dictionary Dictionary { get; private set; }
         public static string Status { get; private set; } = "idle";
         public static string LastError { get; private set; } = "";
+        /// <summary>Target of the satellite being flown (or set up) in OpenC3; null when none.</summary>
+        public static string CurrentTarget { get; private set; }
         public static event Action<string> StatusChanged;
 
         public static string PluginRoot => Path.Combine(Application.persistentDataPath, "OpsLink", "plugins");
@@ -91,6 +93,7 @@ namespace Academy.OpsLink
             link.dictionary = Dictionary;
             link.port = entry.port;
             link.enabled = true;
+            CurrentTarget = target;
 
             bool present = targets.Contains(target);
             if (present && entry.hash == hash)
@@ -104,17 +107,21 @@ namespace Academy.OpsLink
                 entry.hash = hash;
                 settings.Save();
             }
+            if (link == null) return await Abandoned(api, settings, target);
 
             SetStatus("Connecting OpenC3 to the satellite");
-            if (!await ConnectOnlyAsync(api, settings, target + "_INT"))
+            if (!await ConnectOnlyAsync(api, settings, target + "_INT", link))
+            {
+                if (link == null) return await Abandoned(api, settings, target);
                 return Fail("OpenC3 could not connect to the simulator on port " + entry.port + ".");
+            }
 
             SetStatus("Ready");
             return true;
         }
 
         /// <summary>Parks every other Academy interface, then connects ours once its microservice is up.</summary>
-        static async Task<bool> ConnectOnlyAsync(Oc3Api api, OpsLinkSettings s, string ours)
+        static async Task<bool> ConnectOnlyAsync(Oc3Api api, OpsLinkSettings s, string ours, SpacecraftLink link)
         {
             string pw = s.password;
             var academyTargets = new HashSet<string>(s.installed.Select(i => i.target));
@@ -130,6 +137,7 @@ namespace Academy.OpsLink
             DateTime nextConnect = DateTime.MinValue;
             while (DateTime.UtcNow < deadline)
             {
+                if (link == null) return false; // the learner left Mission Operations
                 string info = await api.RpcAsync("get_interface", "[" + Oc3Api.Json(ours) + "]", pw);
                 if (info.Contains("\"state\":\"CONNECTED\"")) return true;
                 if (info.Contains("\"result\"") && DateTime.UtcNow >= nextConnect)
@@ -268,6 +276,31 @@ namespace Academy.OpsLink
                 sb.Append(f.Substring(dir.Length)).Append('\n').Append(File.ReadAllText(f));
             using (var sha = SHA256.Create())
                 return BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(sb.ToString()))).Replace("-", "");
+        }
+
+        /// <summary>The learner left Mission Operations while OpenC3 was being set up: park the interface quietly.</summary>
+        static async Task<bool> Abandoned(Oc3Api api, OpsLinkSettings s, string target)
+        {
+            LastError = "";
+            SetStatus("Cancelled");
+            Debug.Log("[OpsLink] Left Mission Operations before OpenC3 connected; " + target + " parked.");
+            try { await api.RpcAsync("disconnect_interface", "[" + Oc3Api.Json(target + "_INT") + "]", s.password); } catch { }
+            if (CurrentTarget == target) CurrentTarget = null;
+            return false;
+        }
+
+        /// <summary>
+        /// Leaving Mission Operations: disconnect the flown satellite's interface so OpenC3 stops retrying a simulator
+        /// that is no longer running (fire and forget).
+        /// </summary>
+        public static async void Park(OpsLinkSettings s)
+        {
+            string target = CurrentTarget;
+            CurrentTarget = null;
+            if (string.IsNullOrEmpty(target)) return;
+            s = s ?? OpsLinkSettings.Load();
+            try { await new Oc3Api(s.openc3Url).RpcAsync("disconnect_interface", "[" + Oc3Api.Json(target + "_INT") + "]", s.password); }
+            catch (Exception e) { Debug.LogWarning("[OpsLink] Could not park " + target + ": " + e.Message); }
         }
 
         static bool Fail(string error)
