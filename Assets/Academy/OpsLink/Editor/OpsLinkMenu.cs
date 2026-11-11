@@ -22,7 +22,7 @@ namespace Academy.OpsLink.EditorTools
             if (!EditorApplication.isPlaying) { EditorUtility.DisplayDialog("OpsLink", "Open Mission Operations in Play mode first.", "OK"); return; }
             var sim = Object.FindFirstObjectByType<Academy.Operations.OperationsSimulation>();
             if (sim == null || sim.Sim == null) { EditorUtility.DisplayDialog("OpsLink", "No running satellite. Start a lesson or free flight first.", "OK"); return; }
-            await OpsLinkSession.StartAsync(sim, null, true);
+            if (await OpsLinkSession.StartAsync(sim, null, null)) OpsBrowserScreen.Open(OpsLinkSession.CommandSenderUrl(OpsLinkSettings.Load()));
         }
 
         [MenuItem("Academy/OpsLink/Close OpenC3 Browser")]

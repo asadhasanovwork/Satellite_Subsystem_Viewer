@@ -21,7 +21,7 @@ namespace Academy.OpsLink
 
         static readonly CultureInfo Inv = CultureInfo.InvariantCulture;
 
-        public static string GemName(Oc3Dictionary d) => "openc3-cosmos-" + d.TargetName.ToLowerInvariant().Replace('_', '-');
+        public static string GemName(Oc3Dictionary d) => OpsLinkSession.GemPrefix + d.TargetName.ToLowerInvariant().Replace('_', '-');
 
         /// <summary>Writes the plugin into <paramref name="dir"/> (emptied first) and returns the gem name.</summary>
         public static string Write(Oc3Dictionary d, string dir, Options opt = null)

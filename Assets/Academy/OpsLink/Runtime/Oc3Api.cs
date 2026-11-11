@@ -58,6 +58,22 @@ namespace Academy.OpsLink
                 return await r.Content.ReadAsStringAsync();
         }
 
+        public async Task<string> GetAsync(string path, string password)
+        {
+            var req = new HttpRequestMessage(HttpMethod.Get, _base + path);
+            req.Headers.TryAddWithoutValidation("Authorization", password ?? "");
+            using (var r = await Http.SendAsync(req))
+                return await r.Content.ReadAsStringAsync();
+        }
+
+        public async Task<bool> DeleteAsync(string path, string password)
+        {
+            var req = new HttpRequestMessage(HttpMethod.Delete, _base + path);
+            req.Headers.TryAddWithoutValidation("Authorization", password ?? "");
+            using (var r = await Http.SendAsync(req))
+                return r.IsSuccessStatusCode;
+        }
+
         public async Task<string> TargetNamesAsync(string password)
         {
             try { return await RpcAsync("get_target_names", "[]", password); }
