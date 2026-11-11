@@ -124,6 +124,36 @@ namespace Academy.OpsLink
             surface.SetActive(true);
 
             BuildBackButton();
+            Build3DButton();
+            // While OpenC3 covers the screen, drags in the browser must not turn the 3D camera behind it
+            Academy.Prototype.PrototypeOrbitCamera.PointerOverUi = _ => true;
+        }
+
+        /// <summary>"3D view" above "← Academy": the floating 3D window of the flying satellite.</summary>
+        void Build3DButton()
+        {
+            var go = new GameObject("Toggle3D", typeof(RectTransform));
+            go.transform.SetParent(transform, false);
+            var rt = go.GetComponent<RectTransform>();
+            rt.anchorMin = rt.anchorMax = rt.pivot = new Vector2(0f, 0f);
+            rt.anchoredPosition = new Vector2(12f, 80f);
+            rt.sizeDelta = new Vector2(132f, 30f);
+            go.AddComponent<Image>().color = new Color(0.263f, 0.627f, 0.278f, 0.92f);
+            var btn = go.AddComponent<Button>();
+            var colors = btn.colors;
+            colors.highlightedColor = new Color(1.15f, 1.15f, 1.15f, 1f);
+            btn.colors = colors;
+            btn.onClick.AddListener(() => Ops3DWindow.Toggle(transform));
+            var label = new GameObject("Label", typeof(RectTransform));
+            label.transform.SetParent(go.transform, false);
+            Stretch(label.GetComponent<RectTransform>());
+            var text = label.AddComponent<Text>();
+            text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            text.text = "3D view";
+            text.fontSize = 14;
+            text.alignment = TextAnchor.MiddleCenter;
+            text.color = Color.white;
+            text.fontStyle = FontStyle.Bold;
         }
 
         void BuildBackButton()
@@ -253,6 +283,8 @@ namespace Academy.OpsLink
 
         void OnDestroy()
         {
+            Ops3DWindow.CloseIfOpen();
+            Academy.Prototype.PrototypeOrbitCamera.PointerOverUi = null;
             if (_current == this) _current = null;
         }
     }
