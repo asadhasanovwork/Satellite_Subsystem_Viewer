@@ -728,12 +728,16 @@ namespace Academy.Builder
 
             Button fly = MakeButton("Fly it: Mission Operations", () =>
             {
-                Academy.Operations.OperationsSession.FlyDesign(_design.ToSave());
-                Academy.Operations.OperationsSceneFactory.Open(_document.panelSettings);
+                // Same path as the main menu's Mission Operations Training: this design, flown in OpenC3 COSMOS
+                // (the start-up screen offers the Unity console when OpenC3 is not available).
+                DesignSave save = _design.ToSave();
+                LastDesignStore.Remember(save);
+                Academy.Operations.OperationsSession.FlyDesign(save);
+                Academy.OpsLink.OpsLinkFlow.Begin(_document.panelSettings);
             }, 0);
             fly.style.marginTop = 8;
             fly.SetEnabled(canLaunch);
-            fly.tooltip = "Take this satellite into orbit: ground passes, power, attitude control, failures.";
+            fly.tooltip = "Take this satellite into orbit and fly it from OpenC3 COSMOS: ground passes, power, attitude control, failures.";
             _detail.Add(fly);
 
             Button save = MakeButton("Save design", SaveDesign, 0);
