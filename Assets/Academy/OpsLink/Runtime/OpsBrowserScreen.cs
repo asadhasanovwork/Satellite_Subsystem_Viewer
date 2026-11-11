@@ -29,6 +29,17 @@ namespace Academy.OpsLink
         public static string AutoLoginPassword;
 
         public static bool IsOpen => _current != null;
+
+        /// <summary>Last page titles (diagnostics: pages can report through document.title).</summary>
+        public static readonly System.Collections.Concurrent.ConcurrentQueue<string> Titles = new System.Collections.Concurrent.ConcurrentQueue<string>();
+
+        /// <summary>Runs JavaScript in the open OpenC3 page (diagnostics and automation).</summary>
+        public static bool RunJs(string js)
+        {
+            if (_current == null || _current._browser == null) return false;
+            try { _current._browser.browserClient.ExecuteJs(js); return true; }
+            catch (Exception e) { Debug.LogWarning("[OpsBrowser] JS failed: " + e.Message); return false; }
+        }
         public WebBrowserUIFull Browser => _browser;
 
         /// <summary>Opens (or re-focuses) the full-screen ops browser.</summary>
@@ -93,6 +104,7 @@ namespace Academy.OpsLink
             client.windowlessFrameRate = 60;
             _browser.inputHandler = Resources.Load<WebBrowserInputHandler>("Input System Handler");
             client.OnLoadFinish += _ => _loginPending = true;   // raised off the main thread
+            client.OnTitleChange += t => { Titles.Enqueue(t ?? ""); while (Titles.Count > 50) Titles.TryDequeue(out _); };
 
             if (client.engine == null || client.communicationLayer == null || _browser.inputHandler == null)
                 Debug.LogError("[OpsBrowser] UnityWebBrowser resources missing (engine/communication/input).");
