@@ -4,6 +4,10 @@ using System.IO;
 using UnityEngine;
 using SatelliteViewer.Data;
 
+// Load the satellite before other scripts' Start (ViewerUI.Start initialises SatelliteMainMenu,
+// which looks up the SatelliteOrbitalMotion this loader adds; CameraOrbitMMB.Start must not
+// override the distance set here).
+[DefaultExecutionOrder(-100)]
 public class SatelliteRuntimeLoader : MonoBehaviour
 {
     [Header("Catalog")]
@@ -197,6 +201,10 @@ public class SatelliteRuntimeLoader : MonoBehaviour
             Debug.LogWarning("[SatelliteRuntimeLoader] metadataLoader is null.");
         }
 
+        // Must run before Visibility/Explode/Selection cache the root: they all key off PartTag,
+        // which nothing else ever adds (isolate/explode by subsystem silently did nothing).
+        TagPartsFromMetadata(CurrentSatelliteRoot);
+
         if (visibilityManager != null)
         {
             visibilityManager.SetSatelliteRoot(CurrentSatelliteRoot, true);
@@ -307,18 +315,101 @@ public class SatelliteRuntimeLoader : MonoBehaviour
         OnSatelliteLoaded?.Invoke(item);
     }
 
+    private void TagPartsFromMetadata(Transform root)
+    {
+        if (root == null || metadataLoader == null || metadataLoader.Data == null || metadataLoader.Data.subsystems == null)
+        {
+            Debug.LogWarning("[SatelliteRuntimeLoader] Cannot tag parts: satellite root or metadata missing.");
+            return;
+        }
+
+        var byName = new Dictionary<string, Transform>();
+        foreach (var t in root.GetComponentsInChildren<Transform>(true))
+        {
+            if (t != null && !byName.ContainsKey(t.name))
+                byName.Add(t.name, t);
+        }
+
+        var tagged = new List<PartTag>();
+        int missing = 0;
+
+        foreach (var subsystem in metadataLoader.Data.subsystems)
+        {
+            if (subsystem == null || subsystem.parts == null)
+                continue;
+
+            foreach (var part in subsystem.parts)
+            {
+                if (part == null || string.IsNullOrWhiteSpace(part.unityName))
+                    continue;
+
+                if (!byName.TryGetValue(part.unityName, out Transform t))
+                {
+                    missing++;
+                    Debug.LogWarning($"[SatelliteRuntimeLoader] Part '{part.unityName}' ({subsystem.id}) not found under {root.name}.");
+                    continue;
+                }
+
+                PartTag tag = t.GetComponent<PartTag>();
+                if (tag == null)
+                    tag = t.gameObject.AddComponent<PartTag>();
+
+                tag.subsystemId = subsystem.id;
+                tag.partId = part.partId;
+                tag.unityName = part.unityName;
+                tagged.Add(tag);
+            }
+        }
+
+        // Cache after all tags exist so nested parts are excluded from their parent's renderers.
+        foreach (var tag in tagged)
+            tag.Cache();
+
+        Debug.Log($"[SatelliteRuntimeLoader] Tagged {tagged.Count} parts ({missing} missing in model).");
+    }
+
     private void SetupOrbitalMotion(Transform targetRoot)
     {
         if (targetRoot == null)
             return;
 
+        // Reuse a SatelliteOrbitalMotion that already drives this root or one of its parents
+        // (Test_Demo has one on ViewerManagers driving the SatelliteRoot spawn parent). Adding a
+        // second one on the spawned instance made two components fight over position/rotation,
+        // and SatelliteMainMenu could only pause one of them.
         SatelliteOrbitalMotion orbitalMotion = targetRoot.GetComponent<SatelliteOrbitalMotion>();
-        if (orbitalMotion == null)
-            orbitalMotion = targetRoot.gameObject.AddComponent<SatelliteOrbitalMotion>();
+        bool reused = false;
 
-        orbitalMotion.satelliteRoot = targetRoot;
+        if (orbitalMotion == null)
+        {
+            var existing = FindObjectsByType<SatelliteOrbitalMotion>(FindObjectsSortMode.None);
+            foreach (var candidate in existing)
+            {
+                if (candidate == null || candidate.satelliteRoot == null)
+                    continue;
+
+                if (targetRoot.IsChildOf(candidate.satelliteRoot))
+                {
+                    orbitalMotion = candidate;
+                    reused = true;
+                    break;
+                }
+            }
+        }
+
+        bool created = false;
+        if (orbitalMotion == null)
+        {
+            orbitalMotion = targetRoot.gameObject.AddComponent<SatelliteOrbitalMotion>();
+            created = true;
+        }
+
+        if (!reused)
+            orbitalMotion.satelliteRoot = targetRoot;
+
         orbitalMotion.operationsManager = operationsManager;
-        orbitalMotion.orbitCenter = orbitCenter;
+        if (orbitCenter != null || !reused)
+            orbitalMotion.orbitCenter = orbitCenter;
         orbitalMotion.useOrbitCenterTransform = useOrbitCenterTransform && orbitCenter != null;
         orbitalMotion.orbitCenterPosition = orbitCenterPosition;
 
@@ -335,9 +426,12 @@ public class SatelliteRuntimeLoader : MonoBehaviour
         orbitalMotion.faceVelocityDirection = faceVelocityDirection;
         orbitalMotion.addNadirBias = addNadirBias;
         orbitalMotion.attitudeSmooth = attitudeSmooth;
-        orbitalMotion.simulate = true;
 
-        Debug.Log("[SatelliteRuntimeLoader] SatelliteOrbitalMotion added/configured at runtime.");
+        // Don't override a pause applied by SatelliteMainMenu on an existing component.
+        if (created)
+            orbitalMotion.simulate = true;
+
+        Debug.Log($"[SatelliteRuntimeLoader] SatelliteOrbitalMotion {(created ? "added" : "reused")} and configured (drives '{orbitalMotion.satelliteRoot.name}').");
     }
 
     private float ResolveCameraDistance(SatelliteCatalogItem item)
@@ -375,7 +469,9 @@ public class SatelliteRuntimeLoader : MonoBehaviour
             string subsystemId = subsystem.id;
             OperationalState subsystemDefaultState = ParseOperationalState(subsystem.defaultOperationalState, OperationalState.Standby);
 
-            operationsManager.EnsureSubsystem(subsystemId, subsystemDefaultState);
+            // EnsureSubsystem keeps an existing state, so the JSON default was ignored for the
+            // built-in subsystems created in Awake (and for states left from a previous satellite).
+            operationsManager.InitializeSubsystemState(subsystemId, subsystemDefaultState);
 
             if (subsystem.parts == null)
                 continue;

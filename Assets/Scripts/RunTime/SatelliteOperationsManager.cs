@@ -75,6 +75,21 @@ public class SatelliteOperationsManager : MonoBehaviour
             subsystemToParts[key] = new List<string>();
     }
 
+    /// <summary>
+    /// Sets a subsystem's initial state (e.g. JSON defaultOperationalState) without notifying.
+    /// Unlike EnsureSubsystem this overwrites a state that already exists (such as the hard-coded
+    /// defaults created in Awake or a state left over from a previously loaded satellite).
+    /// </summary>
+    public void InitializeSubsystemState(string subsystemName, OperationalState state)
+    {
+        string key = NormalizeSubsystem(subsystemName);
+        if (string.IsNullOrEmpty(key))
+            return;
+
+        EnsureSubsystem(key, state);
+        subsystemStates[key] = state;
+    }
+
     public void ConfigureParts(IEnumerable<PartBinding> bindings, bool rebuildAfter = true)
     {
         if (bindings == null)
@@ -233,7 +248,9 @@ public class SatelliteOperationsManager : MonoBehaviour
         if (logStateChanges)
             Debug.Log($"[SatelliteOperationsManager] Subsystem state change -> {key} = {newState} | Reason: {reason}");
 
-        RebuildPartStatesFromSubsystems();
+        // Only this subsystem's parts follow the new state; rebuilding every subsystem here
+        // used to wipe per-part states (e.g. a single faulted wheel) in unrelated subsystems.
+        RebuildPartStatesForSubsystem(key);
         NotifyStateChanged();
     }
 
@@ -243,14 +260,16 @@ public class SatelliteOperationsManager : MonoBehaviour
         if (string.IsNullOrEmpty(partKey))
             return;
 
+        bool newlyRegistered = false;
         if (!partStates.ContainsKey(partKey))
         {
             string inferredSubsystem = InferSubsystemFromPartName(partKey);
             RegisterOrUpdatePart(partKey, inferredSubsystem, newState);
+            newlyRegistered = true;
         }
 
         OperationalState oldState = partStates[partKey];
-        if (oldState == newState)
+        if (oldState == newState && !newlyRegistered)
             return;
 
         partStates[partKey] = newState;
@@ -291,6 +310,9 @@ public class SatelliteOperationsManager : MonoBehaviour
                 Debug.Log($"[SatelliteOperationsManager] Part state change -> {partKey} = {newState} | Reason: {reason}");
         }
 
+        if (subsystemStates.TryGetValue(subsystemKey, out OperationalState oldSubsystemState) && oldSubsystemState != newState)
+            changed = true;
+
         subsystemStates[subsystemKey] = newState;
 
         if (changed)
@@ -303,9 +325,37 @@ public class SatelliteOperationsManager : MonoBehaviour
 
     public void RebuildRuntimeState()
     {
-        RebuildPartStatesFromSubsystems();
+        // Parts keep their registered/initial states (JSON defaultState); only parts without a
+        // state inherit their subsystem's. Subsystem states are then derived from the parts.
+        // (Previously every part was overwritten with its subsystem state, discarding JSON defaults.)
+        FillMissingPartStatesFromSubsystems();
         RebuildAllSubsystemStatesFromParts();
         NotifyStateChanged();
+    }
+
+    private void FillMissingPartStatesFromSubsystems()
+    {
+        foreach (KeyValuePair<string, List<string>> kvp in subsystemToParts)
+        {
+            OperationalState subsystemState = GetSubsystemState(kvp.Key);
+            foreach (string partKey in kvp.Value)
+            {
+                if (!partStates.ContainsKey(partKey))
+                    partStates[partKey] = GetPartStateForSubsystemState(kvp.Key, subsystemState);
+            }
+        }
+    }
+
+    private void RebuildPartStatesForSubsystem(string subsystemKey)
+    {
+        if (!subsystemToParts.TryGetValue(subsystemKey, out List<string> parts))
+            return;
+
+        OperationalState subsystemState = GetSubsystemState(subsystemKey);
+        OperationalState partState = GetPartStateForSubsystemState(subsystemKey, subsystemState);
+
+        for (int i = 0; i < parts.Count; i++)
+            partStates[parts[i]] = partState;
     }
 
     public void RebuildPartStatesFromSubsystems()

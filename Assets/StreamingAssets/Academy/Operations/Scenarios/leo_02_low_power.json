@@ -1,0 +1,107 @@
+{
+ "id": "leo_02_low_power",
+ "title": "Low power: a solar panel has failed",
+ "template": "leo_cubesat",
+ "orbitClass": "LEO",
+ "level": "Beginner",
+ "summary": "During imaging the battery is draining faster than it should. Find out why and save the satellite.",
+ "goals": [
+  "Read power telemetry: generation, load, net power",
+  "Understand the trade-off between pointing the camera and pointing the arrays",
+  "Shed load to protect the battery"
+ ],
+ "prerequisites": [
+  "Commissioning: first contact after separation"
+ ],
+ "situation": "The satellite is imaging in NADIR mode with the camera on. The low-power rule has been disabled for a software update, so nothing will protect the battery automatically. The instructor console shows the training contact aid is on: you can command at any time.",
+ "design": [],
+ "start": {
+  "utc": "",
+  "overrideOrbit": false,
+  "orbit": {
+   "periapsisAltKm": 500,
+   "apoapsisAltKm": 500,
+   "inclinationDeg": 97.4,
+   "raanDeg": 0,
+   "argPeriapsisDeg": 0,
+   "trueAnomalyDeg": 0,
+   "j2": true,
+   "geoLongitudeDeg": -999
+  },
+  "placement": "",
+  "placeStation": "",
+  "placeLeadDeg": 20,
+  "adcsMode": "NADIR",
+  "ratesDps": [
+   0,
+   0,
+   0
+  ],
+  "socPercent": 55,
+  "temperatureC": -999,
+  "stowed": false,
+  "alwaysInContact": true,
+  "timeWarp": 30,
+  "commands": [
+   "pl.main ON",
+   "OBSW RULE LOW_POWER OFF",
+   "SIM FAULT eps.solar PANEL_OFF 3"
+  ]
+ },
+ "faults": [],
+ "steps": [
+  {
+   "text": "Switch the camera off (pl.main OFF) to reduce the load.",
+   "hint": "Power telemetry: 'Total load'. The camera is the biggest consumer.",
+   "check": {
+    "point": "pl.main.state",
+    "op": "<",
+    "value": 0.5,
+    "seconds": 0,
+    "command": ""
+   }
+  },
+  {
+   "text": "Point the arrays at the Sun: ADCS MODE SUNSAFE.",
+   "hint": "In NADIR the arrays face the Sun only part of the orbit. One panel shows 0 W in the Power group - that is the failed one.",
+   "check": {
+    "point": "adcs.mode",
+    "op": "==",
+    "value": 2,
+    "seconds": 30,
+    "command": ""
+   }
+  },
+  {
+   "text": "Confirm the battery is charging again.",
+   "hint": "Net power positive in sunlight.",
+   "check": {
+    "point": "eps.net",
+    "op": ">",
+    "value": 0.5,
+    "seconds": 120,
+    "command": ""
+   }
+  },
+  {
+   "text": "Let the battery recover above 70%.",
+   "hint": "Use time warp. Eclipses pause charging.",
+   "check": {
+    "point": "eps.battery.soc",
+    "op": ">",
+    "value": 70,
+    "seconds": 0,
+    "command": ""
+   }
+  }
+ ],
+ "failWhen": {
+  "point": "eps.battery.soc",
+  "op": "<",
+  "value": 10,
+  "seconds": 0,
+  "command": ""
+ },
+ "failText": "The battery dropped below 10% and the satellite entered safe mode.",
+ "successText": "Battery recovered. Lesson: when generation drops, shed load and point the arrays at the Sun first; investigate later."
+}

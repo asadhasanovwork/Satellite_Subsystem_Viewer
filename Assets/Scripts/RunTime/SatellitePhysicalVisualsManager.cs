@@ -67,6 +67,22 @@ public class SatellitePhysicalVisualsManager : MonoBehaviour
 
     private MaterialPropertyBlock _mpb;
 
+    // Per-renderer flags resolved once in CacheCurrentSatellite (the per-frame loop used to do
+    // List.Contains on every list, ToLowerInvariant on names and allocate sharedMaterials arrays).
+    private struct RendererInfo
+    {
+        public Renderer renderer;
+        public bool thermal, battery, fuel, comms, payload, hasColor, hasBaseColor, tinted;
+    }
+
+    private readonly List<RendererInfo> _rendererInfos = new();
+    private static readonly int ColorId = Shader.PropertyToID("_Color");
+    private static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
+
+    // Root wobble is applied as a delta on top of whatever else drives the root rotation
+    // (SatelliteOrbitalMotion), instead of overwriting localRotation with a cached base.
+    private Quaternion _appliedWobble = Quaternion.identity;
+
     private void Awake()
     {
         if (autoFindDependencies)
@@ -140,6 +156,12 @@ public class SatellitePhysicalVisualsManager : MonoBehaviour
         _fuelRenderers.Clear();
         _baseMaterials.Clear();
         _baseScales.Clear();
+        _rendererInfos.Clear();
+
+        // Remove the wobble we added to the previous root before forgetting it.
+        if (_root != null)
+            _root.localRotation = _root.localRotation * Quaternion.Inverse(_appliedWobble);
+        _appliedWobble = Quaternion.identity;
 
         _root = runtimeLoader != null ? runtimeLoader.CurrentSatelliteRoot : null;
         if (_root == null && visibility != null)
@@ -173,6 +195,19 @@ public class SatellitePhysicalVisualsManager : MonoBehaviour
 
             if (ContainsAnyHint(n, propNameHints))
                 _fuelRenderers.Add(r);
+
+            _rendererInfos.Add(new RendererInfo
+            {
+                renderer = r,
+                thermal = true,
+                battery = ContainsAnyHint(n, solarPanelNameHints),
+                fuel = ContainsAnyHint(n, propNameHints),
+                comms = ContainsAnyHint(n, commsNameHints),
+                payload = ContainsAnyHint(n, payloadNameHints),
+                hasColor = HasColorProperty(r),
+                hasBaseColor = HasBaseColorProperty(r),
+                tinted = true // force one SetPropertyBlock so stale blocks get cleared
+            });
         }
 
         var transforms = _root.GetComponentsInChildren<Transform>(true);
@@ -233,8 +268,12 @@ public class SatellitePhysicalVisualsManager : MonoBehaviour
             wobble *= Quaternion.Euler(0f, spinY, 0f);
         }
 
-        Quaternion target = _baseRootLocalRotation * wobble;
-        _root.localRotation = Quaternion.Slerp(_root.localRotation, target, Time.deltaTime * rootReturnSpeed);
+        Quaternion newWobble = Quaternion.Slerp(_appliedWobble, wobble, Time.deltaTime * rootReturnSpeed);
+
+        // Swap last frame's wobble for the new one without discarding rotation written by
+        // SatelliteOrbitalMotion (or anything else) this frame.
+        _root.localRotation = _root.localRotation * Quaternion.Inverse(_appliedWobble) * newWobble;
+        _appliedWobble = newWobble;
     }
 
     private void ApplyMaterialEffects()
@@ -243,66 +282,78 @@ public class SatellitePhysicalVisualsManager : MonoBehaviour
             return;
 
         float temp01 = Mathf.InverseLerp(coolTemp, hotTemp, physics.temperatureC);
-        float lowBattery01 = 1f - Mathf.Clamp01(physics.batteryPercent / 100f);
-        float lowFuel01 = 1f - Mathf.Clamp01(physics.fuelPercent / 100f);
 
         bool commsBad = !physics.commandLinkAvailable || physics.signalQuality < 0.2f;
         float commsBlink = (Mathf.Sin(Time.time * commsBlinkSpeed) * 0.5f + 0.5f);
 
-        foreach (var r in _allRenderers)
+        bool payloadPulseOn = physics.payloadDataRate > 0.25f;
+        float payloadPulse = Mathf.Sin(Time.time * payloadPulseSpeed) * 0.5f + 0.5f;
+
+        for (int i = 0; i < _rendererInfos.Count; i++)
         {
+            RendererInfo info = _rendererInfos[i];
+            Renderer r = info.renderer;
             if (r == null)
                 continue;
-
-            r.GetPropertyBlock(_mpb);
-            _mpb.Clear();
 
             Color finalColor = Color.white;
             float tintStrength = 0f;
 
-            if (_thermalRenderers.Contains(r))
+            if (info.thermal)
             {
                 finalColor = Color.Lerp(finalColor, hotTint, temp01);
                 tintStrength = Mathf.Max(tintStrength, temp01 * maxThermalTint);
             }
 
-            if (_batterySensitiveRenderers.Contains(r) && physics.batteryPercent < lowBatteryThreshold)
+            if (info.battery && physics.batteryPercent < lowBatteryThreshold)
             {
                 float t = Mathf.InverseLerp(lowBatteryThreshold, 0f, physics.batteryPercent);
                 finalColor = Color.Lerp(finalColor, lowBatteryTint, t);
                 tintStrength = Mathf.Max(tintStrength, t * lowBatteryTintStrength);
             }
 
-            if (_fuelRenderers.Contains(r) && physics.fuelPercent < 30f)
+            if (info.fuel && physics.fuelPercent < 30f)
             {
                 float t = Mathf.InverseLerp(30f, 0f, physics.fuelPercent);
                 finalColor = Color.Lerp(finalColor, lowFuelTint, t);
                 tintStrength = Mathf.Max(tintStrength, t * lowFuelTintStrength);
             }
 
-            if (_commsRenderers.Contains(r) && commsBad)
+            if (info.comms && commsBad)
             {
                 finalColor = Color.Lerp(finalColor, commsAlertTint, commsBlink * 0.85f);
                 tintStrength = Mathf.Max(tintStrength, 0.55f * commsBlink);
             }
 
-            if (physics.payloadDataRate > 0.25f && RendererBelongsToPayload(r))
+            if (payloadPulseOn && info.payload)
             {
-                float pulse = Mathf.Sin(Time.time * payloadPulseSpeed) * 0.5f + 0.5f;
-                finalColor = Color.Lerp(finalColor, payloadActiveTint, pulse * 0.75f);
-                tintStrength = Mathf.Max(tintStrength, pulse * 0.45f);
+                finalColor = Color.Lerp(finalColor, payloadActiveTint, payloadPulse * 0.75f);
+                tintStrength = Mathf.Max(tintStrength, payloadPulse * 0.45f);
             }
 
-            if (tintStrength > 0.001f)
-            {
-                if (HasColorProperty(r))
-                    _mpb.SetColor("_Color", Color.Lerp(Color.white, finalColor, tintStrength));
+            bool tint = tintStrength > 0.001f;
+            if (!tint && !info.tinted)
+                continue; // nothing to set and nothing to clear
 
-                if (HasBaseColorProperty(r))
-                    _mpb.SetColor("_BaseColor", Color.Lerp(Color.white, finalColor, tintStrength));
+            _mpb.Clear();
+
+            if (tint)
+            {
+                Color c = Color.Lerp(Color.white, finalColor, tintStrength);
+                if (info.hasColor)
+                    _mpb.SetColor(ColorId, c);
+
+                if (info.hasBaseColor)
+                    _mpb.SetColor(BaseColorId, c);
             }
 
             r.SetPropertyBlock(_mpb);
+
+            if (info.tinted != tint)
+            {
+                info.tinted = tint;
+                _rendererInfos[i] = info;
+            }
         }
     }
 

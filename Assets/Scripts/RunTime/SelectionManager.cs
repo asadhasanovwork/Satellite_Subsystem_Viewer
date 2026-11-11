@@ -27,6 +27,10 @@ public class SelectionManager : MonoBehaviour
     [Header("Double Click")]
     public float doubleClickThreshold = 0.35f;
 
+    [Header("Picking")]
+    [Tooltip("Add MeshColliders to the loaded satellite so clicks hit actual geometry instead of renderer AABBs.")]
+    public bool addMeshCollidersForPicking = true;
+
     public event Action<GameObject> OnPartSelected;
     public event Action<GameObject> OnPartFocused;
 
@@ -37,6 +41,7 @@ public class SelectionManager : MonoBehaviour
     private float _lastClickTime = -999f;
     private GameObject _lastClickedRoot;
     private bool _suppressUiPush;
+    private bool _hasPickColliders;
 
     private void Awake()
     {
@@ -79,6 +84,33 @@ public class SelectionManager : MonoBehaviour
             visibility.SetSatelliteRoot(root, true);
 
         ClearHighlight();
+        EnsurePickColliders(root);
+    }
+
+    private void EnsurePickColliders(Transform root)
+    {
+        _hasPickColliders = false;
+        if (!addMeshCollidersForPicking || root == null)
+            return;
+
+        foreach (var mf in root.GetComponentsInChildren<MeshFilter>(true))
+        {
+            if (!mf || mf.sharedMesh == null) continue;
+
+            if (mf.GetComponent<Collider>() != null)
+            {
+                _hasPickColliders = true;
+                continue;
+            }
+
+            // Non-readable meshes can only be cooked at runtime in the Editor (or when prebaked).
+            if (!mf.sharedMesh.isReadable && !Application.isEditor)
+                continue;
+
+            var mc = mf.gameObject.AddComponent<MeshCollider>();
+            mc.sharedMesh = mf.sharedMesh;
+            _hasPickColliders = true;
+        }
     }
 
     public void SuppressUiPush(bool suppress)
@@ -151,10 +183,37 @@ public class SelectionManager : MonoBehaviour
 
     private GameObject RaycastRendererRoot(Ray ray)
     {
+        var root = visibility.satelliteRoot;
+
+        if (_hasPickColliders)
+        {
+            // The satellite moves every frame; make sure collider poses match the transforms.
+            Physics.SyncTransforms();
+
+            var hits = Physics.RaycastAll(ray, float.MaxValue, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
+            if (hits != null && hits.Length > 0)
+            {
+                System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+                foreach (var hit in hits)
+                {
+                    var col = hit.collider;
+                    if (!col || !col.transform.IsChildOf(root)) continue;
+
+                    var rend = col.GetComponent<Renderer>();
+                    if (rend != null && !rend.enabled) continue; // hidden by isolation/focus
+
+                    return ResolvePartRoot(col.gameObject);
+                }
+            }
+
+            return null;
+        }
+
+        // Fallback (no colliders available): renderer AABB test. Coarse - large enclosing parts
+        // tend to win - but better than nothing for non-readable meshes in a player build.
         float closest = float.MaxValue;
         Renderer closestRenderer = null;
 
-        var root = visibility.satelliteRoot;
         var renderers = root.GetComponentsInChildren<Renderer>(true);
 
         for (int i = 0; i < renderers.Length; i++)
@@ -221,7 +280,7 @@ public class SelectionManager : MonoBehaviour
             var rend = _selectedRenderers[r];
             if (!rend) continue;
 
-            rend.enabled = true;
+            // Visibility is owned by VisibilityManager; don't un-hide isolated/hidden renderers here.
             _originalMats[r] = rend.sharedMaterials;
 
             if (highlightMaterial != null)
@@ -244,7 +303,10 @@ public class SelectionManager : MonoBehaviour
                 var rend = _selectedRenderers[i];
                 if (!rend) continue;
 
-                if (i < _originalMats.Length && _originalMats[i] != null)
+                // Only restore if the renderer still shows our highlight; if something else
+                // (e.g. OperationalStateVisualizer) swapped materials meanwhile, keep its result.
+                if (i < _originalMats.Length && _originalMats[i] != null &&
+                    (highlightMaterial == null || rend.sharedMaterial == highlightMaterial))
                     rend.sharedMaterials = _originalMats[i];
             }
         }
@@ -279,8 +341,15 @@ public class SelectionManager : MonoBehaviour
         Vector2 pos = Input.mousePosition;
 #endif
 
+        var panel = uiDocument.rootVisualElement.panel;
+        if (panel == null)
+            return false;
+
+        // Screen space (origin bottom-left) -> panel space (origin top-left, PanelSettings scaling).
         pos.y = Screen.height - pos.y;
-        var picked = uiDocument.rootVisualElement.panel?.Pick(pos);
+        pos = RuntimePanelUtils.ScreenToPanel(panel, pos);
+
+        var picked = panel.Pick(pos);
         return picked != null;
     }
 

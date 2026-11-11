@@ -1,0 +1,97 @@
+{
+ "id": "geo_03_wheel_failure",
+ "title": "Reaction wheel failure",
+ "template": "geo_comsat",
+ "orbitClass": "GEO",
+ "level": "Advanced",
+ "summary": "One of the four reaction wheels seizes. Its stored momentum kicks the satellite off its target.",
+ "goals": [
+  "Recognise a wheel failure in telemetry",
+  "Reconfigure attitude control to the remaining wheels",
+  "Unload the momentum the failure left behind"
+ ],
+ "prerequisites": [
+  "Station keeping: stop the drift"
+ ],
+ "situation": "The satellite points its antennas at Europe and Asia with four reaction wheels in a pyramid, any three of which can control the satellite. Two minutes in, a wheel fails.",
+ "design": [],
+ "start": {
+  "utc": "",
+  "overrideOrbit": false,
+  "orbit": {
+   "periapsisAltKm": 500,
+   "apoapsisAltKm": 500,
+   "inclinationDeg": 97.4,
+   "raanDeg": 0,
+   "argPeriapsisDeg": 0,
+   "trueAnomalyDeg": 0,
+   "j2": true,
+   "geoLongitudeDeg": -999
+  },
+  "placement": "",
+  "placeStation": "",
+  "placeLeadDeg": 20,
+  "adcsMode": "NADIR",
+  "ratesDps": [
+   0,
+   0,
+   0
+  ],
+  "socPercent": -1,
+  "temperatureC": -999,
+  "stowed": false,
+  "alwaysInContact": true,
+  "timeWarp": 10,
+  "commands": []
+ },
+ "faults": [
+  {
+   "atSeconds": 120,
+   "command": "SIM FAULT adcs.wheels WHEEL_FAIL 2"
+  }
+ ],
+ "steps": [
+  {
+   "text": "Remove the failed wheel from control: adcs.wheels DISABLE <n>.",
+   "hint": "Look at the wheel speeds: one drops to 0 rpm and shows FAILED.",
+   "check": {
+    "point": "",
+    "op": ">",
+    "value": 0,
+    "seconds": 0,
+    "command": "adcs.wheels DISABLE 2"
+   }
+  },
+  {
+   "text": "Get back into service (pointing within 0.2 deg) for 5 minutes.",
+   "hint": "If the satellite left NADIR, send ADCS MODE NADIR.",
+   "check": {
+    "point": "payload.service",
+    "op": ">",
+    "value": 0.5,
+    "seconds": 300,
+    "command": ""
+   }
+  },
+  {
+   "text": "Unload the stored momentum below 30%: ADCS DUMP NOW.",
+   "hint": "Without magnetorquers the thrusters do the dumping.",
+   "check": {
+    "point": "adcs.wheels.net",
+    "op": "<",
+    "value": 30,
+    "seconds": 30,
+    "command": ""
+   }
+  }
+ ],
+ "failWhen": {
+  "point": "",
+  "op": ">",
+  "value": 0,
+  "seconds": 0,
+  "command": ""
+ },
+ "failText": "",
+ "successText": "Reconfigured. Three wheels are enough; the spare in the pyramid is there for exactly this."
+}

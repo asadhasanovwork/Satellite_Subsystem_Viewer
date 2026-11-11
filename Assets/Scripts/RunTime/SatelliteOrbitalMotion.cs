@@ -76,6 +76,7 @@ public class SatelliteOrbitalMotion : MonoBehaviour
     private float _runtimeOrbitPeriod;
 
     private Quaternion _baseRotationOffset = Quaternion.identity;
+    private float _bodySpinAngleDeg;
 
     private void Start()
     {
@@ -91,6 +92,10 @@ public class SatelliteOrbitalMotion : MonoBehaviour
         _runtimeSemiMinor = semiMinorAxis;
         _runtimeInclination = inclinationDeg;
         _runtimeOrbitPeriod = orbitPeriodSeconds;
+
+        // Keep the model's authored orientation (e.g. the FBX -90 deg X import rotation)
+        // instead of replacing it with a bare LookRotation.
+        _baseRotationOffset = satelliteRoot.rotation;
 
         Vector3 startPos = GetOrbitWorldPosition(_orbitAngleDeg);
         satelliteRoot.position = startPos;
@@ -122,8 +127,8 @@ public class SatelliteOrbitalMotion : MonoBehaviour
 
         satelliteRoot.position = newPos;
 
-        ApplyAttitudeFromSubsystems(velocity, dt);
-        ApplyBodySpinFromSubsystems(dt);
+        bool attitudeApplied = ApplyAttitudeFromSubsystems(velocity, dt);
+        ApplyBodySpinFromSubsystems(dt, attitudeApplied);
 
         _lastWorldPos = newPos;
         _initialized = true;
@@ -173,8 +178,10 @@ public class SatelliteOrbitalMotion : MonoBehaviour
         float maintenanceLoss = guidancePenalty + powerPenalty;
         if (maintenanceLoss > 0.001f)
         {
-            _runtimeSemiMajor += Mathf.Sin(Time.time * 0.35f) * maintenanceLoss * 0.03f;
-            _runtimeSemiMinor += Mathf.Cos(Time.time * 0.41f) * maintenanceLoss * 0.025f;
+            // Scaled by dt (tuned so 60 fps looks as before); previously applied per frame,
+            // so the drift magnitude depended on frame rate.
+            _runtimeSemiMajor += Mathf.Sin(Time.time * 0.35f) * maintenanceLoss * 1.8f * dt;
+            _runtimeSemiMinor += Mathf.Cos(Time.time * 0.41f) * maintenanceLoss * 1.5f * dt;
             _runtimeInclination += Mathf.Sin(Time.time * 0.22f) * maintenanceLoss * 0.35f * dt;
         }
 
@@ -189,10 +196,10 @@ public class SatelliteOrbitalMotion : MonoBehaviour
         _runtimeOrbitPeriod = Mathf.Clamp(_runtimeOrbitPeriod, minOrbitPeriodSeconds, maxOrbitPeriodSeconds);
     }
 
-    private void ApplyAttitudeFromSubsystems(Vector3 velocity, float dt)
+    private bool ApplyAttitudeFromSubsystems(Vector3 velocity, float dt)
     {
         if (!faceVelocityDirection || velocity.sqrMagnitude < 0.000001f)
-            return;
+            return false;
 
         OperationalState eps = GetSubsystemState("EPS");
         OperationalState obc = GetSubsystemState("OBC");
@@ -225,11 +232,21 @@ public class SatelliteOrbitalMotion : MonoBehaviour
             nominalTarget = nominalTarget * errorRot;
         }
 
+        // Body spin is folded into the attitude target; rotating the transform separately
+        // was cancelled by this Slerp every frame (net effect: a fixed tilt, no visible spin).
+        Quaternion spinRot = rotateBody ? Quaternion.AngleAxis(_bodySpinAngleDeg, GetSpinAxis()) : Quaternion.identity;
+
         float smooth = Mathf.Lerp(attitudeSmooth, 0.8f, attitudePenalty);
-        satelliteRoot.rotation = Quaternion.Slerp(satelliteRoot.rotation, nominalTarget * _baseRotationOffset, dt * smooth);
+        satelliteRoot.rotation = Quaternion.Slerp(satelliteRoot.rotation, nominalTarget * _baseRotationOffset * spinRot, dt * smooth);
+        return true;
     }
 
-    private void ApplyBodySpinFromSubsystems(float dt)
+    private Vector3 GetSpinAxis()
+    {
+        return bodySpinAxis.sqrMagnitude > 0.0001f ? bodySpinAxis.normalized : Vector3.up;
+    }
+
+    private void ApplyBodySpinFromSubsystems(float dt, bool attitudeApplied)
     {
         if (!rotateBody)
             return;
@@ -237,7 +254,7 @@ public class SatelliteOrbitalMotion : MonoBehaviour
         OperationalState adcs = GetSubsystemState("ADCS");
         OperationalState eps = GetSubsystemState("EPS");
 
-        Vector3 axis = bodySpinAxis.sqrMagnitude > 0.0001f ? bodySpinAxis.normalized : Vector3.up;
+        Vector3 axis = GetSpinAxis();
         float spin = bodySpinDegPerSec;
 
         if (adcs == OperationalState.Standby)
@@ -250,7 +267,12 @@ public class SatelliteOrbitalMotion : MonoBehaviour
         if (eps == OperationalState.Off || eps == OperationalState.Fault)
             spin *= 1.25f;
 
-        satelliteRoot.Rotate(axis, spin * dt, Space.Self);
+        // Advance the spin angle for the next attitude target (see ApplyAttitudeFromSubsystems).
+        _bodySpinAngleDeg = Mathf.Repeat(_bodySpinAngleDeg + spin * dt, 360f);
+
+        // Without an attitude target nothing else writes the rotation, so spin directly.
+        if (!attitudeApplied)
+            satelliteRoot.Rotate(axis, spin * dt, Space.Self);
     }
 
     private OperationalState GetSubsystemState(string subsystemId)

@@ -1,0 +1,2619 @@
+{
+ "id": "leo_cubesat",
+ "displayName": "Academy-3U",
+ "satelliteClass": "3U CubeSat",
+ "orbitClass": "LEO",
+ "orbitSummary": "Low Earth orbit, about 500 km up. One orbit takes ~95 minutes; ground stations see it only a few times a day.",
+ "description": "A small, low-cost satellite: one of each unit (no redundancy), 1-3 year life.",
+ "designName": "My CubeSat",
+ "cameraDistance": 0.9,
+ "explodeDistance": 0.12,
+ "subsystems": [
+  {
+   "id": "structure",
+   "name": "Structure & Mechanisms",
+   "description": "The skeleton: carries every unit through launch vibration and holds the satellite together in orbit. A CubeSat's outer size is fixed by the CubeSat Design Specification so it fits the launch dispenser.",
+   "slots": [
+    {
+     "id": "str.frame",
+     "name": "3U structure",
+     "requirement": "mandatory",
+     "why": "Rails, frames and end plates. Must match the CubeSat standard: 100 x 100 x 340.5 mm.",
+     "quantity": "1",
+     "variants": [
+      {
+       "id": "al_frame",
+       "name": "Aluminium 3U frame",
+       "description": "Machined aluminium alloy: the common, robust choice.",
+       "specs": "Al 6061 \u00b7 4 rails \u00b7 0.35 kg",
+       "massKg": 0.35,
+       "powerW": 0.0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "cubesat_frame",
+         "position": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "units": 3,
+         "unitSize": 0.1,
+         "unitHeight": 0.1135,
+         "railWidth": 0.0085,
+         "pcbStack": false
+        }
+       ],
+       "parameters": []
+      },
+      {
+       "id": "light_frame",
+       "name": "Lightweight 3U frame",
+       "description": "Thinner walls save mass for payload, with less stiffness margin.",
+       "specs": "Al 7075 \u00b7 0.25 kg",
+       "massKg": 0.25,
+       "powerW": 0.0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "cubesat_frame",
+         "position": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "units": 3,
+         "unitSize": 0.1,
+         "unitHeight": 0.1135,
+         "railWidth": 0.0075,
+         "pcbStack": false
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "str.sep",
+     "name": "Deployment switches",
+     "requirement": "mandatory",
+     "why": "Pressed by the dispenser's walls; they keep the satellite completely switched off until it is released.",
+     "quantity": "1-4",
+     "variants": [
+      {
+       "id": "sep2",
+       "name": "2 rail-end switches",
+       "description": "Spring plungers in two rail feet.",
+       "specs": "2 switches",
+       "massKg": 0.01,
+       "powerW": 0.0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.0458,
+          "y": -0.1738,
+          "z": 0.0458
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.004,
+          "y": 0.007,
+          "z": 0.004
+         },
+         "material": "steel"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.0458,
+          "y": -0.1738,
+          "z": -0.0458
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.004,
+          "y": 0.007,
+          "z": 0.004
+         },
+         "material": "steel"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "str.rbf",
+     "name": "Remove-before-flight pin",
+     "requirement": "mandatory",
+     "why": "Keeps the power off while people handle the satellite on the ground. Pulled out just before integration into the dispenser.",
+     "quantity": "1",
+     "variants": [
+      {
+       "id": "rbf",
+       "name": "RBF pin",
+       "description": "Removable pin through a switch on the open side.",
+       "specs": "1 pin",
+       "massKg": 0.005,
+       "powerW": 0.0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": -0.03,
+          "y": -0.03,
+          "z": -0.052
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.014,
+          "y": 0.004,
+          "z": 0.004
+         },
+         "material": "connector"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "str.hdrm",
+     "name": "Hold-down and release mechanism",
+     "requirement": "conditional",
+     "why": "Holds the deployable wings closed during launch, then burns a restraint line to free them.",
+     "quantity": "1 per deployable",
+     "variants": [
+      {
+       "id": "burnwire",
+       "name": "Burn-wire release (2)",
+       "description": "A heated wire melts a Dyneema line that holds each wing.",
+       "specs": "2 units",
+       "massKg": 0.02,
+       "powerW": 0.1,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.0536,
+          "y": -0.148,
+          "z": 0.032
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.006,
+          "y": 0.01,
+          "z": 0.008
+         },
+         "material": "anodized_black"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.0536,
+          "y": -0.148,
+          "z": -0.032
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.006,
+          "y": 0.01,
+          "z": 0.008
+         },
+         "material": "anodized_black"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": [
+      {
+       "slot": "eps.solar",
+       "variants": [
+        "wings"
+       ]
+      }
+     ],
+     "conditionText": "you chose deployable solar wings"
+    }
+   ]
+  },
+  {
+   "id": "payload",
+   "name": "Payload",
+   "description": "The reason the satellite exists. Choose the mission first: it decides how precisely you must point, how much data you send down and how much power you need.",
+   "slots": [
+    {
+     "id": "pl.main",
+     "name": "Main payload",
+     "requirement": "mandatory",
+     "why": "What your mission measures or does.",
+     "quantity": "1",
+     "variants": [
+      {
+       "id": "camera",
+       "name": "Earth observation camera",
+       "description": "Takes pictures of the Earth. Needs fine pointing and a fast downlink, so it triggers reaction wheels, a star tracker and an S-band transmitter.",
+       "specs": "~5 m resolution \u00b7 2.5 W",
+       "massKg": 0.35,
+       "powerW": 2.5,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "sensor",
+         "position": {
+          "x": 0.0,
+          "y": -0.1705,
+          "z": 0.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": -1.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "style": "star_tracker",
+         "size": {
+          "x": 0.05,
+          "y": 0.05,
+          "z": 0.04
+         },
+         "length": 0.035,
+         "label": "Camera"
+        }
+       ],
+       "parameters": [
+        {
+         "id": "baffle",
+         "label": "Lens baffle length",
+         "unit": "m",
+         "min": 0.02,
+         "max": 0.05,
+         "defaultValue": 0.035,
+         "wholeNumbers": false,
+         "fields": [
+          "length"
+         ],
+         "partIndices": [],
+         "fieldMultiplier": 1.0,
+         "massPerUnit": 0.0,
+         "powerPerUnit": 0.0,
+         "powerGenPerUnit": 0.0,
+         "help": "A longer baffle blocks more stray sunlight."
+        }
+       ]
+      },
+      {
+       "id": "science",
+       "name": "Space-weather sensor",
+       "description": "Measures particles and fields around the satellite. Needs only coarse pointing and a little data.",
+       "specs": "1.0 W",
+       "massKg": 0.2,
+       "powerW": 1.0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "sensor",
+         "position": {
+          "x": 0.0,
+          "y": -0.1705,
+          "z": 0.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": -1.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "style": "earth_sensor",
+         "size": {
+          "x": 0.05,
+          "y": 0.04,
+          "z": 0.04
+         },
+         "label": "Science sensor"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    }
+   ]
+  },
+  {
+   "id": "eps",
+   "name": "Electrical Power (EPS)",
+   "description": "Makes, stores and distributes electricity. In LEO the satellite is in Earth's shadow for about a third of every 95-minute orbit, so the battery charges and discharges thousands of times a year.",
+   "slots": [
+    {
+     "id": "eps.solar",
+     "name": "Solar panels",
+     "requirement": "mandatory",
+     "why": "Turn sunlight into electricity, the only power source in orbit.",
+     "quantity": "3-5 panels",
+     "variants": [
+      {
+       "id": "wings",
+       "name": "Body panels + 2 deployable wings",
+       "description": "Adds two hinged wings that open after release, roughly tripling the sunlit area.",
+       "specs": "~17 W orbit average",
+       "massKg": 0.45,
+       "powerW": 0.0,
+       "powerGenW": 17.0,
+       "parts": [
+        {
+         "type": "solar_panel",
+         "position": {
+          "x": 0.0512,
+          "y": -0.16,
+          "z": 0.0
+         },
+         "forward": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "width": 0.082,
+         "height": 0.32,
+         "thickness": 0.0016,
+         "cellRows": 7,
+         "cellColumns": 2,
+         "deployable": false
+        },
+        {
+         "type": "solar_panel",
+         "position": {
+          "x": -0.0512,
+          "y": -0.16,
+          "z": 0.0
+         },
+         "forward": {
+          "x": -1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "width": 0.082,
+         "height": 0.32,
+         "thickness": 0.0016,
+         "cellRows": 7,
+         "cellColumns": 2,
+         "deployable": false
+        },
+        {
+         "type": "solar_panel",
+         "position": {
+          "x": 0.0,
+          "y": -0.16,
+          "z": 0.0512
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "width": 0.082,
+         "height": 0.32,
+         "thickness": 0.0016,
+         "cellRows": 7,
+         "cellColumns": 2,
+         "deployable": false
+        },
+        {
+         "type": "solar_panel",
+         "position": {
+          "x": 0.0545,
+          "y": 0.168,
+          "z": 0.0
+         },
+         "forward": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": -1.0,
+          "z": 0.0
+         },
+         "width": 0.082,
+         "height": 0.32,
+         "thickness": 0.0016,
+         "cellRows": 7,
+         "cellColumns": 2,
+         "deployable": true,
+         "deployAngle": 90
+        },
+        {
+         "type": "solar_panel",
+         "position": {
+          "x": -0.0545,
+          "y": 0.168,
+          "z": 0.0
+         },
+         "forward": {
+          "x": -1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": -1.0,
+          "z": 0.0
+         },
+         "width": 0.082,
+         "height": 0.32,
+         "thickness": 0.0016,
+         "cellRows": 7,
+         "cellColumns": 2,
+         "deployable": true,
+         "deployAngle": 90
+        }
+       ],
+       "parameters": [
+        {
+         "id": "angle",
+         "label": "Wing opening angle",
+         "unit": "deg",
+         "min": 45,
+         "max": 135,
+         "defaultValue": 90,
+         "wholeNumbers": false,
+         "fields": [
+          "deployAngle"
+         ],
+         "partIndices": [
+          3,
+          4
+         ],
+         "fieldMultiplier": 1.0,
+         "massPerUnit": 0.0,
+         "powerPerUnit": 0.0,
+         "powerGenPerUnit": 0.0,
+         "help": "Tilt the wings to change which way their cells face."
+        }
+       ]
+      },
+      {
+       "id": "body",
+       "name": "Body-mounted panels (3 faces)",
+       "description": "Cells glued directly onto three faces. Simple and robust, but limited area.",
+       "specs": "~6.5 W orbit average",
+       "massKg": 0.15,
+       "powerW": 0.0,
+       "powerGenW": 6.5,
+       "parts": [
+        {
+         "type": "solar_panel",
+         "position": {
+          "x": 0.0512,
+          "y": -0.16,
+          "z": 0.0
+         },
+         "forward": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "width": 0.082,
+         "height": 0.32,
+         "thickness": 0.0016,
+         "cellRows": 7,
+         "cellColumns": 2,
+         "deployable": false
+        },
+        {
+         "type": "solar_panel",
+         "position": {
+          "x": -0.0512,
+          "y": -0.16,
+          "z": 0.0
+         },
+         "forward": {
+          "x": -1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "width": 0.082,
+         "height": 0.32,
+         "thickness": 0.0016,
+         "cellRows": 7,
+         "cellColumns": 2,
+         "deployable": false
+        },
+        {
+         "type": "solar_panel",
+         "position": {
+          "x": 0.0,
+          "y": -0.16,
+          "z": 0.0512
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "width": 0.082,
+         "height": 0.32,
+         "thickness": 0.0016,
+         "cellRows": 7,
+         "cellColumns": 2,
+         "deployable": false
+        }
+       ],
+       "parameters": [
+        {
+         "id": "rows",
+         "label": "Cell rows per panel",
+         "unit": "",
+         "min": 5,
+         "max": 9,
+         "defaultValue": 7,
+         "wholeNumbers": true,
+         "fields": [
+          "cellRows"
+         ],
+         "partIndices": [],
+         "fieldMultiplier": 1.0,
+         "massPerUnit": 0.01,
+         "powerPerUnit": 0.0,
+         "powerGenPerUnit": 0.9,
+         "help": "More rows of cells = more power, until the panel is full."
+        }
+       ]
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "eps.battery",
+     "name": "Battery pack",
+     "requirement": "mandatory",
+     "why": "Powers the satellite through every eclipse and through peaks such as radio transmissions.",
+     "quantity": "1",
+     "variants": [
+      {
+       "id": "b2",
+       "name": "2-cell Li-ion pack",
+       "description": "18650 cells with protection circuit.",
+       "specs": "20 Wh",
+       "massKg": 0.1,
+       "powerW": 0.0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.0,
+          "y": -0.11,
+          "z": 0.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.07,
+          "y": 0.02,
+          "z": 0.07
+         },
+         "material": "white_paint",
+         "label": "Battery pack"
+        }
+       ],
+       "parameters": []
+      },
+      {
+       "id": "b4",
+       "name": "4-cell Li-ion pack",
+       "description": "More energy for longer eclipses and power-hungry payloads.",
+       "specs": "40 Wh",
+       "massKg": 0.2,
+       "powerW": 0.0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.0,
+          "y": -0.11,
+          "z": 0.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.078,
+          "y": 0.03,
+          "z": 0.078
+         },
+         "material": "white_paint",
+         "label": "Battery pack"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "eps.pcdu",
+     "name": "Power control & distribution board",
+     "requirement": "mandatory",
+     "why": "Tracks the solar arrays' best operating point, charges the battery and switches power to each unit.",
+     "quantity": "1",
+     "variants": [
+      {
+       "id": "pcdu",
+       "name": "EPS board with MPPT",
+       "description": "Peak-power tracking, battery charger, 3.3 V / 5 V rails, 8 switched outputs.",
+       "specs": "0.2 W losses",
+       "massKg": 0.09,
+       "powerW": 0.2,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.0,
+          "y": 0.07275,
+          "z": 0.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.077,
+          "y": 0.0016,
+          "z": 0.077
+         },
+         "material": "pcb_green",
+         "label": "EPS board"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.01,
+          "y": 0.07415,
+          "z": -0.012
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.014,
+          "y": 0.0012,
+          "z": 0.014
+         },
+         "material": "anodized_black"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.02,
+          "y": 0.07415,
+          "z": 0.015
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.01,
+          "y": 0.0012,
+          "z": 0.008
+         },
+         "material": "anodized_black"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    }
+   ]
+  },
+  {
+   "id": "obc",
+   "name": "On-board Computer (OBC)",
+   "description": "The satellite's brain: runs its modes, stores data between ground-station passes and protects itself with a watchdog that restarts it if it hangs.",
+   "slots": [
+    {
+     "id": "obc.computer",
+     "name": "Flight computer",
+     "requirement": "mandatory",
+     "why": "Executes commands, collects telemetry, runs the attitude control and fault handling.",
+     "quantity": "1",
+     "variants": [
+      {
+       "id": "mcu",
+       "name": "Flight computer (microcontroller)",
+       "description": "Low-power radiation-tolerant microcontroller board.",
+       "specs": "0.4 W",
+       "massKg": 0.07,
+       "powerW": 0.4,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.0,
+          "y": 0.08875,
+          "z": 0.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.077,
+          "y": 0.0016,
+          "z": 0.077
+         },
+         "material": "pcb_green",
+         "label": "Flight computer"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.0,
+          "y": 0.09015,
+          "z": 0.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.016,
+          "y": 0.0012,
+          "z": 0.016
+         },
+         "material": "anodized_black"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.033,
+          "y": 0.10675,
+          "z": -0.033
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.0025,
+          "y": 0.09,
+          "z": 0.0025
+         },
+         "material": "steel",
+         "label": "Stack standoff"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.033,
+          "y": 0.10675,
+          "z": 0.033
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.0025,
+          "y": 0.09,
+          "z": 0.0025
+         },
+         "material": "steel",
+         "label": "Stack standoff"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.033,
+          "y": 0.10675,
+          "z": -0.033
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.0025,
+          "y": 0.09,
+          "z": 0.0025
+         },
+         "material": "steel",
+         "label": "Stack standoff"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.033,
+          "y": 0.10675,
+          "z": 0.033
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.0025,
+          "y": 0.09,
+          "z": 0.0025
+         },
+         "material": "steel",
+         "label": "Stack standoff"
+        }
+       ],
+       "parameters": []
+      },
+      {
+       "id": "fpga",
+       "name": "Flight computer + FPGA processor",
+       "description": "Adds an FPGA for on-board image processing and compression.",
+       "specs": "1.5 W",
+       "massKg": 0.09,
+       "powerW": 1.5,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.0,
+          "y": 0.08875,
+          "z": 0.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.077,
+          "y": 0.0016,
+          "z": 0.077
+         },
+         "material": "pcb_green",
+         "label": "Flight computer"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.0,
+          "y": 0.09015,
+          "z": 0.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.016,
+          "y": 0.0012,
+          "z": 0.016
+         },
+         "material": "anodized_black"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.02,
+          "y": 0.09015,
+          "z": 0.02
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.018,
+          "y": 0.0012,
+          "z": 0.018
+         },
+         "material": "anodized_black"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.033,
+          "y": 0.10675,
+          "z": -0.033
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.0025,
+          "y": 0.09,
+          "z": 0.0025
+         },
+         "material": "steel",
+         "label": "Stack standoff"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.033,
+          "y": 0.10675,
+          "z": 0.033
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.0025,
+          "y": 0.09,
+          "z": 0.0025
+         },
+         "material": "steel",
+         "label": "Stack standoff"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.033,
+          "y": 0.10675,
+          "z": -0.033
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.0025,
+          "y": 0.09,
+          "z": 0.0025
+         },
+         "material": "steel",
+         "label": "Stack standoff"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.033,
+          "y": 0.10675,
+          "z": 0.033
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.0025,
+          "y": 0.09,
+          "z": 0.0025
+         },
+         "material": "steel",
+         "label": "Stack standoff"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "obc.storage",
+     "name": "Data storage",
+     "requirement": "mandatory",
+     "why": "Keeps telemetry and payload data until the next pass over a ground station.",
+     "quantity": "1",
+     "variants": [
+      {
+       "id": "sd8",
+       "name": "8 GB flash",
+       "description": "Industrial flash memory.",
+       "specs": "8 GB",
+       "massKg": 0.005,
+       "powerW": 0.05,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.022,
+          "y": 0.09125,
+          "z": 0.02
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.012,
+          "y": 0.0012,
+          "z": 0.016
+         },
+         "material": "anodized_black",
+         "label": "Flash memory"
+        }
+       ],
+       "parameters": []
+      },
+      {
+       "id": "sd64",
+       "name": "64 GB flash",
+       "description": "For image-heavy missions.",
+       "specs": "64 GB",
+       "massKg": 0.008,
+       "powerW": 0.08,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.022,
+          "y": 0.09125,
+          "z": 0.02
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.016,
+          "y": 0.0014,
+          "z": 0.02
+         },
+         "material": "anodized_black",
+         "label": "Flash memory"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    }
+   ]
+  },
+  {
+   "id": "ttc",
+   "name": "Communications (TT&C)",
+   "description": "Telemetry, tracking and command: how the satellite talks to the ground. In LEO a ground station only sees the satellite for a few passes of about 10 minutes per day.",
+   "slots": [
+    {
+     "id": "ttc.radio",
+     "name": "UHF transceiver",
+     "requirement": "mandatory",
+     "why": "Receives commands and sends telemetry and a beacon.",
+     "quantity": "1",
+     "variants": [
+      {
+       "id": "uhf",
+       "name": "UHF transceiver",
+       "description": "Half-duplex radio, 9.6 kbit/s.",
+       "specs": "~0.5 W average",
+       "massKg": 0.08,
+       "powerW": 0.5,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.0,
+          "y": 0.10475,
+          "z": 0.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.077,
+          "y": 0.0016,
+          "z": 0.077
+         },
+         "material": "pcb_green",
+         "label": "UHF transceiver"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.015,
+          "y": 0.10615,
+          "z": 0.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.03,
+          "y": 0.0012,
+          "z": 0.025
+         },
+         "material": "aluminium"
+        }
+       ],
+       "parameters": []
+      },
+      {
+       "id": "vu",
+       "name": "VHF/UHF transceiver",
+       "description": "Uplink on VHF, downlink on UHF; avoids interference between the two.",
+       "specs": "~0.6 W average",
+       "massKg": 0.09,
+       "powerW": 0.6,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.0,
+          "y": 0.10475,
+          "z": 0.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.077,
+          "y": 0.0016,
+          "z": 0.077
+         },
+         "material": "pcb_green",
+         "label": "VHF/UHF transceiver"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.015,
+          "y": 0.10615,
+          "z": 0.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.03,
+          "y": 0.0012,
+          "z": 0.025
+         },
+         "material": "aluminium"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.02,
+          "y": 0.10615,
+          "z": 0.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.015,
+          "y": 0.0012,
+          "z": 0.02
+         },
+         "material": "aluminium"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "ttc.antenna",
+     "name": "UHF antenna",
+     "requirement": "mandatory",
+     "why": "Coiled tape-spring elements; the CubeSat standard requires waiting after release before deploying them and before transmitting.",
+     "quantity": "1",
+     "variants": [
+      {
+       "id": "turnstile",
+       "name": "Turnstile (4 elements)",
+       "description": "Near-omnidirectional coverage in any attitude.",
+       "specs": "4 tapes",
+       "massKg": 0.1,
+       "powerW": 0.0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "antenna",
+         "position": {
+          "x": 0.0,
+          "y": 0.1705,
+          "z": 0.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.7071,
+          "y": 0.0,
+          "z": 0.7071
+         },
+         "style": "turnstile",
+         "plateSize": 0.07,
+         "elements": 4,
+         "length": 0.17
+        }
+       ],
+       "parameters": [
+        {
+         "id": "len",
+         "label": "Element length",
+         "unit": "m",
+         "min": 0.12,
+         "max": 0.2,
+         "defaultValue": 0.17,
+         "wholeNumbers": false,
+         "fields": [
+          "length"
+         ],
+         "partIndices": [],
+         "fieldMultiplier": 1.0,
+         "massPerUnit": 0.0,
+         "powerPerUnit": 0.0,
+         "powerGenPerUnit": 0.0,
+         "help": "A quarter-wavelength at ~435 MHz is about 0.17 m."
+        }
+       ]
+      },
+      {
+       "id": "dipole",
+       "name": "Dipole (2 elements)",
+       "description": "Simpler; has nulls along its axis.",
+       "specs": "2 tapes",
+       "massKg": 0.08,
+       "powerW": 0.0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "antenna",
+         "position": {
+          "x": 0.0,
+          "y": 0.1705,
+          "z": 0.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.7071,
+          "y": 0.0,
+          "z": 0.7071
+         },
+         "style": "turnstile",
+         "plateSize": 0.07,
+         "elements": 2,
+         "length": 0.17
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "ttc.sband",
+     "name": "S-band transmitter + patch antenna",
+     "requirement": "conditional",
+     "why": "High-rate downlink for large data volumes.",
+     "quantity": "1",
+     "variants": [
+      {
+       "id": "sband",
+       "name": "S-band transmitter",
+       "description": "Up to ~2 Mbit/s downlink.",
+       "specs": "~1.5 W average",
+       "massKg": 0.12,
+       "powerW": 1.5,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.0,
+          "y": 0.12075,
+          "z": 0.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.077,
+          "y": 0.0016,
+          "z": 0.077
+         },
+         "material": "pcb_green",
+         "label": "S-band transmitter"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.0,
+          "y": 0.12215,
+          "z": 0.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.03,
+          "y": 0.0012,
+          "z": 0.03
+         },
+         "material": "aluminium"
+        },
+        {
+         "type": "antenna",
+         "position": {
+          "x": 0.0,
+          "y": -0.142,
+          "z": -0.0505
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "style": "patch",
+         "patchSize": 0.026,
+         "label": "S-band patch"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": [
+      {
+       "slot": "pl.main",
+       "variants": [
+        "camera"
+       ]
+      }
+     ],
+     "conditionText": "your camera payload produces a lot of image data"
+    },
+    {
+     "id": "ttc.gnss",
+     "name": "GNSS receiver",
+     "requirement": "optional",
+     "why": "Gives the satellite its own position and accurate time.",
+     "quantity": "1",
+     "variants": [
+      {
+       "id": "gnss",
+       "name": "GNSS receiver + patch",
+       "description": "Small GPS/Galileo receiver.",
+       "specs": "0.4 W",
+       "massKg": 0.03,
+       "powerW": 0.4,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "antenna",
+         "position": {
+          "x": 0.0,
+          "y": 0.1777,
+          "z": 0.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "style": "patch",
+         "patchSize": 0.016,
+         "label": "GNSS patch"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    }
+   ]
+  },
+  {
+   "id": "adcs",
+   "name": "Attitude Control (ADCS)",
+   "description": "Measures and controls which way the satellite points. After release it tumbles; the first job is to stop the tumbling (detumble) using the Earth's magnetic field, which is strong in LEO.",
+   "slots": [
+    {
+     "id": "adcs.mag",
+     "name": "Magnetometer",
+     "requirement": "mandatory",
+     "why": "Measures the Earth's magnetic field: needed to detumble with magnetorquers.",
+     "quantity": "1",
+     "variants": [
+      {
+       "id": "mag",
+       "name": "3-axis magnetometer",
+       "description": "Small chip on the ADCS board.",
+       "specs": "0.05 W",
+       "massKg": 0.02,
+       "powerW": 0.05,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.0,
+          "y": 0.13675,
+          "z": 0.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.077,
+          "y": 0.0016,
+          "z": 0.077
+         },
+         "material": "pcb_green",
+         "label": "ADCS board"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.02,
+          "y": 0.13815,
+          "z": 0.02
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.008,
+          "y": 0.0012,
+          "z": 0.008
+         },
+         "material": "anodized_black"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "adcs.mtq",
+     "name": "Magnetorquers",
+     "requirement": "mandatory",
+     "why": "Electromagnets that push against Earth's field: detumbling and momentum dumping. Work well only in LEO.",
+     "quantity": "3 (X, Y, Z)",
+     "variants": [
+      {
+       "id": "rods",
+       "name": "3 torque rods",
+       "description": "Copper coils on ferromagnetic cores.",
+       "specs": "0.3 W average",
+       "massKg": 0.06,
+       "powerW": 0.3,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "magnetorquer",
+         "position": {
+          "x": 0.0,
+          "y": 0.048,
+          "z": 0.032
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "radius": 0.004,
+         "length": 0.07
+        },
+        {
+         "type": "magnetorquer",
+         "position": {
+          "x": 0.034,
+          "y": 0.0,
+          "z": 0.034
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "radius": 0.004,
+         "length": 0.08
+        },
+        {
+         "type": "magnetorquer",
+         "position": {
+          "x": 0.034,
+          "y": -0.04,
+          "z": 0.0
+         },
+         "forward": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "radius": 0.004,
+         "length": 0.07
+        }
+       ],
+       "parameters": [
+        {
+         "id": "r",
+         "label": "Rod thickness",
+         "unit": "mm",
+         "min": 3,
+         "max": 5,
+         "defaultValue": 4,
+         "wholeNumbers": false,
+         "fields": [
+          "radius"
+         ],
+         "partIndices": [],
+         "fieldMultiplier": 0.001,
+         "massPerUnit": 0.012,
+         "powerPerUnit": 0.0,
+         "powerGenPerUnit": 0.0,
+         "help": "Thicker rods give a stronger magnetic dipole."
+        }
+       ]
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "adcs.css",
+     "name": "Coarse Sun sensors",
+     "requirement": "mandatory",
+     "why": "Find the Sun from any attitude: used for power-safe pointing.",
+     "quantity": "~6",
+     "variants": [
+      {
+       "id": "css6",
+       "name": "6 coarse Sun sensors",
+       "description": "Photodiodes on every face.",
+       "specs": "6 sensors",
+       "massKg": 0.03,
+       "powerW": 0.05,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "sensor",
+         "position": {
+          "x": 0.0525,
+          "y": 0.165,
+          "z": 0.0
+         },
+         "forward": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "style": "sun_sensor",
+         "size": {
+          "x": 0.012,
+          "y": 0.012,
+          "z": 0.004
+         }
+        },
+        {
+         "type": "sensor",
+         "position": {
+          "x": -0.0525,
+          "y": 0.165,
+          "z": 0.0
+         },
+         "forward": {
+          "x": -1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "style": "sun_sensor",
+         "size": {
+          "x": 0.012,
+          "y": 0.012,
+          "z": 0.004
+         }
+        },
+        {
+         "type": "sensor",
+         "position": {
+          "x": 0.0,
+          "y": 0.165,
+          "z": 0.0525
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "style": "sun_sensor",
+         "size": {
+          "x": 0.012,
+          "y": 0.012,
+          "z": 0.004
+         }
+        },
+        {
+         "type": "sensor",
+         "position": {
+          "x": 0.0,
+          "y": 0.165,
+          "z": -0.0525
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "style": "sun_sensor",
+         "size": {
+          "x": 0.012,
+          "y": 0.012,
+          "z": 0.004
+         }
+        },
+        {
+         "type": "sensor",
+         "position": {
+          "x": 0.035,
+          "y": -0.1705,
+          "z": 0.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": -1.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "style": "sun_sensor",
+         "size": {
+          "x": 0.012,
+          "y": 0.012,
+          "z": 0.004
+         }
+        },
+        {
+         "type": "sensor",
+         "position": {
+          "x": 0.0,
+          "y": 0.1777,
+          "z": 0.025
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "style": "sun_sensor",
+         "size": {
+          "x": 0.012,
+          "y": 0.012,
+          "z": 0.004
+         }
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "adcs.imu",
+     "name": "Gyro / IMU",
+     "requirement": "mandatory",
+     "why": "Measures how fast the satellite rotates.",
+     "quantity": "1",
+     "variants": [
+      {
+       "id": "mems",
+       "name": "MEMS IMU",
+       "description": "Gyros + accelerometers on a chip.",
+       "specs": "0.1 W",
+       "massKg": 0.05,
+       "powerW": 0.1,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": -0.02,
+          "y": 0.13915,
+          "z": -0.02
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.014,
+          "y": 0.004,
+          "z": 0.014
+         },
+         "material": "aluminium",
+         "label": "IMU"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "adcs.wheels",
+     "name": "Reaction wheels",
+     "requirement": "conditional",
+     "why": "Spinning flywheels: speeding one up turns the satellite the other way. Needed for fine pointing.",
+     "quantity": "3-4",
+     "variants": [
+      {
+       "id": "open",
+       "name": "3 wheels (shown cut away)",
+       "description": "Housings opened so you can see the flywheels.",
+       "specs": "3 wheels \u00b7 0.6 W",
+       "massKg": 0.3,
+       "powerW": 0.6,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "reaction_wheel",
+         "position": {
+          "x": -0.038,
+          "y": 0.02,
+          "z": 0.012
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "radius": 0.017,
+         "wheelHeight": 0.012,
+         "spinRpm": 90,
+         "openHousing": true
+        },
+        {
+         "type": "reaction_wheel",
+         "position": {
+          "x": 0.0,
+          "y": -0.045,
+          "z": 0.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "radius": 0.017,
+         "wheelHeight": 0.012,
+         "spinRpm": 60,
+         "openHousing": true
+        },
+        {
+         "type": "reaction_wheel",
+         "position": {
+          "x": 0.014,
+          "y": 0.02,
+          "z": -0.004
+         },
+         "forward": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "radius": 0.017,
+         "wheelHeight": 0.012,
+         "spinRpm": 120,
+         "openHousing": true
+        }
+       ],
+       "parameters": [
+        {
+         "id": "r",
+         "label": "Flywheel radius",
+         "unit": "mm",
+         "min": 14,
+         "max": 19,
+         "defaultValue": 17,
+         "wholeNumbers": false,
+         "fields": [
+          "radius"
+         ],
+         "partIndices": [],
+         "fieldMultiplier": 0.001,
+         "massPerUnit": 0.02,
+         "powerPerUnit": 0.03,
+         "powerGenPerUnit": 0.0,
+         "help": "A bigger flywheel stores more momentum but weighs more."
+        }
+       ]
+      },
+      {
+       "id": "closed",
+       "name": "3 wheels (sealed housings)",
+       "description": "As flown: each flywheel sealed in its housing.",
+       "specs": "3 wheels \u00b7 0.6 W",
+       "massKg": 0.3,
+       "powerW": 0.6,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "reaction_wheel",
+         "position": {
+          "x": -0.038,
+          "y": 0.02,
+          "z": 0.012
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "radius": 0.017,
+         "wheelHeight": 0.012,
+         "spinRpm": 90,
+         "openHousing": false
+        },
+        {
+         "type": "reaction_wheel",
+         "position": {
+          "x": 0.0,
+          "y": -0.045,
+          "z": 0.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "radius": 0.017,
+         "wheelHeight": 0.012,
+         "spinRpm": 60,
+         "openHousing": false
+        },
+        {
+         "type": "reaction_wheel",
+         "position": {
+          "x": 0.014,
+          "y": 0.02,
+          "z": -0.004
+         },
+         "forward": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "radius": 0.017,
+         "wheelHeight": 0.012,
+         "spinRpm": 120,
+         "openHousing": false
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": [
+      {
+       "slot": "pl.main",
+       "variants": [
+        "camera"
+       ]
+      }
+     ],
+     "conditionText": "your camera needs fine pointing"
+    },
+    {
+     "id": "adcs.str",
+     "name": "Star tracker",
+     "requirement": "conditional",
+     "why": "Camera that recognises star patterns: the most accurate attitude sensor.",
+     "quantity": "1",
+     "variants": [
+      {
+       "id": "st",
+       "name": "Nano star tracker",
+       "description": "Arc-second class accuracy.",
+       "specs": "0.8 W",
+       "massKg": 0.1,
+       "powerW": 0.8,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "sensor",
+         "position": {
+          "x": -0.02,
+          "y": 0.03,
+          "z": -0.0505
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "style": "star_tracker",
+         "size": {
+          "x": 0.025,
+          "y": 0.025,
+          "z": 0.03
+         },
+         "length": 0.03
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": [
+      {
+       "slot": "pl.main",
+       "variants": [
+        "camera"
+       ]
+      }
+     ],
+     "conditionText": "your camera needs fine pointing"
+    }
+   ]
+  },
+  {
+   "id": "tcs",
+   "name": "Thermal Control",
+   "description": "Keeps every unit inside its temperature limits. On a CubeSat this is mostly passive: surface finishes set how much sunlight is absorbed and how much heat is radiated.",
+   "slots": [
+    {
+     "id": "tcs.finish",
+     "name": "Surface finishes",
+     "requirement": "mandatory",
+     "why": "Coatings and tapes that set the overall temperature balance.",
+     "quantity": "-",
+     "variants": [
+      {
+       "id": "anodize",
+       "name": "Black anodize + white paint",
+       "description": "Standard finishes on frame and radiating surfaces.",
+       "specs": "passive",
+       "massKg": 0.01,
+       "powerW": 0.0,
+       "powerGenW": 0.0,
+       "parts": [],
+       "parameters": []
+      },
+      {
+       "id": "tape",
+       "name": "Silver thermal tape",
+       "description": "Reflects more sunlight; runs cooler.",
+       "specs": "passive",
+       "massKg": 0.01,
+       "powerW": 0.0,
+       "powerGenW": 0.0,
+       "parts": [],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "tcs.sensors",
+     "name": "Temperature sensors",
+     "requirement": "mandatory",
+     "why": "Thermistors report temperatures in telemetry.",
+     "quantity": "6-20",
+     "variants": [
+      {
+       "id": "t8",
+       "name": "8 thermistors",
+       "description": "On battery, boards and panels.",
+       "specs": "8 sensors",
+       "massKg": 0.005,
+       "powerW": 0.01,
+       "powerGenW": 0.0,
+       "parts": [],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "tcs.heater",
+     "name": "Battery heater",
+     "requirement": "mandatory",
+     "why": "Lithium cells must not be charged below about 0 C, so the battery has its own heater.",
+     "quantity": "1",
+     "variants": [
+      {
+       "id": "kapton",
+       "name": "Kapton film heater",
+       "description": "Thin heater under the battery, thermostat controlled.",
+       "specs": "0.3 W average",
+       "massKg": 0.01,
+       "powerW": 0.3,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.0,
+          "y": -0.1255,
+          "z": 0.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.074,
+          "y": 0.0008,
+          "z": 0.074
+         },
+         "material": "gold_foil",
+         "label": "Battery heater"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    }
+   ]
+  },
+  {
+   "id": "prop",
+   "name": "Propulsion",
+   "description": "Optional on a CubeSat in low orbit: air drag brings it down within the deorbit time limit. Needed to change or maintain the orbit, or to dodge debris.",
+   "slots": [
+    {
+     "id": "prop.module",
+     "name": "Propulsion module",
+     "requirement": "optional",
+     "why": "Changes the orbit, avoids collisions, speeds up deorbit.",
+     "quantity": "1",
+     "variants": [
+      {
+       "id": "coldgas",
+       "name": "Cold-gas module (4 nozzles)",
+       "description": "Compressed gas through four small nozzles: simple and safe, low total impulse.",
+       "specs": "~10 m/s delta-v",
+       "massKg": 0.45,
+       "powerW": 0.2,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.0,
+          "y": -0.08,
+          "z": 0.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.077,
+          "y": 0.012,
+          "z": 0.077
+         },
+         "material": "titanium",
+         "label": "Gas tank"
+        },
+        {
+         "type": "thruster",
+         "position": {
+          "x": 0.028,
+          "y": -0.1705,
+          "z": 0.028
+         },
+         "forward": {
+          "x": 0.0,
+          "y": -1.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "throatRadius": 0.0012,
+         "nozzleExitRadius": 0.0055,
+         "nozzleLength": 0.012
+        },
+        {
+         "type": "thruster",
+         "position": {
+          "x": -0.028,
+          "y": -0.1705,
+          "z": 0.028
+         },
+         "forward": {
+          "x": 0.0,
+          "y": -1.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "throatRadius": 0.0012,
+         "nozzleExitRadius": 0.0055,
+         "nozzleLength": 0.012
+        },
+        {
+         "type": "thruster",
+         "position": {
+          "x": -0.028,
+          "y": -0.1705,
+          "z": -0.028
+         },
+         "forward": {
+          "x": 0.0,
+          "y": -1.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "throatRadius": 0.0012,
+         "nozzleExitRadius": 0.0055,
+         "nozzleLength": 0.012
+        },
+        {
+         "type": "thruster",
+         "position": {
+          "x": 0.028,
+          "y": -0.1705,
+          "z": -0.028
+         },
+         "forward": {
+          "x": 0.0,
+          "y": -1.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "throatRadius": 0.0012,
+         "nozzleExitRadius": 0.0055,
+         "nozzleLength": 0.012
+        }
+       ],
+       "parameters": [
+        {
+         "id": "exit",
+         "label": "Nozzle exit radius",
+         "unit": "mm",
+         "min": 4,
+         "max": 7,
+         "defaultValue": 5.5,
+         "wholeNumbers": false,
+         "fields": [
+          "nozzleExitRadius"
+         ],
+         "partIndices": [
+          1,
+          2,
+          3,
+          4
+         ],
+         "fieldMultiplier": 0.001,
+         "massPerUnit": 0.0,
+         "powerPerUnit": 0.0,
+         "powerGenPerUnit": 0.0,
+         "help": "A larger exit (expansion ratio) gets a little more thrust from the same gas."
+        }
+       ]
+      }
+     ],
+     "conditions": []
+    }
+   ]
+  }
+ ]
+}

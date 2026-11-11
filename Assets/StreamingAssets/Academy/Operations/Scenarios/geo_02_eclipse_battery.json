@@ -1,0 +1,116 @@
+{
+ "id": "geo_02_eclipse_battery",
+ "title": "Equinox eclipse: manage the payload power",
+ "template": "geo_comsat",
+ "orbitClass": "GEO",
+ "level": "Advanced",
+ "summary": "It is equinox: every night the satellite passes through Earth's shadow for over an hour.",
+ "goals": [
+  "Understand GEO eclipse seasons around the equinoxes",
+  "Budget payload power against battery energy",
+  "Trade service capacity for survival"
+ ],
+ "prerequisites": [
+  "Station keeping: stop the drift"
+ ],
+ "situation": "Part of the battery has failed. Full payload (18 channels) through the coming eclipse would take the battery below 30%, and the onboard rule would switch all amplifiers off. Reduce the channels, survive the eclipse, then restore them.",
+ "design": [],
+ "start": {
+  "utc": "2027-03-20T20:15:00Z",
+  "overrideOrbit": false,
+  "orbit": {
+   "periapsisAltKm": 500,
+   "apoapsisAltKm": 500,
+   "inclinationDeg": 97.4,
+   "raanDeg": 0,
+   "argPeriapsisDeg": 0,
+   "trueAnomalyDeg": 0,
+   "j2": true,
+   "geoLongitudeDeg": -999
+  },
+  "placement": "",
+  "placeStation": "",
+  "placeLeadDeg": 20,
+  "adcsMode": "NADIR",
+  "ratesDps": [
+   0,
+   0,
+   0
+  ],
+  "socPercent": 70,
+  "temperatureC": -999,
+  "stowed": false,
+  "alwaysInContact": true,
+  "timeWarp": 60,
+  "commands": [
+   "SIM FAULT eps.battery CELL_FAIL 0.4"
+  ]
+ },
+ "faults": [],
+ "steps": [
+  {
+   "text": "Reduce the amplifiers to 12 channels: pl.amps CHANNELS 12.",
+   "hint": "Amplifier power scales with the number of channels.",
+   "check": {
+    "point": "pl.amps.channels",
+    "op": "<=",
+    "value": 12,
+    "seconds": 0,
+    "command": ""
+   }
+  },
+  {
+   "text": "Wait for the eclipse.",
+   "hint": "",
+   "check": {
+    "point": "orbit.sun",
+    "op": "<",
+    "value": 0.5,
+    "seconds": 0,
+    "command": ""
+   }
+  },
+  {
+   "text": "Leave the eclipse with the service on.",
+   "hint": "",
+   "check": {
+    "point": "orbit.sun",
+    "op": ">",
+    "value": 0.5,
+    "seconds": 10,
+    "command": ""
+   }
+  },
+  {
+   "text": "Let the battery recover above 60%.",
+   "hint": "",
+   "check": {
+    "point": "eps.battery.soc",
+    "op": ">",
+    "value": 60,
+    "seconds": 0,
+    "command": ""
+   }
+  },
+  {
+   "text": "Restore full capacity: pl.amps CHANNELS 18.",
+   "hint": "",
+   "check": {
+    "point": "pl.amps.channels",
+    "op": ">=",
+    "value": 18,
+    "seconds": 0,
+    "command": ""
+   }
+  }
+ ],
+ "failWhen": {
+  "point": "eps.battery.soc",
+  "op": "<",
+  "value": 31,
+  "seconds": 0,
+  "command": ""
+ },
+ "failText": "The battery reached the shedding limit: all amplifiers would be switched off.",
+ "successText": "Customers kept most of their service through the eclipse."
+}

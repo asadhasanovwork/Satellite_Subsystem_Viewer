@@ -1,0 +1,7 @@
+{
+ "templates": [
+  "leo_cubesat_template.json",
+  "meo_navsat_template.json",
+  "geo_comsat_template.json"
+ ]
+}

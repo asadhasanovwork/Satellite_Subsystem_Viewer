@@ -23,10 +23,20 @@ public class CameraOrbitMMB : MonoBehaviour
     private Vector3 _currentTargetPos;
     private bool _initialized;
 
+    // Pivot offset (in target local space) set by FrameBounds so the framed bounds centre
+    // keeps following the target instead of drifting back to the target's pivot.
+    private Vector3 _pivotOffsetLocal;
+    private bool _hasPivotOffset;
+
     private void Start()
     {
-        if (target != null)
+        // SetTarget may already have been called by the loader before Start; don't discard
+        // the distance/angles it set by re-deriving them from the scene camera pose.
+        if (target != null && !_initialized)
+        {
             ReinitializeFromCurrentView();
+            _initialized = true;
+        }
     }
 
     private void LateUpdate()
@@ -61,7 +71,7 @@ public class CameraOrbitMMB : MonoBehaviour
             distance = Mathf.Clamp(distance, minDistance, maxDistance);
         }
 
-        Vector3 desiredTarget = target.position;
+        Vector3 desiredTarget = GetPivotWorld();
 
         if (!_initialized)
         {
@@ -87,12 +97,17 @@ public class CameraOrbitMMB : MonoBehaviour
         if (newTarget == null) return;
 
         target = newTarget;
+        _hasPivotOffset = false;
+        _pivotOffsetLocal = Vector3.zero;
+
+        // Keep the current viewing angles, then apply the requested distance
+        // (ReinitializeFromCurrentView overwrites distance with the current camera distance).
+        ReinitializeFromCurrentView();
 
         if (newDistance.HasValue)
             distance = Mathf.Clamp(newDistance.Value, minDistance, maxDistance);
 
         _currentTargetPos = target.position;
-        ReinitializeFromCurrentView();
         _initialized = true;
     }
 
@@ -104,8 +119,12 @@ public class CameraOrbitMMB : MonoBehaviour
         if (dir.sqrMagnitude < 0.0001f)
             dir = new Vector3(0f, 0.3f, -1f).normalized;
 
-        pitch = Mathf.Asin(dir.y) * Mathf.Rad2Deg;
-        yaw = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
+        // LateUpdate places the camera at target + Euler(pitch, yaw, 0) * (0, 0, -distance),
+        // so dir == -(rotation * forward): invert x/z when solving for yaw (otherwise the
+        // camera jumps to the opposite side of the target on every re-init).
+        pitch = Mathf.Asin(Mathf.Clamp(dir.y, -1f, 1f)) * Mathf.Rad2Deg;
+        pitch = Mathf.Clamp(pitch, -80f, 80f);
+        yaw = Mathf.Atan2(-dir.x, -dir.z) * Mathf.Rad2Deg;
         distance = Mathf.Clamp(Vector3.Distance(transform.position, target.position), minDistance, maxDistance);
         _currentTargetPos = target.position;
     }
@@ -115,7 +134,19 @@ public class CameraOrbitMMB : MonoBehaviour
         float radius = bounds.extents.magnitude;
         float wanted = Mathf.Clamp(radius * paddingMultiplier, minDistance, maxDistance);
         distance = wanted;
+
+        if (target != null)
+        {
+            _pivotOffsetLocal = target.InverseTransformPoint(bounds.center);
+            _hasPivotOffset = true;
+        }
+
         _currentTargetPos = bounds.center;
         _initialized = true;
+    }
+
+    private Vector3 GetPivotWorld()
+    {
+        return _hasPivotOffset ? target.TransformPoint(_pivotOffsetLocal) : target.position;
     }
 }

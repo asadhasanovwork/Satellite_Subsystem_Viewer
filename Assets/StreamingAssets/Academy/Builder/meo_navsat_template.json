@@ -1,0 +1,3212 @@
+{
+ "id": "meo_navsat",
+ "displayName": "NavStar-M",
+ "satelliteClass": "Navigation satellite",
+ "orbitClass": "MEO",
+ "orbitSummary": "Medium Earth orbit, about 20,000-23,000 km up, 12-14 hour period, part of a constellation of 24-30 satellites.",
+ "description": "Redundant critical units, 12+ year life, harsh radiation environment.",
+ "designName": "My navigation satellite",
+ "cameraDistance": 13.0,
+ "explodeDistance": 1.2,
+ "subsystems": [
+  {
+   "id": "structure",
+   "name": "Structure & Mechanisms",
+   "description": "The bus carries ~700 kg of hardware through launch and holds the antennas, sensors and wings in precise alignment for 12+ years.",
+   "slots": [
+    {
+     "id": "str.bus",
+     "name": "Primary structure",
+     "requirement": "mandatory",
+     "why": "Honeycomb panels form the box; the Earth deck carries the navigation antenna.",
+     "quantity": "1",
+     "variants": [
+      {
+       "id": "al",
+       "name": "Aluminium honeycomb bus",
+       "description": "Aluminium skins on aluminium honeycomb: proven, easy to build.",
+       "specs": "~150 kg",
+       "massKg": 150,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "bus",
+         "position": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 1.3,
+          "y": 1.2,
+          "z": 2.4
+         },
+         "facePX": "gold_foil",
+         "faceNX": "gold_foil",
+         "facePY": "gold_foil",
+         "faceNY": "gold_foil",
+         "facePZ": "white_paint",
+         "faceNZ": "gold_foil",
+         "edgeBeams": true,
+         "adapterRing": false
+        }
+       ],
+       "parameters": []
+      },
+      {
+       "id": "cfrp",
+       "name": "Carbon-fibre honeycomb bus",
+       "description": "Carbon-fibre skins: lighter and more thermally stable, more expensive.",
+       "specs": "~115 kg",
+       "massKg": 115,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "bus",
+         "position": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 1.3,
+          "y": 1.2,
+          "z": 2.4
+         },
+         "facePX": "black_mli",
+         "faceNX": "black_mli",
+         "facePY": "black_mli",
+         "faceNY": "black_mli",
+         "facePZ": "white_paint",
+         "faceNZ": "black_mli",
+         "edgeBeams": true,
+         "adapterRing": false
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "str.sep",
+     "name": "Launch adapter / separation system",
+     "requirement": "mandatory",
+     "why": "Bolts the satellite to the rocket and releases it in orbit. Navigation satellites are often launched several at a time.",
+     "quantity": "1",
+     "variants": [
+      {
+       "id": "ring",
+       "name": "Clamp-band adapter ring",
+       "description": "A clamp band holds the ring until pyrotechnic bolts release it.",
+       "specs": "1 ring",
+       "massKg": 15,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "adapter_ring",
+         "position": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.2
+         },
+         "forward": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "radius": 0.4,
+         "length": 0.12
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "str.hdrm",
+     "name": "Wing hold-down & release + hinges",
+     "requirement": "mandatory",
+     "why": "Holds the folded wings against the bus during launch; spring hinges unfold them after release.",
+     "quantity": "3-4 per wing",
+     "variants": [
+      {
+       "id": "hdrm8",
+       "name": "8 hold-downs (4 per wing)",
+       "description": "Non-explosive release actuators.",
+       "specs": "8 units",
+       "massKg": 6,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.67,
+          "y": -0.35,
+          "z": -0.2
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.04,
+          "y": 0.06,
+          "z": 0.06
+         },
+         "material": "anodized_black",
+         "label": "Hold-down"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.67,
+          "y": -0.35,
+          "z": 0.8
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.04,
+          "y": 0.06,
+          "z": 0.06
+         },
+         "material": "anodized_black",
+         "label": "Hold-down"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.67,
+          "y": 0.35,
+          "z": -0.2
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.04,
+          "y": 0.06,
+          "z": 0.06
+         },
+         "material": "anodized_black",
+         "label": "Hold-down"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.67,
+          "y": 0.35,
+          "z": 0.8
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.04,
+          "y": 0.06,
+          "z": 0.06
+         },
+         "material": "anodized_black",
+         "label": "Hold-down"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.67,
+          "y": -0.35,
+          "z": -0.2
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.04,
+          "y": 0.06,
+          "z": 0.06
+         },
+         "material": "anodized_black",
+         "label": "Hold-down"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.67,
+          "y": -0.35,
+          "z": 0.8
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.04,
+          "y": 0.06,
+          "z": 0.06
+         },
+         "material": "anodized_black",
+         "label": "Hold-down"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.67,
+          "y": 0.35,
+          "z": -0.2
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.04,
+          "y": 0.06,
+          "z": 0.06
+         },
+         "material": "anodized_black",
+         "label": "Hold-down"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.67,
+          "y": 0.35,
+          "z": 0.8
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.04,
+          "y": 0.06,
+          "z": 0.06
+         },
+         "material": "anodized_black",
+         "label": "Hold-down"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    }
+   ]
+  },
+  {
+   "id": "payload",
+   "name": "Navigation Payload",
+   "description": "The mission: broadcast extremely precise time and orbit data so receivers on Earth can compute their position. Everything starts from the atomic clocks.",
+   "slots": [
+    {
+     "id": "pl.clocks",
+     "name": "Atomic clocks",
+     "requirement": "mandatory",
+     "why": "Navigation accuracy comes from time accuracy: 1 ns of clock error is about 30 cm of position error.",
+     "quantity": "2-4",
+     "variants": [
+      {
+       "id": "rb_phm",
+       "name": "2 rubidium + 2 hydrogen maser",
+       "description": "Masers are the most stable; rubidium clocks are compact backups.",
+       "specs": "4 clocks \u00b7 1 Rb + 1 PHM running",
+       "massKg": 43,
+       "powerW": 90,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": -0.4,
+          "y": 0.53,
+          "z": 0.85
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.18,
+          "y": 0.12,
+          "z": 0.15
+         },
+         "material": "aluminium",
+         "label": "Rubidium clock"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.15,
+          "y": 0.53,
+          "z": 0.85
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.18,
+          "y": 0.12,
+          "z": 0.15
+         },
+         "material": "aluminium",
+         "label": "Rubidium clock"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.13,
+          "y": 0.49,
+          "z": 0.85
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.24,
+          "y": 0.2,
+          "z": 0.3
+         },
+         "material": "gold_foil",
+         "label": "Hydrogen maser"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.4,
+          "y": 0.49,
+          "z": 0.85
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.24,
+          "y": 0.2,
+          "z": 0.3
+         },
+         "material": "gold_foil",
+         "label": "Hydrogen maser"
+        }
+       ],
+       "parameters": []
+      },
+      {
+       "id": "rb4",
+       "name": "4 rubidium clocks",
+       "description": "Lighter and cheaper, slightly less stable.",
+       "specs": "4 clocks \u00b7 2 running",
+       "massKg": 14,
+       "powerW": 60,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": -0.4,
+          "y": 0.53,
+          "z": 0.85
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.18,
+          "y": 0.12,
+          "z": 0.15
+         },
+         "material": "aluminium",
+         "label": "Rubidium clock"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.15,
+          "y": 0.53,
+          "z": 0.85
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.18,
+          "y": 0.12,
+          "z": 0.15
+         },
+         "material": "aluminium",
+         "label": "Rubidium clock"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.13,
+          "y": 0.53,
+          "z": 0.85
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.18,
+          "y": 0.12,
+          "z": 0.15
+         },
+         "material": "aluminium",
+         "label": "Rubidium clock"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.4,
+          "y": 0.53,
+          "z": 0.85
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.18,
+          "y": 0.12,
+          "z": 0.15
+         },
+         "material": "aluminium",
+         "label": "Rubidium clock"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "pl.cmcu",
+     "name": "Clock monitoring & control unit",
+     "requirement": "mandatory",
+     "why": "Compares the clocks and switches to a backup if one drifts.",
+     "quantity": "1",
+     "variants": [
+      {
+       "id": "cmcu",
+       "name": "Clock monitoring unit",
+       "description": "",
+       "specs": "1 unit",
+       "massKg": 5,
+       "powerW": 15,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.3,
+          "y": 0.53,
+          "z": 0.25
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.25,
+          "y": 0.12,
+          "z": 0.15
+         },
+         "material": "aluminium",
+         "label": "Clock monitoring unit"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "pl.nsgu",
+     "name": "Navigation signal generator",
+     "requirement": "mandatory",
+     "why": "Builds the ranging codes and the navigation message from the clock signal.",
+     "quantity": "1-2",
+     "variants": [
+      {
+       "id": "nsgu2",
+       "name": "2 signal generators",
+       "description": "Redundant pair.",
+       "specs": "2 (redundant)",
+       "massKg": 16,
+       "powerW": 60,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": -0.25,
+          "y": 0.53,
+          "z": 0.5
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.3,
+          "y": 0.12,
+          "z": 0.2
+         },
+         "material": "aluminium",
+         "label": "Signal generator"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.25,
+          "y": 0.53,
+          "z": 0.5
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.3,
+          "y": 0.12,
+          "z": 0.2
+         },
+         "material": "aluminium",
+         "label": "Signal generator"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "pl.fgu",
+     "name": "Frequency generation & up-conversion",
+     "requirement": "mandatory",
+     "why": "Turns the clock's reference into the L-band carrier frequencies.",
+     "quantity": "1-2",
+     "variants": [
+      {
+       "id": "fgu",
+       "name": "Frequency generator",
+       "description": "",
+       "specs": "1 unit",
+       "massKg": 6,
+       "powerW": 30,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": -0.25,
+          "y": 0.53,
+          "z": 0.25
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.3,
+          "y": 0.12,
+          "z": 0.15
+         },
+         "material": "aluminium",
+         "label": "Frequency generator"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "pl.amp",
+     "name": "L-band power amplifiers",
+     "requirement": "mandatory",
+     "why": "Make the signal strong enough to be received on Earth from ~23,000 km.",
+     "quantity": "2+ (redundant)",
+     "variants": [
+      {
+       "id": "sspa",
+       "name": "Solid-state amplifiers",
+       "description": "Rugged, efficient enough, gentle failure modes.",
+       "specs": "2 + 2 spare",
+       "massKg": 14,
+       "powerW": 400,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": -0.4,
+          "y": 0.515,
+          "z": -0.15
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.25,
+          "y": 0.15,
+          "z": 0.22
+         },
+         "material": "white_paint",
+         "label": "L-band amplifier"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.13,
+          "y": 0.515,
+          "z": -0.15
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.25,
+          "y": 0.15,
+          "z": 0.22
+         },
+         "material": "white_paint",
+         "label": "L-band amplifier"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.13,
+          "y": 0.515,
+          "z": -0.15
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.25,
+          "y": 0.15,
+          "z": 0.22
+         },
+         "material": "white_paint",
+         "label": "L-band amplifier"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.4,
+          "y": 0.515,
+          "z": -0.15
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.25,
+          "y": 0.15,
+          "z": 0.22
+         },
+         "material": "white_paint",
+         "label": "L-band amplifier"
+        }
+       ],
+       "parameters": []
+      },
+      {
+       "id": "twta",
+       "name": "Travelling-wave tube amplifiers",
+       "description": "More efficient at high power, heavier power supplies.",
+       "specs": "2 + 1 spare",
+       "massKg": 18,
+       "powerW": 360,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": -0.3,
+          "y": 0.515,
+          "z": -0.15
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.3,
+          "y": 0.15,
+          "z": 0.25
+         },
+         "material": "white_paint",
+         "label": "L-band TWTA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.0,
+          "y": 0.515,
+          "z": -0.15
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.3,
+          "y": 0.15,
+          "z": 0.25
+         },
+         "material": "white_paint",
+         "label": "L-band TWTA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.3,
+          "y": 0.515,
+          "z": -0.15
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.3,
+          "y": 0.15,
+          "z": 0.25
+         },
+         "material": "white_paint",
+         "label": "L-band TWTA"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "pl.omux",
+     "name": "Output multiplexer",
+     "requirement": "mandatory",
+     "why": "Combines the signals of all bands into the antenna.",
+     "quantity": "1",
+     "variants": [
+      {
+       "id": "omux",
+       "name": "Output multiplexer",
+       "description": "",
+       "specs": "1 unit",
+       "massKg": 5,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": -0.25,
+          "y": 0.53,
+          "z": -0.45
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.4,
+          "y": 0.12,
+          "z": 0.18
+         },
+         "material": "aluminium",
+         "label": "Output multiplexer"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "pl.nav",
+     "name": "L-band navigation antenna",
+     "requirement": "mandatory",
+     "why": "Broadcasts to the whole visible Earth with a shaped beam.",
+     "quantity": "1",
+     "variants": [
+      {
+       "id": "helix",
+       "name": "Helix array",
+       "description": "Array of helical elements on the Earth deck.",
+       "specs": "12 elements",
+       "massKg": 25,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "antenna",
+         "position": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.2
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "style": "helix_array",
+         "elements": 12,
+         "arrayRadius": 0.36,
+         "helixRadius": 0.045,
+         "helixTurns": 6,
+         "length": 0.45
+        }
+       ],
+       "parameters": [
+        {
+         "id": "n",
+         "label": "Number of helix elements",
+         "unit": "",
+         "min": 8,
+         "max": 16,
+         "defaultValue": 12,
+         "wholeNumbers": true,
+         "fields": [
+          "elements"
+         ],
+         "partIndices": [],
+         "fieldMultiplier": 1.0,
+         "massPerUnit": 0.8,
+         "powerPerUnit": 0.0,
+         "powerGenPerUnit": 0.0,
+         "help": "More elements give a better-shaped beam."
+        }
+       ]
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "pl.uplink",
+     "name": "Mission uplink receiver + antenna",
+     "requirement": "mandatory",
+     "why": "Receives fresh orbit and clock corrections from the ground every few hours.",
+     "quantity": "1-2",
+     "variants": [
+      {
+       "id": "cband",
+       "name": "C-band uplink horn + receiver",
+       "description": "",
+       "specs": "1 horn \u00b7 1 receiver",
+       "massKg": 6,
+       "powerW": 15,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "feed_horn",
+         "position": {
+          "x": -0.47,
+          "y": 0.42,
+          "z": 1.2
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "radius": 0.07,
+         "length": 0.2
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.25,
+          "y": 0.53,
+          "z": -0.45
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.25,
+          "y": 0.12,
+          "z": 0.15
+         },
+         "material": "aluminium",
+         "label": "Uplink receiver"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "pl.lra",
+     "name": "Laser retroreflector array",
+     "requirement": "optional",
+     "why": "Corner cubes that bounce ground laser pulses straight back: an independent, centimetre-level check of the orbit. Strongly recommended.",
+     "quantity": "1",
+     "variants": [
+      {
+       "id": "lra",
+       "name": "Retroreflector array",
+       "description": "",
+       "specs": "~40 corner cubes",
+       "massKg": 1.5,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "retroreflector",
+         "position": {
+          "x": -0.47,
+          "y": -0.42,
+          "z": 1.2
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "width": 0.24,
+         "height": 0.2,
+         "cellColumns": 6,
+         "cellRows": 5
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "pl.sar",
+     "name": "Search & rescue transponder",
+     "requirement": "optional",
+     "why": "Relays distress beacons from ships, aircraft and people to rescue centres.",
+     "quantity": "1",
+     "variants": [
+      {
+       "id": "sar",
+       "name": "SAR transponder + helix",
+       "description": "",
+       "specs": "1 unit",
+       "massKg": 10,
+       "powerW": 60,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "antenna",
+         "position": {
+          "x": 0.47,
+          "y": 0.42,
+          "z": 1.2
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "style": "helix",
+         "helixRadius": 0.05,
+         "helixTurns": 8,
+         "length": 0.38
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.0,
+          "y": 0.53,
+          "z": -0.75
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.3,
+          "y": 0.12,
+          "z": 0.18
+         },
+         "material": "aluminium",
+         "label": "SAR transponder"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    }
+   ]
+  },
+  {
+   "id": "eps",
+   "name": "Electrical Power (EPS)",
+   "description": "Sun-tracking wings power the satellite; batteries cover eclipse seasons, when the Earth's shadow crosses the orbit for up to about an hour per revolution.",
+   "slots": [
+    {
+     "id": "eps.wings",
+     "name": "Solar wings",
+     "requirement": "mandatory",
+     "why": "Main power source. Folded for launch, unfolded in orbit.",
+     "quantity": "2",
+     "variants": [
+      {
+       "id": "w2",
+       "name": "2 wings x 2 panels",
+       "description": "",
+       "specs": "~1.8 kW",
+       "massKg": 30,
+       "powerW": 0,
+       "powerGenW": 1760,
+       "parts": [
+        {
+         "type": "solar_wing",
+         "position": {
+          "x": 0.65,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "panelCount": 2,
+         "width": 1.0,
+         "height": 2.0,
+         "thickness": 0.025,
+         "yokeLength": 0.2,
+         "yokeStowedAngle": -90,
+         "sadaLength": 0.2,
+         "sadaRadius": 0.07,
+         "cellRows": 18,
+         "cellColumns": 8,
+         "drawSada": false,
+         "deployStart": 0.0,
+         "deployEnd": 0.75
+        },
+        {
+         "type": "solar_wing",
+         "position": {
+          "x": -0.65,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": -1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "panelCount": 2,
+         "width": 1.0,
+         "height": 2.0,
+         "thickness": 0.025,
+         "yokeLength": 0.2,
+         "yokeStowedAngle": -90,
+         "sadaLength": 0.2,
+         "sadaRadius": 0.07,
+         "cellRows": 18,
+         "cellColumns": 8,
+         "drawSada": false,
+         "deployStart": 0.0,
+         "deployEnd": 0.75
+        }
+       ],
+       "parameters": [
+        {
+         "id": "L",
+         "label": "Panel length",
+         "unit": "m",
+         "min": 1.6,
+         "max": 2.0,
+         "defaultValue": 2.0,
+         "wholeNumbers": false,
+         "fields": [
+          "height"
+         ],
+         "partIndices": [],
+         "fieldMultiplier": 1.0,
+         "massPerUnit": 9,
+         "powerPerUnit": 0.0,
+         "powerGenPerUnit": 880,
+         "help": "Longer panels = more area = more power."
+        }
+       ]
+      },
+      {
+       "id": "w3",
+       "name": "2 wings x 3 panels",
+       "description": "",
+       "specs": "~2.6 kW",
+       "massKg": 42,
+       "powerW": 0,
+       "powerGenW": 2640,
+       "parts": [
+        {
+         "type": "solar_wing",
+         "position": {
+          "x": 0.65,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "panelCount": 3,
+         "width": 1.0,
+         "height": 2.0,
+         "thickness": 0.025,
+         "yokeLength": 0.2,
+         "yokeStowedAngle": -90,
+         "sadaLength": 0.2,
+         "sadaRadius": 0.07,
+         "cellRows": 18,
+         "cellColumns": 8,
+         "drawSada": false,
+         "deployStart": 0.0,
+         "deployEnd": 0.75
+        },
+        {
+         "type": "solar_wing",
+         "position": {
+          "x": -0.65,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": -1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "panelCount": 3,
+         "width": 1.0,
+         "height": 2.0,
+         "thickness": 0.025,
+         "yokeLength": 0.2,
+         "yokeStowedAngle": -90,
+         "sadaLength": 0.2,
+         "sadaRadius": 0.07,
+         "cellRows": 18,
+         "cellColumns": 8,
+         "drawSada": false,
+         "deployStart": 0.0,
+         "deployEnd": 0.75
+        }
+       ],
+       "parameters": [
+        {
+         "id": "L",
+         "label": "Panel length",
+         "unit": "m",
+         "min": 1.6,
+         "max": 2.0,
+         "defaultValue": 2.0,
+         "wholeNumbers": false,
+         "fields": [
+          "height"
+         ],
+         "partIndices": [],
+         "fieldMultiplier": 1.0,
+         "massPerUnit": 13,
+         "powerPerUnit": 0.0,
+         "powerGenPerUnit": 1320,
+         "help": "Longer panels = more area = more power."
+        }
+       ]
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "eps.sada",
+     "name": "Solar array drive mechanisms",
+     "requirement": "mandatory",
+     "why": "Turn each wing about its axis so the cells keep facing the Sun.",
+     "quantity": "2",
+     "variants": [
+      {
+       "id": "sada",
+       "name": "2 drive mechanisms",
+       "description": "Stepper-motor drives with slip rings carrying the power.",
+       "specs": "2 units",
+       "massKg": 16,
+       "powerW": 10,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "sada",
+         "position": {
+          "x": 0.65,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "sadaLength": 0.2,
+         "sadaRadius": 0.07
+        },
+        {
+         "type": "sada",
+         "position": {
+          "x": -0.65,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": -1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "sadaLength": 0.2,
+         "sadaRadius": 0.07
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "eps.battery",
+     "name": "Li-ion battery",
+     "requirement": "mandatory",
+     "why": "Supplies power during eclipses.",
+     "quantity": "1-2",
+     "variants": [
+      {
+       "id": "b3",
+       "name": "3 kWh battery",
+       "description": "",
+       "specs": "3 kWh",
+       "massKg": 25,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.0,
+          "y": -0.49,
+          "z": -0.95
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.7,
+          "y": 0.2,
+          "z": 0.25
+         },
+         "material": "white_paint",
+         "label": "Li-ion battery"
+        }
+       ],
+       "parameters": []
+      },
+      {
+       "id": "b5",
+       "name": "5 kWh battery",
+       "description": "More reserve for longer eclipses and failures.",
+       "specs": "5 kWh",
+       "massKg": 38,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.0,
+          "y": -0.465,
+          "z": -0.95
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.9,
+          "y": 0.25,
+          "z": 0.3
+         },
+         "material": "white_paint",
+         "label": "Li-ion battery"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "eps.pcdu",
+     "name": "Power conditioning & distribution unit",
+     "requirement": "mandatory",
+     "why": "Regulates the bus voltage, charges the battery, switches and protects every load.",
+     "quantity": "1 (internally redundant)",
+     "variants": [
+      {
+       "id": "pcdu",
+       "name": "PCDU",
+       "description": "",
+       "specs": "1 unit",
+       "massKg": 15,
+       "powerW": 30,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.0,
+          "y": -0.53,
+          "z": -0.65
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.5,
+          "y": 0.12,
+          "z": 0.2
+         },
+         "material": "anodized_black",
+         "label": "PCDU"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "eps.release",
+     "name": "Release-actuator electronics",
+     "requirement": "mandatory",
+     "why": "Fires the hold-down release devices at the right time.",
+     "quantity": "1",
+     "variants": [
+      {
+       "id": "rel",
+       "name": "Release electronics",
+       "description": "",
+       "specs": "1 unit",
+       "massKg": 3,
+       "powerW": 1,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.45,
+          "y": -0.54,
+          "z": -0.65
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.15,
+          "y": 0.1,
+          "z": 0.12
+         },
+         "material": "anodized_black",
+         "label": "Release electronics"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    }
+   ]
+  },
+  {
+   "id": "obc",
+   "name": "On-board Computer (C&DH)",
+   "description": "Command and data handling. Every critical unit has a backup, because a single failure must not lose a satellite that people navigate by.",
+   "slots": [
+    {
+     "id": "obc.computer",
+     "name": "On-board computers",
+     "requirement": "mandatory",
+     "why": "Run the modes, attitude control and fault handling.",
+     "quantity": "2 (redundant)",
+     "variants": [
+      {
+       "id": "obc2",
+       "name": "2 on-board computers",
+       "description": "Cold-redundant pair: one on, one off.",
+       "specs": "2 (redundant)",
+       "massKg": 12,
+       "powerW": 20,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": -0.25,
+          "y": -0.53,
+          "z": 0.85
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.3,
+          "y": 0.12,
+          "z": 0.2
+         },
+         "material": "anodized_black",
+         "label": "On-board computer"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.25,
+          "y": -0.53,
+          "z": 0.85
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.3,
+          "y": 0.12,
+          "z": 0.2
+         },
+         "material": "anodized_black",
+         "label": "On-board computer"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "obc.mm",
+     "name": "Mass memory",
+     "requirement": "mandatory",
+     "why": "Stores telemetry and payload housekeeping.",
+     "quantity": "1",
+     "variants": [
+      {
+       "id": "mm",
+       "name": "Mass memory unit",
+       "description": "",
+       "specs": "1 unit",
+       "massKg": 3,
+       "powerW": 10,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": -0.3,
+          "y": -0.53,
+          "z": 0.25
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.25,
+          "y": 0.12,
+          "z": 0.15
+         },
+         "material": "anodized_black",
+         "label": "Mass memory"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "obc.riu",
+     "name": "Remote interface units",
+     "requirement": "mandatory",
+     "why": "Connect the computer to sensors, heaters and actuators.",
+     "quantity": "1-2",
+     "variants": [
+      {
+       "id": "riu2",
+       "name": "2 remote interface units",
+       "description": "",
+       "specs": "2 (redundant)",
+       "massKg": 8,
+       "powerW": 10,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.12,
+          "y": -0.53,
+          "z": 0.25
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.18,
+          "y": 0.12,
+          "z": 0.15
+         },
+         "material": "anodized_black",
+         "label": "Remote interface unit"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.4,
+          "y": -0.53,
+          "z": 0.25
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.18,
+          "y": 0.12,
+          "z": 0.15
+         },
+         "material": "anodized_black",
+         "label": "Remote interface unit"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "obc.bus",
+     "name": "Data bus",
+     "requirement": "mandatory",
+     "why": "The redundant network between all units.",
+     "quantity": "1 (redundant)",
+     "variants": [
+      {
+       "id": "1553",
+       "name": "MIL-STD-1553 bus",
+       "description": "Dual-channel, deterministic.",
+       "specs": "dual channel",
+       "massKg": 5,
+       "powerW": 2,
+       "powerGenW": 0.0,
+       "parts": [],
+       "parameters": []
+      },
+      {
+       "id": "spw",
+       "name": "SpaceWire network",
+       "description": "Higher data rate, routed network.",
+       "specs": "dual network",
+       "massKg": 4,
+       "powerW": 3,
+       "powerGenW": 0.0,
+       "parts": [],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    }
+   ]
+  },
+  {
+   "id": "ttc",
+   "name": "Communications (TT&C)",
+   "description": "S-band link for commands, telemetry and ranging. Unlike LEO, a MEO satellite stays in view of a ground station for hours.",
+   "slots": [
+    {
+     "id": "ttc.transponder",
+     "name": "S-band transponders",
+     "requirement": "mandatory",
+     "why": "Receive commands, send telemetry, and return ranging tones to measure distance.",
+     "quantity": "2 (redundant)",
+     "variants": [
+      {
+       "id": "tr2",
+       "name": "2 S-band transponders",
+       "description": "",
+       "specs": "2 (redundant)",
+       "massKg": 8,
+       "powerW": 20,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": -0.25,
+          "y": -0.53,
+          "z": -0.05
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.25,
+          "y": 0.12,
+          "z": 0.18
+         },
+         "material": "aluminium",
+         "label": "S-band transponder"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.25,
+          "y": -0.53,
+          "z": -0.05
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.25,
+          "y": 0.12,
+          "z": 0.18
+         },
+         "material": "aluminium",
+         "label": "S-band transponder"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "ttc.omni",
+     "name": "Omni antennas",
+     "requirement": "mandatory",
+     "why": "Two antennas (Earth side and space side) so contact works in any attitude.",
+     "quantity": "2",
+     "variants": [
+      {
+       "id": "omni2",
+       "name": "2 omni antennas",
+       "description": "",
+       "specs": "2 units",
+       "massKg": 2,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "antenna",
+         "position": {
+          "x": 0.57,
+          "y": 0.1,
+          "z": 1.2
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "style": "omni",
+         "length": 0.3
+        },
+        {
+         "type": "antenna",
+         "position": {
+          "x": 0.0,
+          "y": 0.45,
+          "z": -1.2
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "style": "omni",
+         "length": 0.3
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "ttc.rf",
+     "name": "RF switches, diplexers, filters",
+     "requirement": "mandatory",
+     "why": "Route signals between transponders and antennas.",
+     "quantity": "set",
+     "variants": [
+      {
+       "id": "rf",
+       "name": "RF distribution unit",
+       "description": "",
+       "specs": "1 unit",
+       "massKg": 2,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.0,
+          "y": -0.54,
+          "z": -0.35
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.2,
+          "y": 0.1,
+          "z": 0.12
+         },
+         "material": "aluminium",
+         "label": "RF distribution"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "ttc.crypto",
+     "name": "Command encryption unit",
+     "requirement": "mandatory",
+     "why": "Navigation is critical infrastructure: only authenticated commands are accepted.",
+     "quantity": "2 (redundant)",
+     "variants": [
+      {
+       "id": "cr2",
+       "name": "2 encryption units",
+       "description": "",
+       "specs": "2 (redundant)",
+       "massKg": 4,
+       "powerW": 10,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": -0.35,
+          "y": -0.54,
+          "z": -0.35
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.15,
+          "y": 0.1,
+          "z": 0.12
+         },
+         "material": "anodized_black",
+         "label": "Encryption unit"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.35,
+          "y": -0.54,
+          "z": -0.35
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.15,
+          "y": 0.1,
+          "z": 0.12
+         },
+         "material": "anodized_black",
+         "label": "Encryption unit"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    }
+   ]
+  },
+  {
+   "id": "adcs",
+   "name": "Attitude Control (ADCS)",
+   "description": "Keeps the navigation antenna on the centre of the Earth and the wings on the Sun. Earth's magnetic field is too weak at MEO for magnetorquers, so thrusters unload the wheels.",
+   "slots": [
+    {
+     "id": "adcs.esa",
+     "name": "Earth sensors",
+     "requirement": "mandatory",
+     "why": "Measure roll and pitch relative to the Earth.",
+     "quantity": "2 (redundant)",
+     "variants": [
+      {
+       "id": "esa2",
+       "name": "2 Earth sensors",
+       "description": "",
+       "specs": "2 (redundant)",
+       "massKg": 6,
+       "powerW": 6,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "sensor",
+         "position": {
+          "x": 0.47,
+          "y": -0.42,
+          "z": 1.2
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "style": "earth_sensor",
+         "size": {
+          "x": 0.14,
+          "y": 0.11,
+          "z": 0.1
+         }
+        },
+        {
+         "type": "sensor",
+         "position": {
+          "x": -0.57,
+          "y": 0.0,
+          "z": 1.2
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "style": "earth_sensor",
+         "size": {
+          "x": 0.14,
+          "y": 0.11,
+          "z": 0.1
+         }
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "adcs.ss",
+     "name": "Sun sensors",
+     "requirement": "mandatory",
+     "why": "Point the wings, steer yaw, find the Sun in safe mode.",
+     "quantity": "set",
+     "variants": [
+      {
+       "id": "ss",
+       "name": "Coarse + fine Sun sensors",
+       "description": "",
+       "specs": "4 heads",
+       "massKg": 1,
+       "powerW": 1,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "sensor",
+         "position": {
+          "x": 0.651,
+          "y": 0.3,
+          "z": 0.9
+         },
+         "forward": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "style": "sun_sensor",
+         "size": {
+          "x": 0.08,
+          "y": 0.08,
+          "z": 0.04
+         }
+        },
+        {
+         "type": "sensor",
+         "position": {
+          "x": -0.651,
+          "y": 0.3,
+          "z": 0.9
+         },
+         "forward": {
+          "x": -1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "style": "sun_sensor",
+         "size": {
+          "x": 0.08,
+          "y": 0.08,
+          "z": 0.04
+         }
+        },
+        {
+         "type": "sensor",
+         "position": {
+          "x": 0.651,
+          "y": -0.3,
+          "z": 0.9
+         },
+         "forward": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "style": "sun_sensor",
+         "size": {
+          "x": 0.08,
+          "y": 0.08,
+          "z": 0.04
+         }
+        },
+        {
+         "type": "sensor",
+         "position": {
+          "x": -0.651,
+          "y": -0.3,
+          "z": 0.9
+         },
+         "forward": {
+          "x": -1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "style": "sun_sensor",
+         "size": {
+          "x": 0.08,
+          "y": 0.08,
+          "z": 0.04
+         }
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "adcs.gyro",
+     "name": "Gyros / inertial measurement unit",
+     "requirement": "mandatory",
+     "why": "Measure rotation rates.",
+     "quantity": "2 (redundant)",
+     "variants": [
+      {
+       "id": "imu2",
+       "name": "2 inertial measurement units",
+       "description": "",
+       "specs": "2 (redundant)",
+       "massKg": 8,
+       "powerW": 15,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": -0.25,
+          "y": -0.53,
+          "z": 0.55
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.2,
+          "y": 0.12,
+          "z": 0.15
+         },
+         "material": "anodized_black",
+         "label": "IMU"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.25,
+          "y": -0.53,
+          "z": 0.55
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.2,
+          "y": 0.12,
+          "z": 0.15
+         },
+         "material": "anodized_black",
+         "label": "IMU"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "adcs.wheels",
+     "name": "Reaction wheels",
+     "requirement": "mandatory",
+     "why": "Precise attitude control; four in a pyramid so any three can do the job.",
+     "quantity": "4 (one spare)",
+     "variants": [
+      {
+       "id": "rw4",
+       "name": "4 reaction wheels (pyramid)",
+       "description": "Shown cut away.",
+       "specs": "4 wheels",
+       "massKg": 20,
+       "powerW": 40,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "reaction_wheel",
+         "position": {
+          "x": 0.22,
+          "y": 0.2,
+          "z": -0.88
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.85749,
+          "z": -0.5145
+         },
+         "up": {
+          "x": 0.4575,
+          "y": 0.4575,
+          "z": 0.76249
+         },
+         "radius": 0.1,
+         "wheelHeight": 0.06,
+         "spinRpm": 40,
+         "openHousing": true
+        },
+        {
+         "type": "reaction_wheel",
+         "position": {
+          "x": -0.22,
+          "y": 0.2,
+          "z": -0.88
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.85749,
+          "z": -0.5145
+         },
+         "up": {
+          "x": -0.4575,
+          "y": 0.4575,
+          "z": 0.76249
+         },
+         "radius": 0.1,
+         "wheelHeight": 0.06,
+         "spinRpm": 40,
+         "openHousing": true
+        },
+        {
+         "type": "reaction_wheel",
+         "position": {
+          "x": -0.22,
+          "y": -0.2,
+          "z": -0.88
+         },
+         "forward": {
+          "x": -0.0,
+          "y": 0.85749,
+          "z": 0.5145
+         },
+         "up": {
+          "x": -0.4575,
+          "y": -0.4575,
+          "z": 0.76249
+         },
+         "radius": 0.1,
+         "wheelHeight": 0.06,
+         "spinRpm": 40,
+         "openHousing": true
+        },
+        {
+         "type": "reaction_wheel",
+         "position": {
+          "x": 0.22,
+          "y": -0.2,
+          "z": -0.88
+         },
+         "forward": {
+          "x": -0.0,
+          "y": 0.85749,
+          "z": 0.5145
+         },
+         "up": {
+          "x": 0.4575,
+          "y": -0.4575,
+          "z": 0.76249
+         },
+         "radius": 0.1,
+         "wheelHeight": 0.06,
+         "spinRpm": 40,
+         "openHousing": true
+        }
+       ],
+       "parameters": [
+        {
+         "id": "r",
+         "label": "Flywheel radius",
+         "unit": "m",
+         "min": 0.08,
+         "max": 0.12,
+         "defaultValue": 0.1,
+         "wholeNumbers": false,
+         "fields": [
+          "radius"
+         ],
+         "partIndices": [],
+         "fieldMultiplier": 1.0,
+         "massPerUnit": 60,
+         "powerPerUnit": 50,
+         "powerGenPerUnit": 0.0,
+         "help": "Bigger wheels store more momentum, so thrusters unload them less often."
+        }
+       ]
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "adcs.str",
+     "name": "Star trackers",
+     "requirement": "optional",
+     "why": "Higher pointing accuracy, especially for precise yaw steering.",
+     "quantity": "1-2",
+     "variants": [
+      {
+       "id": "st2",
+       "name": "2 star trackers",
+       "description": "",
+       "specs": "2 (redundant)",
+       "massKg": 6,
+       "powerW": 20,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "sensor",
+         "position": {
+          "x": -0.25,
+          "y": -0.5,
+          "z": -1.2
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "style": "star_tracker",
+         "size": {
+          "x": 0.12,
+          "y": 0.12,
+          "z": 0.1
+         },
+         "length": 0.16
+        },
+        {
+         "type": "sensor",
+         "position": {
+          "x": 0.25,
+          "y": -0.5,
+          "z": -1.2
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "style": "star_tracker",
+         "size": {
+          "x": 0.12,
+          "y": 0.12,
+          "z": 0.1
+         },
+         "length": 0.16
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    }
+   ]
+  },
+  {
+   "id": "tcs",
+   "name": "Thermal Control",
+   "description": "Removes heat from the amplifiers and keeps the clocks extremely stable, because their frequency shifts with temperature.",
+   "slots": [
+    {
+     "id": "tcs.rad",
+     "name": "Radiators",
+     "requirement": "mandatory",
+     "why": "Mirror-tile panels that radiate heat to space; placed on faces that see little Sun.",
+     "quantity": "2 faces",
+     "variants": [
+      {
+       "id": "osr",
+       "name": "Mirror-tile radiators (+Y / -Y)",
+       "description": "",
+       "specs": "2 panels",
+       "massKg": 10,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "radiator_panel",
+         "position": {
+          "x": 0.0,
+          "y": 0.602,
+          "z": 0.1
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "width": 1.1,
+         "height": 1.8,
+         "thickness": 0.02
+        },
+        {
+         "type": "radiator_panel",
+         "position": {
+          "x": 0.0,
+          "y": -0.602,
+          "z": 0.1
+         },
+         "forward": {
+          "x": 0.0,
+          "y": -1.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "width": 1.1,
+         "height": 1.8,
+         "thickness": 0.02
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "tcs.clockpanel",
+     "name": "Thermally stable clock panel",
+     "requirement": "mandatory",
+     "why": "An isolated, tightly heated panel for the clocks.",
+     "quantity": "1",
+     "variants": [
+      {
+       "id": "cp",
+       "name": "Clock thermal panel",
+       "description": "",
+       "specs": "1 panel",
+       "massKg": 5,
+       "powerW": 10,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.0,
+          "y": 0.592,
+          "z": 0.85
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 1.1,
+          "y": 0.006,
+          "z": 0.36
+         },
+         "material": "white_paint",
+         "label": "Clock thermal panel"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "tcs.heaters",
+     "name": "Heaters + thermistors",
+     "requirement": "mandatory",
+     "why": "Keep every unit within its limits, especially in eclipse.",
+     "quantity": "dozens",
+     "variants": [
+      {
+       "id": "h",
+       "name": "Heater network",
+       "description": "Thermostat- and computer-controlled heaters.",
+       "specs": "~40 circuits",
+       "massKg": 3,
+       "powerW": 120,
+       "powerGenW": 0.0,
+       "parts": [],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "tcs.mli",
+     "name": "Multi-layer insulation",
+     "requirement": "mandatory",
+     "why": "The blanket you see on the bus: insulates everything that is not a radiator.",
+     "quantity": "-",
+     "variants": [
+      {
+       "id": "mli",
+       "name": "MLI blankets",
+       "description": "",
+       "specs": "whole bus",
+       "massKg": 8,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "tcs.hp",
+     "name": "Heat pipes",
+     "requirement": "conditional",
+     "why": "Move heat sideways from hot units to the radiators.",
+     "quantity": "set",
+     "variants": [
+      {
+       "id": "hp",
+       "name": "Embedded heat pipes",
+       "description": "",
+       "specs": "set",
+       "massKg": 4,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [],
+       "parameters": []
+      }
+     ],
+     "conditions": [
+      {
+       "slot": "pl.amp",
+       "variants": [
+        "sspa",
+        "twta"
+       ]
+      }
+     ],
+     "conditionText": "your amplifiers dissipate hundreds of watts"
+    },
+    {
+     "id": "env.shield",
+     "name": "Radiation shielding",
+     "requirement": "mandatory",
+     "why": "MEO crosses the outer Van Allen belt: radiation-tolerant parts plus extra shielding around sensitive units.",
+     "quantity": "-",
+     "variants": [
+      {
+       "id": "spot",
+       "name": "Spot shielding + rad-tolerant parts",
+       "description": "",
+       "specs": "",
+       "massKg": 15,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    }
+   ]
+  },
+  {
+   "id": "prop",
+   "name": "Propulsion",
+   "description": "Corrects the orbit after launch, keeps the satellite in its slot in the constellation, unloads the wheels, and moves it to a disposal orbit at end of life.",
+   "slots": [
+    {
+     "id": "prop.tank",
+     "name": "Hydrazine tank",
+     "requirement": "mandatory",
+     "why": "Propellant for the whole 12+ year life.",
+     "quantity": "1",
+     "variants": [
+      {
+       "id": "t1",
+       "name": "Hydrazine tank (blowdown)",
+       "description": "Pressurant gas shares the tank and pushes the propellant out.",
+       "specs": "1 tank \u00b7 70 kg hydrazine",
+       "massKg": 85,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "tank",
+         "position": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -0.2
+         },
+         "forward": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "radius": 0.32,
+         "length": 0.0,
+         "material": "titanium"
+        }
+       ],
+       "parameters": [
+        {
+         "id": "prop",
+         "label": "Propellant load",
+         "unit": "kg",
+         "min": 40,
+         "max": 100,
+         "defaultValue": 70,
+         "wholeNumbers": false,
+         "fields": [],
+         "partIndices": [],
+         "fieldMultiplier": 1.0,
+         "massPerUnit": 1.0,
+         "powerPerUnit": 0.0,
+         "powerGenPerUnit": 0.0,
+         "help": "Mass of hydrazine loaded before launch."
+        }
+       ]
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "prop.thr",
+     "name": "Thrusters",
+     "requirement": "mandatory",
+     "why": "Small monopropellant thrusters in two independent branches.",
+     "quantity": "8 (2 x 4)",
+     "variants": [
+      {
+       "id": "t8",
+       "name": "8 x 1 N thrusters",
+       "description": "",
+       "specs": "8 thrusters",
+       "massKg": 4,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "thruster",
+         "position": {
+          "x": 0.47,
+          "y": 0.47,
+          "z": -1.2
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "scale": 6,
+         "throatRadius": 0.0012,
+         "nozzleExitRadius": 0.0055,
+         "nozzleLength": 0.012
+        },
+        {
+         "type": "thruster",
+         "position": {
+          "x": 0.57,
+          "y": 0.47,
+          "z": -1.2
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "scale": 6,
+         "throatRadius": 0.0012,
+         "nozzleExitRadius": 0.0055,
+         "nozzleLength": 0.012
+        },
+        {
+         "type": "thruster",
+         "position": {
+          "x": -0.57,
+          "y": 0.47,
+          "z": -1.2
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "scale": 6,
+         "throatRadius": 0.0012,
+         "nozzleExitRadius": 0.0055,
+         "nozzleLength": 0.012
+        },
+        {
+         "type": "thruster",
+         "position": {
+          "x": -0.47,
+          "y": 0.47,
+          "z": -1.2
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "scale": 6,
+         "throatRadius": 0.0012,
+         "nozzleExitRadius": 0.0055,
+         "nozzleLength": 0.012
+        },
+        {
+         "type": "thruster",
+         "position": {
+          "x": -0.57,
+          "y": -0.47,
+          "z": -1.2
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "scale": 6,
+         "throatRadius": 0.0012,
+         "nozzleExitRadius": 0.0055,
+         "nozzleLength": 0.012
+        },
+        {
+         "type": "thruster",
+         "position": {
+          "x": -0.47,
+          "y": -0.47,
+          "z": -1.2
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "scale": 6,
+         "throatRadius": 0.0012,
+         "nozzleExitRadius": 0.0055,
+         "nozzleLength": 0.012
+        },
+        {
+         "type": "thruster",
+         "position": {
+          "x": 0.47,
+          "y": -0.47,
+          "z": -1.2
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "scale": 6,
+         "throatRadius": 0.0012,
+         "nozzleExitRadius": 0.0055,
+         "nozzleLength": 0.012
+        },
+        {
+         "type": "thruster",
+         "position": {
+          "x": 0.57,
+          "y": -0.47,
+          "z": -1.2
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "scale": 6,
+         "throatRadius": 0.0012,
+         "nozzleExitRadius": 0.0055,
+         "nozzleLength": 0.012
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "prop.valves",
+     "name": "Valves, filters, pressure sensors",
+     "requirement": "mandatory",
+     "why": "Isolate, protect and measure the propellant system.",
+     "quantity": "set",
+     "variants": [
+      {
+       "id": "v",
+       "name": "Propellant control set",
+       "description": "",
+       "specs": "set",
+       "massKg": 4,
+       "powerW": 2,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.0,
+          "y": 0.3,
+          "z": -1.05
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.3,
+          "y": 0.1,
+          "z": 0.15
+         },
+         "material": "steel",
+         "label": "Valves & sensors"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    }
+   ]
+  }
+ ]
+}

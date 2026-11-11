@@ -1,0 +1,188 @@
+{
+  "name": "Academy-3U Prototype",
+  "orbitClass": "LEO",
+  "orbitSummary": "Small CubeSat in low Earth orbit, about 500 km up. It circles the Earth every ~95 minutes and is in contact with a ground station only for a few short passes per day.",
+  "cameraDistance": 0.9,
+  "explodeDistance": 0.12,
+  "description": "Procedurally generated 3U CubeSat. Body frame: +Y = long axis (antenna end), -Y = propulsion end. The -Z face is left open so the interior can be seen. All dimensions in metres; values are generic and for teaching only.",
+  "parts": [
+    {
+      "id": "STR-FRAME",
+      "type": "cubesat_frame",
+      "label": "3U Structure",
+      "description": "Aluminium frame with four rails, sized to the CubeSat standard (100 x 100 mm per unit, 113.5 mm per U). Carries an electronics board stack in the top unit.",
+      "position": { "x": 0, "y": 0, "z": 0 },
+      "forward": { "x": 0, "y": 0, "z": 1 },
+      "up": { "x": 0, "y": 1, "z": 0 },
+      "units": 3,
+      "unitSize": 0.1,
+      "unitHeight": 0.1135,
+      "railWidth": 0.0085,
+      "pcbStack": true
+    },
+
+    {
+      "id": "EPS-SP-PX",
+      "type": "solar_panel",
+      "label": "Body Solar Panel +X",
+      "description": "Body-mounted panel with triple-junction cells on the +X face.",
+      "position": { "x": 0.0512, "y": -0.16, "z": 0 },
+      "forward": { "x": 1, "y": 0, "z": 0 },
+      "up": { "x": 0, "y": 1, "z": 0 },
+      "width": 0.082, "height": 0.32, "thickness": 0.0016,
+      "cellRows": 7, "cellColumns": 2,
+      "deployable": false
+    },
+    {
+      "id": "EPS-SP-MX",
+      "type": "solar_panel",
+      "label": "Body Solar Panel -X",
+      "position": { "x": -0.0512, "y": -0.16, "z": 0 },
+      "forward": { "x": -1, "y": 0, "z": 0 },
+      "up": { "x": 0, "y": 1, "z": 0 },
+      "width": 0.082, "height": 0.32, "thickness": 0.0016,
+      "cellRows": 7, "cellColumns": 2,
+      "deployable": false
+    },
+    {
+      "id": "EPS-SP-PZ",
+      "type": "solar_panel",
+      "label": "Body Solar Panel +Z",
+      "position": { "x": 0, "y": -0.16, "z": 0.0512 },
+      "forward": { "x": 0, "y": 0, "z": 1 },
+      "up": { "x": 0, "y": 1, "z": 0 },
+      "width": 0.082, "height": 0.32, "thickness": 0.0016,
+      "cellRows": 7, "cellColumns": 2,
+      "deployable": false
+    },
+    {
+      "id": "EPS-WING-PX",
+      "type": "solar_panel",
+      "label": "Deployable Wing +X",
+      "description": "Hinged at the top of the +X face. Stowed flat against the body for launch, swings out 90 degrees after separation.",
+      "position": { "x": 0.0545, "y": 0.168, "z": 0 },
+      "forward": { "x": 1, "y": 0, "z": 0 },
+      "up": { "x": 0, "y": -1, "z": 0 },
+      "width": 0.082, "height": 0.32, "thickness": 0.0016,
+      "cellRows": 7, "cellColumns": 2,
+      "deployable": true,
+      "deployAngle": 90
+    },
+    {
+      "id": "EPS-WING-MX",
+      "type": "solar_panel",
+      "label": "Deployable Wing -X",
+      "position": { "x": -0.0545, "y": 0.168, "z": 0 },
+      "forward": { "x": -1, "y": 0, "z": 0 },
+      "up": { "x": 0, "y": -1, "z": 0 },
+      "width": 0.082, "height": 0.32, "thickness": 0.0016,
+      "cellRows": 7, "cellColumns": 2,
+      "deployable": true,
+      "deployAngle": 90
+    },
+
+    {
+      "id": "ADCS-RW-X",
+      "type": "reaction_wheel",
+      "label": "Reaction Wheel X",
+      "description": "Spins up or down to rotate the satellite about its X axis (conservation of angular momentum). Housing shown cut away.",
+      "position": { "x": -0.038, "y": 0.02, "z": 0.012 },
+      "forward": { "x": 0, "y": 0, "z": 1 },
+      "up": { "x": 1, "y": 0, "z": 0 },
+      "radius": 0.017, "wheelHeight": 0.012, "spinRpm": 90, "openHousing": true
+    },
+    {
+      "id": "ADCS-RW-Y",
+      "type": "reaction_wheel",
+      "label": "Reaction Wheel Y",
+      "position": { "x": 0, "y": -0.045, "z": 0 },
+      "forward": { "x": 0, "y": 0, "z": 1 },
+      "up": { "x": 0, "y": 1, "z": 0 },
+      "radius": 0.017, "wheelHeight": 0.012, "spinRpm": 60, "openHousing": true
+    },
+    {
+      "id": "ADCS-RW-Z",
+      "type": "reaction_wheel",
+      "label": "Reaction Wheel Z",
+      "position": { "x": 0.014, "y": 0.02, "z": -0.004 },
+      "forward": { "x": 1, "y": 0, "z": 0 },
+      "up": { "x": 0, "y": 0, "z": -1 },
+      "radius": 0.017, "wheelHeight": 0.012, "spinRpm": 120, "openHousing": true
+    },
+
+    {
+      "id": "EPS-BATT",
+      "type": "box",
+      "label": "Battery Pack",
+      "description": "Placeholder battery block in the bottom unit.",
+      "position": { "x": 0, "y": -0.11, "z": 0 },
+      "forward": { "x": 0, "y": 0, "z": 1 },
+      "up": { "x": 0, "y": 1, "z": 0 },
+      "size": { "x": 0.078, "y": 0.03, "z": 0.078 },
+      "material": "white_paint"
+    },
+
+    {
+      "id": "COMMS-UHF",
+      "type": "antenna",
+      "label": "UHF Turnstile Antenna",
+      "description": "Four tape-spring elements, coiled for launch and released by burn wires after separation.",
+      "position": { "x": 0, "y": 0.1705, "z": 0 },
+      "forward": { "x": 0, "y": 1, "z": 0 },
+      "up": { "x": 0.7071, "y": 0, "z": 0.7071 },
+      "style": "turnstile",
+      "plateSize": 0.07,
+      "elements": 4,
+      "length": 0.17
+    },
+    {
+      "id": "COMMS-SBAND",
+      "type": "antenna",
+      "label": "S-band Patch Antenna",
+      "description": "Flat patch antenna for higher-rate downlink.",
+      "position": { "x": 0, "y": -0.1705, "z": 0 },
+      "forward": { "x": 0, "y": -1, "z": 0 },
+      "up": { "x": 0, "y": 0, "z": 1 },
+      "style": "patch",
+      "patchSize": 0.026
+    },
+
+    {
+      "id": "PROP-THR-1",
+      "type": "thruster",
+      "label": "Thruster 1",
+      "description": "Small cold-gas thruster. Exhaust leaves through the bell nozzle; the valve sits inside the structure.",
+      "position": { "x": 0.028, "y": -0.1705, "z": 0.028 },
+      "forward": { "x": 0, "y": -1, "z": 0 },
+      "up": { "x": 0, "y": 0, "z": 1 },
+      "throatRadius": 0.0012, "nozzleExitRadius": 0.0055, "nozzleLength": 0.012
+    },
+    {
+      "id": "PROP-THR-2",
+      "type": "thruster",
+      "label": "Thruster 2",
+      "position": { "x": -0.028, "y": -0.1705, "z": 0.028 },
+      "forward": { "x": 0, "y": -1, "z": 0 },
+      "up": { "x": 0, "y": 0, "z": 1 },
+      "throatRadius": 0.0012, "nozzleExitRadius": 0.0055, "nozzleLength": 0.012
+    },
+    {
+      "id": "PROP-THR-3",
+      "type": "thruster",
+      "label": "Thruster 3",
+      "position": { "x": -0.028, "y": -0.1705, "z": -0.028 },
+      "forward": { "x": 0, "y": -1, "z": 0 },
+      "up": { "x": 0, "y": 0, "z": 1 },
+      "throatRadius": 0.0012, "nozzleExitRadius": 0.0055, "nozzleLength": 0.012
+    },
+    {
+      "id": "PROP-THR-4",
+      "type": "thruster",
+      "label": "Thruster 4",
+      "position": { "x": 0.028, "y": -0.1705, "z": -0.028 },
+      "forward": { "x": 0, "y": -1, "z": 0 },
+      "up": { "x": 0, "y": 0, "z": 1 },
+      "throatRadius": 0.0012, "nozzleExitRadius": 0.0055, "nozzleLength": 0.012
+    }
+  ]
+}

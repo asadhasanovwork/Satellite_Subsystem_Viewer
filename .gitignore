@@ -37,3 +37,8 @@ ExportedObj/
 # OS files
 .DS_Store
 Thumbs.db
+# Large / proprietary material kept outside version control
+/Training/
+/OpenC3 Simulation/
+*.rar
+*.zip

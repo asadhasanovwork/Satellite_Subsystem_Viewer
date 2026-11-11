@@ -1,0 +1,92 @@
+{
+ "id": "geo_01_station_keeping",
+ "title": "Station keeping: stop the drift",
+ "template": "geo_comsat",
+ "orbitClass": "GEO",
+ "level": "Intermediate",
+ "summary": "Your geostationary satellite is slowly drifting away from its assigned longitude.",
+ "goals": [
+  "Understand why a GEO satellite drifts in longitude",
+  "Relate orbit size to drift",
+  "Plan and execute a small east-west manoeuvre"
+ ],
+ "prerequisites": [
+  "Satellite Builder: build GeoComm-1"
+ ],
+ "situation": "The orbit is about 2 km higher than geostationary, so the satellite is slightly slower than the Earth's rotation and drifts west. Stop the drift with a small retrograde burn on the reaction-control thrusters.",
+ "design": [],
+ "start": {
+  "utc": "",
+  "overrideOrbit": true,
+  "orbit": {
+   "periapsisAltKm": 35788,
+   "apoapsisAltKm": 35788,
+   "inclinationDeg": 0.05,
+   "raanDeg": 0,
+   "argPeriapsisDeg": 0,
+   "trueAnomalyDeg": 0,
+   "j2": true,
+   "geoLongitudeDeg": 46
+  },
+  "placement": "",
+  "placeStation": "",
+  "placeLeadDeg": 20,
+  "adcsMode": "NADIR",
+  "ratesDps": [
+   0,
+   0,
+   0
+  ],
+  "socPercent": -1,
+  "temperatureC": -999,
+  "stowed": false,
+  "alwaysInContact": true,
+  "timeWarp": 300,
+  "commands": []
+ },
+ "faults": [],
+ "steps": [
+  {
+   "text": "Read the drift in the Orbit group (about -0.025 deg/day).",
+   "hint": "Higher orbit = slower = drifts west (negative).",
+   "check": {
+    "point": "orbit.drift",
+    "op": "<",
+    "value": -0.01,
+    "seconds": 1,
+    "command": ""
+   }
+  },
+  {
+   "text": "Burn RETROGRADE about 0.07 m/s: prop.rea BURN RETROGRADE 0.073",
+   "hint": "Change in orbit radius: da = 2 a dv / v. Lowering the orbit 2 km needs ~0.073 m/s.",
+   "check": {
+    "point": "",
+    "op": ">",
+    "value": 0,
+    "seconds": 0,
+    "command": "prop.rea BURN"
+   }
+  },
+  {
+   "text": "Drift below 0.003 deg/day.",
+   "hint": "If you overshot, burn PROGRADE a little.",
+   "check": {
+    "point": "orbit.drift",
+    "op": "abs<",
+    "value": 0.003,
+    "seconds": 10,
+    "command": ""
+   }
+  }
+ ],
+ "failWhen": {
+  "point": "",
+  "op": ">",
+  "value": 0,
+  "seconds": 0,
+  "command": ""
+ },
+ "failText": "",
+ "successText": "Station kept. Real GEO satellites do this every couple of weeks, plus north-south burns for inclination."
+}

@@ -1,0 +1,115 @@
+{
+ "id": "leo_05_imaging_pass",
+ "title": "Imaging and downlink",
+ "template": "leo_cubesat",
+ "orbitClass": "LEO",
+ "level": "Intermediate",
+ "summary": "A normal working day: take images of the Earth and bring the data down to the ground.",
+ "goals": [
+  "Plan around ground-station passes",
+  "Point the payload at the Earth (NADIR)",
+  "Manage the data budget: collection vs downlink",
+  "Use stored commands for work outside contact"
+ ],
+ "prerequisites": [
+  "Low power: a solar panel has failed"
+ ],
+ "situation": "The satellite is in sun-safe mode, approaching Baku. Your task: collect at least 100 MB of images and deliver 50 MB to the ground. The camera drains the battery, so do not leave it on forever.",
+ "design": [],
+ "start": {
+  "utc": "",
+  "overrideOrbit": false,
+  "orbit": {
+   "periapsisAltKm": 500,
+   "apoapsisAltKm": 500,
+   "inclinationDeg": 97.4,
+   "raanDeg": 0,
+   "argPeriapsisDeg": 0,
+   "trueAnomalyDeg": 0,
+   "j2": true,
+   "geoLongitudeDeg": -999
+  },
+  "placement": "station",
+  "placeStation": "Baku",
+  "placeLeadDeg": 40,
+  "adcsMode": "SUNSAFE",
+  "ratesDps": [
+   0,
+   0,
+   0
+  ],
+  "socPercent": -1,
+  "temperatureC": -999,
+  "stowed": false,
+  "alwaysInContact": false,
+  "timeWarp": 20,
+  "commands": []
+ },
+ "faults": [],
+ "steps": [
+  {
+   "text": "Wait for contact.",
+   "hint": "The pass timer shows the next AOS.",
+   "check": {
+    "point": "link.contact",
+    "op": ">",
+    "value": 0.5,
+    "seconds": 0,
+    "command": ""
+   }
+  },
+  {
+   "text": "Point the camera at the Earth: ADCS MODE NADIR.",
+   "hint": "The star tracker gives the best attitude knowledge for pointing.",
+   "check": {
+    "point": "adcs.mode",
+    "op": "==",
+    "value": 3,
+    "seconds": 10,
+    "command": ""
+   }
+  },
+  {
+   "text": "Switch the camera on: pl.main ON.",
+   "hint": "It only records over the sunlit Earth with good pointing.",
+   "check": {
+    "point": "pl.main.state",
+    "op": ">",
+    "value": 0.5,
+    "seconds": 0,
+    "command": ""
+   }
+  },
+  {
+   "text": "Collect at least 100 MB.",
+   "hint": "'Data collected' in the Computer group. Stored data also drops while a pass downlinks it. Tip: OBSW SCHEDULE_IN 900 pl.main OFF switches the camera off later even without contact.",
+   "check": {
+    "point": "obc.storage.collected",
+    "op": ">",
+    "value": 100,
+    "seconds": 0,
+    "command": ""
+   }
+  },
+  {
+   "text": "Deliver 50 MB to the ground.",
+   "hint": "Data only flows during passes, through the S-band radio.",
+   "check": {
+    "point": "obc.storage.downlinked",
+    "op": ">",
+    "value": 50,
+    "seconds": 0,
+    "command": ""
+   }
+  }
+ ],
+ "failWhen": {
+  "point": "eps.battery.soc",
+  "op": "<",
+  "value": 20,
+  "seconds": 0,
+  "command": ""
+ },
+ "failText": "The battery fell below 20%: imaging cost too much power.",
+ "successText": "Data delivered. Data budget = what you can collect vs what the passes can bring down."
+}

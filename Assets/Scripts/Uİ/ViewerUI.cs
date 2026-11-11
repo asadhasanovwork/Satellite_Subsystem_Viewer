@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -80,6 +80,10 @@ public class ViewerUI : MonoBehaviour
     private string currentSatelliteTitle = "Satellite Viewer";
     private PartData currentPartData;
 
+    private bool toolkitBound;
+    private float nextTelemetryRefreshTime;
+    private const float TelemetryRefreshInterval = 0.1f;
+
     private void Awake()
     {
         AutoWireManagers();
@@ -113,6 +117,10 @@ public class ViewerUI : MonoBehaviour
         AutoWireManagers();
         BindUIToolkit();
 
+        var mainMenu = GetComponent<SatelliteMainMenu>();
+        if (mainMenu == null) mainMenu = gameObject.AddComponent<SatelliteMainMenu>();
+        mainMenu.Initialize(uiDocument);
+
         if (metadataLoader == null)
         {
             Debug.LogError("[ViewerUI] metadataLoader is NULL!");
@@ -127,6 +135,11 @@ public class ViewerUI : MonoBehaviour
 
     private void Update()
     {
+        // Throttled: rebuilding 7 label strings every frame allocates and dirties UI layout.
+        if (Time.unscaledTime < nextTelemetryRefreshTime)
+            return;
+
+        nextTelemetryRefreshTime = Time.unscaledTime + TelemetryRefreshInterval;
         RefreshTelemetryOnly();
     }
 
@@ -165,9 +178,27 @@ public class ViewerUI : MonoBehaviour
         if (uiDocument == null)
             return;
 
+        // Called from both Awake and Start: bind only once, otherwise every button/list/search
+        // callback is registered twice and each click runs its action twice.
+        if (toolkitBound)
+            return;
+
         root = uiDocument.rootVisualElement;
         if (root == null)
             return;
+
+        toolkitBound = true;
+
+        // "Root" and "CenterSpacer" fill the screen over the 3D view. With the default
+        // PickingMode.Position every click over the viewport counted as "over UI", so
+        // SelectionManager never picked parts. Children stay pickable.
+        var layoutRoot = root.Q<VisualElement>("Root");
+        if (layoutRoot != null)
+            layoutRoot.pickingMode = PickingMode.Ignore;
+
+        var centerSpacer = root.Q<VisualElement>("CenterSpacer");
+        if (centerSpacer != null)
+            centerSpacer.pickingMode = PickingMode.Ignore;
 
         subsystemsList = root.Q<ListView>("SubsystemsList");
         partsList = root.Q<ListView>("PartsList");
@@ -258,7 +289,7 @@ public class ViewerUI : MonoBehaviour
             label.text = string.IsNullOrWhiteSpace(item.name) ? item.id : item.name;
         };
 
-        subsystemsList.onSelectionChange += selected =>
+        subsystemsList.selectionChanged += selected =>
         {
             foreach (var obj in selected)
             {
@@ -268,6 +299,12 @@ public class ViewerUI : MonoBehaviour
                     currentSelectedPart = string.Empty;
                     currentPartData = null;
                     lastReason = $"Selected subsystem: {subsystem.id}";
+
+                    // Isolation was implemented (ViewModeController/VisibilityManager) but never
+                    // triggered from the UI. Show/Normal buttons return to the full view.
+                    if (subsystem.canIsolate && viewModeController != null)
+                        viewModeController.IsolateSubsystem(subsystem.id);
+
                     RebuildPartsList();
                     RefreshUI();
                     break;
@@ -302,7 +339,7 @@ public class ViewerUI : MonoBehaviour
             label.text = !string.IsNullOrWhiteSpace(item.displayName) ? item.displayName : item.unityName;
         };
 
-        partsList.onSelectionChange += selected =>
+        partsList.selectionChanged += selected =>
         {
             foreach (var obj in selected)
             {
@@ -481,7 +518,12 @@ public class ViewerUI : MonoBehaviour
 
         string selectedSubsystem = GetCurrentSubsystem();
 
-        if (!string.IsNullOrWhiteSpace(currentSelectedPart) && operationsManager.HasPart(currentSelectedPart))
+        if (!string.IsNullOrWhiteSpace(currentSelectedPart) && currentPartData != null && !currentPartData.canToggle)
+        {
+            // JSON canToggle:false (structure, mechanical, fuel brick) was ignored before.
+            lastReason = $"Part '{currentSelectedPart}' cannot be toggled";
+        }
+        else if (!string.IsNullOrWhiteSpace(currentSelectedPart) && operationsManager.HasPart(currentSelectedPart))
         {
             operationsManager.SetPartState(currentSelectedPart, targetState, reason);
             lastReason = $"Part '{currentSelectedPart}' -> {targetState}";
@@ -503,6 +545,7 @@ public class ViewerUI : MonoBehaviour
     {
         visibilityManager?.ShowAll();
         viewModeController?.EnterNormalMode();
+        subsystemsList?.ClearSelection(); // allow re-selecting the same subsystem to isolate again
         lastReason = "Show all";
         RefreshSelectionInfo();
     }
@@ -511,6 +554,7 @@ public class ViewerUI : MonoBehaviour
     {
         viewModeController?.EnterNormalMode();
         visibilityManager?.ShowAll();
+        subsystemsList?.ClearSelection(); // allow re-selecting the same subsystem to isolate again
         lastReason = "Normal mode";
         RefreshSelectionInfo();
     }
@@ -638,8 +682,10 @@ public class ViewerUI : MonoBehaviour
     private void RefreshButtonInteractability()
     {
         bool hasOps = operationsManager != null;
-        bool canControlPart = hasOps && !string.IsNullOrWhiteSpace(currentSelectedPart) && operationsManager.HasPart(currentSelectedPart);
-        bool canControlSubsystem = hasOps && allowSubsystemControlWhenNoPartSelected && !string.IsNullOrWhiteSpace(GetCurrentSubsystem());
+        bool partSelected = !string.IsNullOrWhiteSpace(currentSelectedPart);
+        bool partLocked = partSelected && currentPartData != null && !currentPartData.canToggle;
+        bool canControlPart = hasOps && partSelected && !partLocked && operationsManager.HasPart(currentSelectedPart);
+        bool canControlSubsystem = hasOps && !partLocked && allowSubsystemControlWhenNoPartSelected && !string.IsNullOrWhiteSpace(GetCurrentSubsystem());
         bool enable = canControlPart || canControlSubsystem;
 
         SetToolkitButtonEnabled(toolkitActivateButton, enable);

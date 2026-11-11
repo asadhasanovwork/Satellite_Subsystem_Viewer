@@ -189,10 +189,8 @@ public class SatellitePhysicsManager : MonoBehaviour
 
         batteryPercent -= batteryDrainPerSec * dt;
 
-        if (prop == OperationalState.Active)
-            heatPerSec += 0.15f;
-        else if (prop == OperationalState.Fault)
-            heatPerSec += 0.08f;
+        // PROP heating is applied in SimulatePropulsion (it was previously added here as well,
+        // doubling thruster heat).
 
         temperatureC += heatPerSec * dt;
 
@@ -321,8 +319,14 @@ public class SatellitePhysicsManager : MonoBehaviour
         // OBC failure removes higher control
         if (obc == OperationalState.Off || obc == OperationalState.Fault)
         {
-            ForceSubsystemStateIfNeeded("ADCS", OperationalState.Standby, "No OBC control");
-            ForceSubsystemStateIfNeeded("PAYLOAD", OperationalState.Standby, "No OBC control");
+            // Only downgrade Active -> Standby. Forcing Standby unconditionally re-enabled
+            // subsystems the EPS/battery rules had just switched Off, so ADCS/PAYLOAD flipped
+            // Off <-> Standby every frame (two state changes + UI refresh + logs per frame).
+            if (GetState("ADCS") == OperationalState.Active)
+                ForceSubsystemStateIfNeeded("ADCS", OperationalState.Standby, "No OBC control");
+
+            if (GetState("PAYLOAD") == OperationalState.Active)
+                ForceSubsystemStateIfNeeded("PAYLOAD", OperationalState.Standby, "No OBC control");
 
             if (GetState("COMMS") == OperationalState.Active)
                 ForceSubsystemStateIfNeeded("COMMS", OperationalState.Standby, "Limited without OBC");

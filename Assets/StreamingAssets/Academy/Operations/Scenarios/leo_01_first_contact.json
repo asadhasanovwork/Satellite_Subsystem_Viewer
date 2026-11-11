@@ -1,0 +1,128 @@
+{
+ "id": "leo_01_first_contact",
+ "title": "Commissioning: first contact after separation",
+ "template": "leo_cubesat",
+ "orbitClass": "LEO",
+ "level": "Beginner",
+ "summary": "Your CubeSat has just left the rocket. It is tumbling, its solar arrays are folded and nobody has talked to it yet.",
+ "goals": [
+  "Understand why a satellite tumbles after separation",
+  "Use B-dot detumbling with magnetorquers",
+  "Deploy the solar arrays and point them at the Sun",
+  "Work within short ground-station passes"
+ ],
+ "prerequisites": [
+  "Satellite Builder: build the Academy-3U CubeSat"
+ ],
+ "situation": "Separation was 20 minutes ago. The satellite is spinning at several degrees per second with its arrays stowed and its automatic detumble disabled for this test. It will rise over the Baku ground station soon. Each pass lasts only about 10 minutes, so plan what you send.",
+ "design": [],
+ "start": {
+  "utc": "",
+  "overrideOrbit": false,
+  "orbit": {
+   "periapsisAltKm": 500,
+   "apoapsisAltKm": 500,
+   "inclinationDeg": 97.4,
+   "raanDeg": 0,
+   "argPeriapsisDeg": 0,
+   "trueAnomalyDeg": 0,
+   "j2": true,
+   "geoLongitudeDeg": -999
+  },
+  "placement": "station",
+  "placeStation": "Baku",
+  "placeLeadDeg": 25,
+  "adcsMode": "PASSIVE",
+  "ratesDps": [
+   4,
+   -3,
+   5
+  ],
+  "socPercent": 60,
+  "temperatureC": -999,
+  "stowed": true,
+  "alwaysInContact": false,
+  "timeWarp": 10,
+  "commands": [
+   "OBSW RULE HIGH_RATE OFF"
+  ]
+ },
+ "faults": [],
+ "steps": [
+  {
+   "text": "Wait for the first contact (AOS) with the ground station.",
+   "hint": "Watch 'Ground contact' and the pass timer at the top. Commands can only be sent while in contact.",
+   "check": {
+    "point": "link.contact",
+    "op": ">",
+    "value": 0.5,
+    "seconds": 0,
+    "command": ""
+   }
+  },
+  {
+   "text": "Start detumbling: send ADCS MODE DETUMBLE.",
+   "hint": "Attitude panel > MODE > DETUMBLE. The magnetorquers push against Earth's magnetic field (B-dot).",
+   "check": {
+    "point": "",
+    "op": ">",
+    "value": 0,
+    "seconds": 0,
+    "command": "ADCS MODE DETUMBLE"
+   }
+  },
+  {
+   "text": "Wait until the rotation rate drops below 1 deg/s.",
+   "hint": "This takes several minutes. Use time warp. Detumbling works without contact - it is onboard software.",
+   "check": {
+    "point": "adcs.rate",
+    "op": "<",
+    "value": 1,
+    "seconds": 10,
+    "command": ""
+   }
+  },
+  {
+   "text": "Deploy the solar arrays (str.hdrm DEPLOY).",
+   "hint": "If the pass is over, wait for the next one - or store the command: OBSW SCHEDULE_IN 60 str.hdrm DEPLOY (must be sent while in contact).",
+   "check": {
+    "point": "str.hdrm.deployed",
+    "op": ">",
+    "value": 0.5,
+    "seconds": 0,
+    "command": ""
+   }
+  },
+  {
+   "text": "Get into SUNSAFE: arrays pointing at the Sun.",
+   "hint": "After detumbling the software switches to SUNSAFE by itself; otherwise send ADCS MODE SUNSAFE.",
+   "check": {
+    "point": "adcs.mode",
+    "op": "==",
+    "value": 2,
+    "seconds": 60,
+    "command": ""
+   }
+  },
+  {
+   "text": "Confirm the battery is charging.",
+   "hint": "'Net power' must be positive in sunlight.",
+   "check": {
+    "point": "eps.net",
+    "op": ">",
+    "value": 0.5,
+    "seconds": 120,
+    "command": ""
+   }
+  }
+ ],
+ "failWhen": {
+  "point": "eps.battery.soc",
+  "op": "<",
+  "value": 5,
+  "seconds": 0,
+  "command": ""
+ },
+ "failText": "The battery ran flat before the arrays were deployed.",
+ "successText": "Commissioning complete: the satellite is stable, deployed and power-positive."
+}

@@ -1,0 +1,1558 @@
+{
+ "templates": [
+  {
+   "template": "leo_cubesat",
+   "startUtc": "2027-03-20T06:00:00Z",
+   "orbit": {
+    "periapsisAltKm": 500,
+    "apoapsisAltKm": 500,
+    "inclinationDeg": 97.4,
+    "raanDeg": 0,
+    "argPeriapsisDeg": 0,
+    "trueAnomalyDeg": 0,
+    "j2": true,
+    "geoLongitudeDeg": -999
+   },
+   "groundStations": [
+    {
+     "name": "Baku",
+     "latDeg": 40.41,
+     "lonDeg": 49.87,
+     "minElevationDeg": 5
+    },
+    {
+     "name": "Svalbard",
+     "latDeg": 78.23,
+     "lonDeg": 15.39,
+     "minElevationDeg": 5
+    },
+    {
+     "name": "Fairbanks",
+     "latDeg": 64.86,
+     "lonDeg": -147.85,
+     "minElevationDeg": 5
+    }
+   ],
+   "thermal": {
+    "heatCapacityJPerK": 800,
+    "conductanceWPerK": 0.15,
+    "sinkTempC": -50,
+    "sunHeatW": 7,
+    "startTempC": 15,
+    "minOperatingC": -10,
+    "maxOperatingC": 45
+   },
+   "adcs": {
+    "nadirAxis": [
+     0,
+     -1,
+     0
+    ],
+    "secondaryAxis": [
+     0,
+     0,
+     1
+    ],
+    "secondaryTarget": "velocity",
+    "sunAxis": [
+     0,
+     0,
+     0
+    ],
+    "naturalFrequency": 0.1,
+    "damping": 0.9,
+    "maxSlewDps": 2,
+    "controlPeriod": 1,
+    "autoSunSafeAfterDetumble": true,
+    "detumbleExitDps": 0.5,
+    "dumpStart": 0.6,
+    "dumpStop": 0.2,
+    "payloadToleranceDeg": 2
+   },
+   "inertia": [
+    0.024,
+    0.004,
+    0.024
+   ],
+   "referenceMassKg": 2.5,
+   "disturbance": [
+    1e-07,
+    0,
+    5e-08
+   ],
+   "disturbanceNoise": 2e-08,
+   "rules": [
+    {
+     "id": "LOW_POWER",
+     "description": "Battery below 30%: payload off, point arrays at the Sun",
+     "point": "eps.battery.soc",
+     "op": "<",
+     "value": 30,
+     "seconds": 10,
+     "actions": [
+      "pl.main OFF",
+      "ADCS MODE SUNSAFE"
+     ],
+     "enabled": true
+    },
+    {
+     "id": "HIGH_RATE",
+     "description": "Spinning faster than 3 deg/s: detumble",
+     "point": "adcs.rate",
+     "op": ">",
+     "value": 3,
+     "seconds": 30,
+     "actions": [
+      "ADCS MODE DETUMBLE"
+     ],
+     "enabled": true
+    },
+    {
+     "id": "COLD",
+     "description": "Interior below -5 C: enable the battery heater",
+     "point": "tcs.temperature",
+     "op": "<",
+     "value": -5,
+     "seconds": 30,
+     "actions": [
+      "tcs.heater ON"
+     ],
+     "enabled": true
+    }
+   ],
+   "slots": [
+    {
+     "slot": "str.frame",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "str.sep",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "str.rbf",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "str.hdrm",
+     "kind": "hdrm",
+     "parameters": [
+      {
+       "key": "burnSeconds",
+       "value": 5
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "pl.main",
+     "kind": "payload",
+     "parameters": [
+      {
+       "key": "chain",
+       "value": 0
+      },
+      {
+       "key": "startOn",
+       "value": 0
+      }
+     ],
+     "variants": [
+      {
+       "id": "camera",
+       "parameters": [
+        {
+         "key": "type",
+         "value": 1
+        },
+        {
+         "key": "dataRateMBps",
+         "value": 0.2
+        }
+       ]
+      },
+      {
+       "id": "science",
+       "parameters": [
+        {
+         "key": "type",
+         "value": 2
+        },
+        {
+         "key": "dataRateMBps",
+         "value": 0.002
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "slot": "eps.solar",
+     "kind": "solar",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "eps.battery",
+     "kind": "battery",
+     "parameters": [
+      {
+       "key": "voltage",
+       "value": 7.4
+      },
+      {
+       "key": "soc",
+       "value": 0.85
+      }
+     ],
+     "variants": [
+      {
+       "id": "b2",
+       "parameters": [
+        {
+         "key": "capacityWh",
+         "value": 20
+        }
+       ]
+      },
+      {
+       "id": "b4",
+       "parameters": [
+        {
+         "key": "capacityWh",
+         "value": 40
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "slot": "eps.pcdu",
+     "kind": "passive",
+     "parameters": [
+      {
+       "key": "essential",
+       "value": 1
+      },
+      {
+       "key": "switchable",
+       "value": 0
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "obc.computer",
+     "kind": "obc",
+     "parameters": [
+      {
+       "key": "bootSeconds",
+       "value": 30
+      },
+      {
+       "key": "watchdogSeconds",
+       "value": 120
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "obc.storage",
+     "kind": "storage",
+     "parameters": [],
+     "variants": [
+      {
+       "id": "sd8",
+       "parameters": [
+        {
+         "key": "capacityMB",
+         "value": 8000
+        }
+       ]
+      },
+      {
+       "id": "sd64",
+       "parameters": [
+        {
+         "key": "capacityMB",
+         "value": 64000
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "slot": "ttc.radio",
+     "kind": "radio_ttc",
+     "parameters": [
+      {
+       "key": "rateKbps",
+       "value": 9.6
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "ttc.antenna",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "ttc.sband",
+     "kind": "radio_data",
+     "parameters": [
+      {
+       "key": "rateKbps",
+       "value": 1000
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "ttc.gnss",
+     "kind": "gnss",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "adcs.mag",
+     "kind": "magnetometer",
+     "parameters": [
+      {
+       "key": "noiseDeg",
+       "value": 1
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "adcs.mtq",
+     "kind": "magnetorquer",
+     "parameters": [
+      {
+       "key": "maxDipole",
+       "value": 0.2
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "adcs.css",
+     "kind": "sun_sensor",
+     "parameters": [
+      {
+       "key": "noiseDeg",
+       "value": 1
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "adcs.imu",
+     "kind": "gyro",
+     "parameters": [
+      {
+       "key": "noiseDeg",
+       "value": 0.01
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "adcs.wheels",
+     "kind": "wheels",
+     "parameters": [
+      {
+       "key": "hMax",
+       "value": 0.0018
+      },
+      {
+       "key": "torqueMax",
+       "value": 0.002
+      },
+      {
+       "key": "maxRpm",
+       "value": 6000
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "adcs.str",
+     "kind": "star_tracker",
+     "parameters": [
+      {
+       "key": "noiseDeg",
+       "value": 0.005
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "tcs.finish",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "tcs.sensors",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "tcs.heater",
+     "kind": "heater",
+     "parameters": [
+      {
+       "key": "lowC",
+       "value": 2
+      },
+      {
+       "key": "highC",
+       "value": 8
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "prop.module",
+     "kind": "thrusters",
+     "parameters": [
+      {
+       "key": "thrustN",
+       "value": 0.001
+      },
+      {
+       "key": "ispS",
+       "value": 60
+      },
+      {
+       "key": "propellantKg",
+       "value": 0.1
+      },
+      {
+       "key": "pressureBar",
+       "value": 8
+      }
+     ],
+     "variants": []
+    }
+   ]
+  },
+  {
+   "template": "meo_navsat",
+   "startUtc": "2027-03-20T06:00:00Z",
+   "orbit": {
+    "periapsisAltKm": 23222,
+    "apoapsisAltKm": 23222,
+    "inclinationDeg": 56,
+    "raanDeg": 0,
+    "argPeriapsisDeg": 0,
+    "trueAnomalyDeg": 0,
+    "j2": true,
+    "geoLongitudeDeg": -999
+   },
+   "groundStations": [
+    {
+     "name": "Baku",
+     "latDeg": 40.41,
+     "lonDeg": 49.87,
+     "minElevationDeg": 5
+    },
+    {
+     "name": "Kourou",
+     "latDeg": 5.25,
+     "lonDeg": -52.77,
+     "minElevationDeg": 5
+    },
+    {
+     "name": "Hartebeesthoek",
+     "latDeg": -25.89,
+     "lonDeg": 27.69,
+     "minElevationDeg": 5
+    },
+    {
+     "name": "Kiruna",
+     "latDeg": 67.86,
+     "lonDeg": 20.96,
+     "minElevationDeg": 5
+    }
+   ],
+   "thermal": {
+    "heatCapacityJPerK": 200000,
+    "conductanceWPerK": 20,
+    "sinkTempC": -40,
+    "sunHeatW": 600,
+    "startTempC": 25,
+    "minOperatingC": 0,
+    "maxOperatingC": 40
+   },
+   "adcs": {
+    "nadirAxis": [
+     0,
+     0,
+     1
+    ],
+    "secondaryAxis": [
+     1,
+     0,
+     0
+    ],
+    "secondaryTarget": "orbit_normal",
+    "sunAxis": [
+     0,
+     0,
+     1
+    ],
+    "naturalFrequency": 0.05,
+    "damping": 0.9,
+    "maxSlewDps": 0.3,
+    "controlPeriod": 1,
+    "autoSunSafeAfterDetumble": true,
+    "detumbleExitDps": 0.3,
+    "dumpStart": 0.6,
+    "dumpStop": 0.2,
+    "payloadToleranceDeg": 1
+   },
+   "inertia": [
+    350,
+    900,
+    800
+   ],
+   "referenceMassKg": 600,
+   "disturbance": [
+    0,
+    2e-05,
+    1e-05
+   ],
+   "disturbanceNoise": 1e-06,
+   "rules": [
+    {
+     "id": "LOW_POWER",
+     "description": "Battery below 35%: amplifier and SAR off, Sun-safe",
+     "point": "eps.battery.soc",
+     "op": "<",
+     "value": 35,
+     "seconds": 10,
+     "actions": [
+      "pl.amp OFF",
+      "pl.sar OFF",
+      "ADCS MODE SUNSAFE"
+     ],
+     "enabled": true
+    },
+    {
+     "id": "HIGH_RATE",
+     "description": "Spinning faster than 1 deg/s: detumble",
+     "point": "adcs.rate",
+     "op": ">",
+     "value": 1,
+     "seconds": 30,
+     "actions": [
+      "ADCS MODE DETUMBLE"
+     ],
+     "enabled": true
+    },
+    {
+     "id": "COLD",
+     "description": "Interior below 5 C: enable heaters",
+     "point": "tcs.temperature",
+     "op": "<",
+     "value": 5,
+     "seconds": 60,
+     "actions": [
+      "tcs.heaters ON"
+     ],
+     "enabled": true
+    }
+   ],
+   "slots": [
+    {
+     "slot": "str.bus",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "str.sep",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "str.hdrm",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "pl.clocks",
+     "kind": "payload",
+     "parameters": [
+      {
+       "key": "type",
+       "value": 3
+      },
+      {
+       "key": "warmupSeconds",
+       "value": 1800
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "pl.cmcu",
+     "kind": "payload",
+     "parameters": [
+      {
+       "key": "type",
+       "value": 0
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "pl.nsgu",
+     "kind": "payload",
+     "parameters": [
+      {
+       "key": "type",
+       "value": 0
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "pl.fgu",
+     "kind": "payload",
+     "parameters": [
+      {
+       "key": "type",
+       "value": 0
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "pl.amp",
+     "kind": "payload",
+     "parameters": [
+      {
+       "key": "type",
+       "value": 0
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "pl.omux",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "pl.nav",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "pl.uplink",
+     "kind": "payload",
+     "parameters": [
+      {
+       "key": "type",
+       "value": 0
+      },
+      {
+       "key": "chain",
+       "value": 0
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "pl.lra",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "pl.sar",
+     "kind": "payload",
+     "parameters": [
+      {
+       "key": "type",
+       "value": 0
+      },
+      {
+       "key": "chain",
+       "value": 0
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "eps.wings",
+     "kind": "solar",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "eps.sada",
+     "kind": "sada",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "eps.battery",
+     "kind": "battery",
+     "parameters": [
+      {
+       "key": "voltage",
+       "value": 50
+      },
+      {
+       "key": "soc",
+       "value": 0.9
+      }
+     ],
+     "variants": [
+      {
+       "id": "b3",
+       "parameters": [
+        {
+         "key": "capacityWh",
+         "value": 3600
+        }
+       ]
+      },
+      {
+       "id": "b5",
+       "parameters": [
+        {
+         "key": "capacityWh",
+         "value": 5500
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "slot": "eps.pcdu",
+     "kind": "passive",
+     "parameters": [
+      {
+       "key": "essential",
+       "value": 1
+      },
+      {
+       "key": "switchable",
+       "value": 0
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "eps.release",
+     "kind": "hdrm",
+     "parameters": [
+      {
+       "key": "burnSeconds",
+       "value": 5
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "obc.computer",
+     "kind": "obc",
+     "parameters": [
+      {
+       "key": "bootSeconds",
+       "value": 60
+      },
+      {
+       "key": "watchdogSeconds",
+       "value": 120
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "obc.mm",
+     "kind": "storage",
+     "parameters": [
+      {
+       "key": "capacityMB",
+       "value": 16000
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "obc.riu",
+     "kind": "passive",
+     "parameters": [
+      {
+       "key": "essential",
+       "value": 1
+      },
+      {
+       "key": "switchable",
+       "value": 0
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "obc.bus",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "ttc.transponder",
+     "kind": "radio_ttc",
+     "parameters": [
+      {
+       "key": "rateKbps",
+       "value": 4
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "ttc.omni",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "ttc.rf",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "ttc.crypto",
+     "kind": "passive",
+     "parameters": [
+      {
+       "key": "essential",
+       "value": 1
+      },
+      {
+       "key": "switchable",
+       "value": 0
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "adcs.esa",
+     "kind": "earth_sensor",
+     "parameters": [
+      {
+       "key": "noiseDeg",
+       "value": 0.05
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "adcs.ss",
+     "kind": "sun_sensor",
+     "parameters": [
+      {
+       "key": "noiseDeg",
+       "value": 0.5
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "adcs.gyro",
+     "kind": "gyro",
+     "parameters": [
+      {
+       "key": "noiseDeg",
+       "value": 0.002
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "adcs.wheels",
+     "kind": "wheels",
+     "parameters": [
+      {
+       "key": "hMax",
+       "value": 12
+      },
+      {
+       "key": "torqueMax",
+       "value": 0.2
+      },
+      {
+       "key": "maxRpm",
+       "value": 4000
+      },
+      {
+       "key": "biasFraction",
+       "value": 0.3
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "adcs.str",
+     "kind": "star_tracker",
+     "parameters": [
+      {
+       "key": "noiseDeg",
+       "value": 0.003
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "tcs.rad",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "tcs.clockpanel",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "tcs.heaters",
+     "kind": "heater",
+     "parameters": [
+      {
+       "key": "lowC",
+       "value": 10
+      },
+      {
+       "key": "highC",
+       "value": 18
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "tcs.mli",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "tcs.hp",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "env.shield",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "prop.tank",
+     "kind": "tank",
+     "parameters": [
+      {
+       "key": "pressureBar",
+       "value": 22
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "prop.thr",
+     "kind": "thrusters",
+     "parameters": [
+      {
+       "key": "thrustN",
+       "value": 1
+      },
+      {
+       "key": "ispS",
+       "value": 220
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "prop.valves",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    }
+   ]
+  },
+  {
+   "template": "geo_comsat",
+   "startUtc": "2027-03-20T06:00:00Z",
+   "orbit": {
+    "periapsisAltKm": 35786,
+    "apoapsisAltKm": 35786,
+    "inclinationDeg": 0.05,
+    "raanDeg": 0,
+    "argPeriapsisDeg": 0,
+    "trueAnomalyDeg": 0,
+    "j2": true,
+    "geoLongitudeDeg": 46
+   },
+   "groundStations": [
+    {
+     "name": "Baku",
+     "latDeg": 40.41,
+     "lonDeg": 49.87,
+     "minElevationDeg": 5
+    },
+    {
+     "name": "Mumbai",
+     "latDeg": 19.08,
+     "lonDeg": 72.88,
+     "minElevationDeg": 5
+    }
+   ],
+   "thermal": {
+    "heatCapacityJPerK": 1000000,
+    "conductanceWPerK": 80,
+    "sinkTempC": -40,
+    "sunHeatW": 2000,
+    "startTempC": 22,
+    "minOperatingC": 0,
+    "maxOperatingC": 45
+   },
+   "adcs": {
+    "nadirAxis": [
+     0,
+     0,
+     1
+    ],
+    "secondaryAxis": [
+     1,
+     0,
+     0
+    ],
+    "secondaryTarget": "orbit_normal",
+    "sunAxis": [
+     0,
+     0,
+     1
+    ],
+    "naturalFrequency": 0.03,
+    "damping": 0.9,
+    "maxSlewDps": 0.2,
+    "controlPeriod": 1,
+    "autoSunSafeAfterDetumble": true,
+    "detumbleExitDps": 0.2,
+    "dumpStart": 0.6,
+    "dumpStop": 0.2,
+    "payloadToleranceDeg": 0.2
+   },
+   "inertia": [
+    4000,
+    18000,
+    17000
+   ],
+   "referenceMassKg": 3200,
+   "disturbance": [
+    0,
+    5e-05,
+    2e-05
+   ],
+   "disturbanceNoise": 5e-06,
+   "rules": [
+    {
+     "id": "LOW_POWER",
+     "description": "Battery below 30%: amplifiers off",
+     "point": "eps.battery.soc",
+     "op": "<",
+     "value": 30,
+     "seconds": 10,
+     "actions": [
+      "pl.amps OFF"
+     ],
+     "enabled": true
+    },
+    {
+     "id": "HIGH_RATE",
+     "description": "Spinning faster than 0.5 deg/s: detumble",
+     "point": "adcs.rate",
+     "op": ">",
+     "value": 0.5,
+     "seconds": 30,
+     "actions": [
+      "ADCS MODE DETUMBLE"
+     ],
+     "enabled": true
+    },
+    {
+     "id": "COLD",
+     "description": "Interior below 5 C: enable heaters",
+     "point": "tcs.temperature",
+     "op": "<",
+     "value": 5,
+     "seconds": 60,
+     "actions": [
+      "tcs.heaters ON"
+     ],
+     "enabled": true
+    }
+   ],
+   "slots": [
+    {
+     "slot": "str.bus",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "str.sep",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "str.hdrm",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "pl.antennas",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "pl.rx",
+     "kind": "payload",
+     "parameters": [
+      {
+       "key": "type",
+       "value": 0
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "pl.imux",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "pl.amps",
+     "kind": "payload",
+     "parameters": [
+      {
+       "key": "type",
+       "value": 4
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "pl.omux",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "pl.switch",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "eps.wings",
+     "kind": "solar",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "eps.sada",
+     "kind": "sada",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "eps.battery",
+     "kind": "battery",
+     "parameters": [
+      {
+       "key": "voltage",
+       "value": 100
+      },
+      {
+       "key": "soc",
+       "value": 0.9
+      },
+      {
+       "key": "capacityWh",
+       "value": 12000
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "eps.pcu",
+     "kind": "passive",
+     "parameters": [
+      {
+       "key": "essential",
+       "value": 1
+      },
+      {
+       "key": "switchable",
+       "value": 0
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "eps.pdu",
+     "kind": "passive",
+     "parameters": [
+      {
+       "key": "essential",
+       "value": 1
+      },
+      {
+       "key": "switchable",
+       "value": 0
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "eps.release",
+     "kind": "hdrm",
+     "parameters": [
+      {
+       "key": "burnSeconds",
+       "value": 5
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "eps.ppu",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "obc.fc",
+     "kind": "obc",
+     "parameters": [
+      {
+       "key": "bootSeconds",
+       "value": 60
+      },
+      {
+       "key": "watchdogSeconds",
+       "value": 120
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "obc.bbe",
+     "kind": "passive",
+     "parameters": [
+      {
+       "key": "essential",
+       "value": 1
+      },
+      {
+       "key": "switchable",
+       "value": 0
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "obc.riu",
+     "kind": "passive",
+     "parameters": [
+      {
+       "key": "essential",
+       "value": 1
+      },
+      {
+       "key": "switchable",
+       "value": 0
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "obc.bus",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "obc.wd",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "obc.crypto",
+     "kind": "passive",
+     "parameters": [
+      {
+       "key": "essential",
+       "value": 1
+      },
+      {
+       "key": "switchable",
+       "value": 0
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "ttc.rx",
+     "kind": "radio_ttc",
+     "parameters": [
+      {
+       "key": "rateKbps",
+       "value": 2
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "ttc.tx",
+     "kind": "passive",
+     "parameters": [
+      {
+       "key": "essential",
+       "value": 1
+      },
+      {
+       "key": "switchable",
+       "value": 0
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "ttc.omni",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "ttc.rf",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "ttc.beacon",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "adcs.esa",
+     "kind": "earth_sensor",
+     "parameters": [
+      {
+       "key": "noiseDeg",
+       "value": 0.03
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "adcs.ss",
+     "kind": "sun_sensor",
+     "parameters": [
+      {
+       "key": "noiseDeg",
+       "value": 0.5
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "adcs.iru",
+     "kind": "gyro",
+     "parameters": [
+      {
+       "key": "noiseDeg",
+       "value": 0.001
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "adcs.wheels",
+     "kind": "wheels",
+     "parameters": [
+      {
+       "key": "hMax",
+       "value": 50
+      },
+      {
+       "key": "torqueMax",
+       "value": 0.3
+      },
+      {
+       "key": "maxRpm",
+       "value": 5000
+      },
+      {
+       "key": "biasFraction",
+       "value": 0.4
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "adcs.str",
+     "kind": "star_tracker",
+     "parameters": [
+      {
+       "key": "noiseDeg",
+       "value": 0.002
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "tcs.rad",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "tcs.hp",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "tcs.heaters",
+     "kind": "heater",
+     "parameters": [
+      {
+       "key": "lowC",
+       "value": 10
+      },
+      {
+       "key": "highC",
+       "value": 18
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "tcs.mli",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "tcs.deprad",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "prop.raising",
+     "kind": "thrusters",
+     "parameters": [],
+     "variants": [
+      {
+       "id": "chemical",
+       "parameters": [
+        {
+         "key": "thrustN",
+         "value": 400
+        },
+        {
+         "key": "ispS",
+         "value": 320
+        }
+       ]
+      },
+      {
+       "id": "electric",
+       "parameters": [
+        {
+         "key": "thrustN",
+         "value": 0.09
+        },
+        {
+         "key": "ispS",
+         "value": 1600
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "slot": "prop.tanks",
+     "kind": "tank",
+     "parameters": [
+      {
+       "key": "pressureBar",
+       "value": 18
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "prop.press",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    },
+    {
+     "slot": "prop.rea",
+     "kind": "thrusters",
+     "parameters": [
+      {
+       "key": "thrustN",
+       "value": 10
+      },
+      {
+       "key": "ispS",
+       "value": 290
+      }
+     ],
+     "variants": []
+    },
+    {
+     "slot": "prop.valves",
+     "kind": "passive",
+     "parameters": [],
+     "variants": []
+    }
+   ]
+  }
+ ]
+}

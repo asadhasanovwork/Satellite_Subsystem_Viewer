@@ -1,0 +1,500 @@
+{
+  "name": "GeoComm-1",
+  "orbitClass": "GEO",
+  "orbitSummary": "Geostationary communications satellite: 35,786 km above the equator, one orbit per day, so it appears fixed in the sky. Serves TV and data over a whole continent.",
+  "description": "Generic GEO communications satellite inspired by common 2-3 tonne platforms. Body frame: +Z = Earth deck (nadir), +X = north, +Y = east. All dimensions are generic teaching values.",
+  "cameraDistance": 24.0,
+  "explodeDistance": 2.5,
+  "parts": [
+    {
+      "id": "BUS",
+      "type": "bus",
+      "label": "Spacecraft Bus",
+      "description": "Box-shaped bus built from honeycomb panels. North and south faces (+X/-X) carry mirror radiators that dump heat from the payload amplifiers; east, west and anti-Earth faces are wrapped in gold multi-layer insulation; the Earth deck (+Z) carries the communication antennas.",
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "forward": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 1.0
+      },
+      "up": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0
+      },
+      "size": {
+        "x": 2.0,
+        "y": 2.4,
+        "z": 2.6
+      },
+      "facePX": "osr_radiator",
+      "faceNX": "osr_radiator",
+      "facePY": "gold_foil",
+      "faceNY": "gold_foil",
+      "facePZ": "white_paint",
+      "faceNZ": "gold_foil",
+      "edgeBeams": true
+    },
+    {
+      "id": "EPS-WING-N",
+      "type": "solar_wing",
+      "label": "North Solar Wing",
+      "description": "Four hinged panels folded accordion-style for launch. After separation the yoke swings out and the panels unfold into one flat wing. The drive at the root (SADA) turns the wing once per day to keep the cells facing the Sun.",
+      "position": {
+        "x": 1.0,
+        "y": 0.0,
+        "z": -1.0
+      },
+      "forward": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -1.0
+      },
+      "up": {
+        "x": 1.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "panelCount": 4,
+      "width": 1.6,
+      "height": 1.8,
+      "thickness": 0.03,
+      "yokeLength": 0.3,
+      "yokeStowedAngle": -90,
+      "sadaLength": 0.3,
+      "sadaRadius": 0.1,
+      "cellRows": 16,
+      "cellColumns": 12,
+      "deployStart": 0.0,
+      "deployEnd": 0.6
+    },
+    {
+      "id": "EPS-WING-S",
+      "type": "solar_wing",
+      "label": "South Solar Wing",
+      "description": "Mirror image of the north wing.",
+      "position": {
+        "x": -1.0,
+        "y": 0.0,
+        "z": -1.0
+      },
+      "forward": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -1.0
+      },
+      "up": {
+        "x": -1.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "panelCount": 4,
+      "width": 1.6,
+      "height": 1.8,
+      "thickness": 0.03,
+      "yokeLength": 0.3,
+      "yokeStowedAngle": -90,
+      "sadaLength": 0.3,
+      "sadaRadius": 0.1,
+      "cellRows": 16,
+      "cellColumns": 12,
+      "deployStart": 0.0,
+      "deployEnd": 0.6
+    },
+    {
+      "id": "PL-REF-E",
+      "type": "reflector",
+      "label": "East Deployable Reflector (Ku-band)",
+      "description": "2.3 m offset-fed parabolic reflector. Stowed against the east face for launch, then swung out by its hinge arm. Its focus sits exactly on the feed horn on the Earth deck; a 2-axis gimbal behind the dish fine-tunes the beam pointing.",
+      "position": {
+        "x": 0.0,
+        "y": 1.55,
+        "z": 0.7
+      },
+      "forward": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 1.0
+      },
+      "up": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0
+      },
+      "diameter": 2.3,
+      "focalLength": 1.0,
+      "offsetHeight": 1.35,
+      "vertexOffset": {
+        "x": 0.0,
+        "y": -0.35,
+        "z": -0.35
+      },
+      "stowedAngle": -105,
+      "deployAngle": 0,
+      "deployStart": 0.55,
+      "deployEnd": 1.0
+    },
+    {
+      "id": "PL-FEED-E",
+      "type": "feed_horn",
+      "label": "East Feed Horn (Ku-band)",
+      "description": "Conical feed horn at the reflector's focal point. It illuminates the dish when transmitting and collects the focused signal when receiving.",
+      "position": {
+        "x": 0.0,
+        "y": 0.8754,
+        "z": 1.4809
+      },
+      "forward": {
+        "x": 0.0,
+        "y": 0.9274,
+        "z": -0.374
+      },
+      "up": {
+        "x": 1.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "radius": 0.12,
+      "length": 0.35
+    },
+    {
+      "id": "PL-FEEDSUP-E",
+      "type": "box",
+      "label": "East Feed Support",
+      "description": "Bracket holding the feed horn at the reflector's focal point.",
+      "position": {
+        "x": 0.0,
+        "y": 0.8754,
+        "z": 1.3904
+      },
+      "forward": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 1.0
+      },
+      "up": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0
+      },
+      "size": {
+        "x": 0.2,
+        "y": 0.2,
+        "z": 0.1809
+      },
+      "material": "aluminium"
+    },
+    {
+      "id": "PL-REF-W",
+      "type": "reflector",
+      "label": "West Deployable Reflector (C-band)",
+      "description": "2.3 m offset-fed parabolic reflector. Stowed against the west face for launch, then swung out by its hinge arm. Its focus sits exactly on the feed horn on the Earth deck; a 2-axis gimbal behind the dish fine-tunes the beam pointing.",
+      "position": {
+        "x": 0.0,
+        "y": -1.55,
+        "z": 0.7
+      },
+      "forward": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 1.0
+      },
+      "up": {
+        "x": 0.0,
+        "y": -1.0,
+        "z": 0.0
+      },
+      "diameter": 2.3,
+      "focalLength": 1.0,
+      "offsetHeight": 1.35,
+      "vertexOffset": {
+        "x": 0.0,
+        "y": -0.35,
+        "z": -0.35
+      },
+      "stowedAngle": -105,
+      "deployAngle": 0,
+      "deployStart": 0.55,
+      "deployEnd": 1.0
+    },
+    {
+      "id": "PL-FEED-W",
+      "type": "feed_horn",
+      "label": "West Feed Horn (C-band)",
+      "description": "Conical feed horn at the reflector's focal point. It illuminates the dish when transmitting and collects the focused signal when receiving.",
+      "position": {
+        "x": 0.0,
+        "y": -0.8754,
+        "z": 1.4809
+      },
+      "forward": {
+        "x": 0.0,
+        "y": -0.9274,
+        "z": -0.374
+      },
+      "up": {
+        "x": 1.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "radius": 0.12,
+      "length": 0.35
+    },
+    {
+      "id": "PL-FEEDSUP-W",
+      "type": "box",
+      "label": "West Feed Support",
+      "description": "Bracket holding the feed horn at the reflector's focal point.",
+      "position": {
+        "x": 0.0,
+        "y": -0.8754,
+        "z": 1.3904
+      },
+      "forward": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 1.0
+      },
+      "up": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0
+      },
+      "size": {
+        "x": 0.2,
+        "y": 0.2,
+        "z": 0.1809
+      },
+      "material": "aluminium"
+    },
+    {
+      "id": "TTC-OMNI",
+      "type": "antenna",
+      "style": "omni",
+      "label": "TT&C Omni Antenna",
+      "description": "Wide-beam antenna used for commanding and telemetry during launch, orbit raising and emergencies, when the satellite is not pointed at the Earth.",
+      "position": {
+        "x": 0.7,
+        "y": -0.15,
+        "z": 1.3
+      },
+      "forward": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 1.0
+      },
+      "up": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0
+      },
+      "length": 0.45
+    },
+    {
+      "id": "ACS-ESA",
+      "type": "sensor",
+      "style": "earth_sensor",
+      "label": "Earth Sensor",
+      "description": "Infrared sensor that detects the Earth's horizon to measure roll and pitch.",
+      "position": {
+        "x": -0.65,
+        "y": 0.0,
+        "z": 1.3
+      },
+      "forward": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 1.0
+      },
+      "up": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0
+      },
+      "size": {
+        "x": 0.22,
+        "y": 0.16,
+        "z": 0.14
+      }
+    },
+    {
+      "id": "ACS-SSA",
+      "type": "sensor",
+      "style": "sun_sensor",
+      "label": "Sun Sensor",
+      "description": "Measures the direction of the Sun; used to find the Sun in safe mode.",
+      "position": {
+        "x": -0.75,
+        "y": 0.5,
+        "z": 1.3
+      },
+      "forward": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 1.0
+      },
+      "up": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0
+      },
+      "size": {
+        "x": 0.1,
+        "y": 0.1,
+        "z": 0.05
+      }
+    },
+    {
+      "id": "PL-BCN",
+      "type": "feed_horn",
+      "label": "Uplink Power Control Beacon Horn",
+      "description": "Small horn radiating a steady beacon signal that ground stations use to measure rain fade and adjust their uplink power.",
+      "position": {
+        "x": 0.75,
+        "y": 0.45,
+        "z": 1.3
+      },
+      "forward": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 1.0
+      },
+      "up": {
+        "x": 1.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "radius": 0.05,
+      "length": 0.15
+    },
+    {
+      "id": "PROP-LAE",
+      "type": "thruster",
+      "label": "Liquid Apogee Engine",
+      "description": "Main engine (hundreds of newtons) used a few times to raise the orbit from transfer orbit to geostationary altitude. Shown here as a scaled-up generic nozzle.",
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -1.3
+      },
+      "forward": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -1.0
+      },
+      "up": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0
+      },
+      "scale": 22,
+      "throatRadius": 0.0012,
+      "nozzleExitRadius": 0.0055,
+      "nozzleLength": 0.012
+    },
+    {
+      "id": "PROP-REA-1",
+      "type": "thruster",
+      "label": "Attitude Thruster 1",
+      "description": "Small hydrazine thruster for attitude control, momentum unloading and east-west stationkeeping.",
+      "position": {
+        "x": 0.75,
+        "y": 0.95,
+        "z": -1.3
+      },
+      "forward": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -1.0
+      },
+      "up": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0
+      },
+      "scale": 5,
+      "throatRadius": 0.0012,
+      "nozzleExitRadius": 0.0055,
+      "nozzleLength": 0.012
+    },
+    {
+      "id": "PROP-REA-2",
+      "type": "thruster",
+      "label": "Attitude Thruster 2",
+      "description": "Small hydrazine thruster for attitude control, momentum unloading and east-west stationkeeping.",
+      "position": {
+        "x": -0.75,
+        "y": 0.95,
+        "z": -1.3
+      },
+      "forward": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -1.0
+      },
+      "up": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0
+      },
+      "scale": 5,
+      "throatRadius": 0.0012,
+      "nozzleExitRadius": 0.0055,
+      "nozzleLength": 0.012
+    },
+    {
+      "id": "PROP-REA-3",
+      "type": "thruster",
+      "label": "Attitude Thruster 3",
+      "description": "Small hydrazine thruster for attitude control, momentum unloading and east-west stationkeeping.",
+      "position": {
+        "x": -0.75,
+        "y": -0.95,
+        "z": -1.3
+      },
+      "forward": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -1.0
+      },
+      "up": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0
+      },
+      "scale": 5,
+      "throatRadius": 0.0012,
+      "nozzleExitRadius": 0.0055,
+      "nozzleLength": 0.012
+    },
+    {
+      "id": "PROP-REA-4",
+      "type": "thruster",
+      "label": "Attitude Thruster 4",
+      "description": "Small hydrazine thruster for attitude control, momentum unloading and east-west stationkeeping.",
+      "position": {
+        "x": 0.75,
+        "y": -0.95,
+        "z": -1.3
+      },
+      "forward": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -1.0
+      },
+      "up": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0
+      },
+      "scale": 5,
+      "throatRadius": 0.0012,
+      "nozzleExitRadius": 0.0055,
+      "nozzleLength": 0.012
+    }
+  ]
+}

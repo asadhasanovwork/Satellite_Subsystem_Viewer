@@ -1,0 +1,14 @@
+{
+ "scenarios": [
+  "leo_01_first_contact.json",
+  "leo_02_low_power.json",
+  "leo_03_rapid_tumble.json",
+  "leo_04_momentum.json",
+  "leo_05_imaging_pass.json",
+  "meo_01_clock_warmup.json",
+  "meo_02_eclipse_season.json",
+  "geo_01_station_keeping.json",
+  "geo_02_eclipse_battery.json",
+  "geo_03_wheel_failure.json"
+ ]
+}

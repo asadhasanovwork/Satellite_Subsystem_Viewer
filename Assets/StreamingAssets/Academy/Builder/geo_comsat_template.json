@@ -1,0 +1,5022 @@
+{
+ "id": "geo_comsat",
+ "displayName": "GeoComm-1",
+ "satelliteClass": "Communications satellite",
+ "orbitClass": "GEO",
+ "orbitSummary": "Geostationary orbit, 35,786 km above the equator. One orbit per day, so it appears fixed in the sky over one longitude.",
+ "description": "Everything critical is redundant, 15+ year life, kilowatt-class payload.",
+ "designName": "My communications satellite",
+ "cameraDistance": 24.0,
+ "explodeDistance": 2.5,
+ "subsystems": [
+  {
+   "id": "structure",
+   "name": "Structure & Mechanisms",
+   "description": "A 3-5 tonne satellite at launch. A central thrust tube carries the heavy propellant tanks straight down into the rocket's adapter.",
+   "slots": [
+    {
+     "id": "str.bus",
+     "name": "Primary structure",
+     "requirement": "mandatory",
+     "why": "Central cylinder plus honeycomb panels: the Earth deck, north/south payload panels and east/west panels.",
+     "quantity": "1",
+     "variants": [
+      {
+       "id": "tube",
+       "name": "Bus with central thrust tube",
+       "description": "Aluminium/carbon cylinder through the middle of the box.",
+       "specs": "~350 kg",
+       "massKg": 350,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "bus",
+         "position": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 2.0,
+          "y": 2.4,
+          "z": 2.6
+         },
+         "facePX": "gold_foil",
+         "faceNX": "gold_foil",
+         "facePY": "gold_foil",
+         "faceNY": "gold_foil",
+         "facePZ": "white_paint",
+         "faceNZ": "gold_foil",
+         "edgeBeams": true,
+         "adapterRing": false
+        },
+        {
+         "type": "adapter_ring",
+         "position": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.25
+         },
+         "forward": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "radius": 0.55,
+         "length": 2.5,
+         "label": "Central thrust tube"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "str.sep",
+     "name": "Launch adapter / separation ring",
+     "requirement": "mandatory",
+     "why": "Interface to the rocket; a clamp band releases the satellite in transfer orbit.",
+     "quantity": "1",
+     "variants": [
+      {
+       "id": "ring",
+       "name": "1194 mm-class adapter ring",
+       "description": "",
+       "specs": "1 ring",
+       "massKg": 30,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "adapter_ring",
+         "position": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.3
+         },
+         "forward": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "radius": 0.66,
+         "length": 0.13
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "str.hdrm",
+     "name": "Hold-down & release mechanisms",
+     "requirement": "mandatory",
+     "why": "Hold the wings and reflectors during launch; released one by one in orbit.",
+     "quantity": "4-6 per deployable",
+     "variants": [
+      {
+       "id": "hdrm",
+       "name": "Non-explosive hold-downs",
+       "description": "",
+       "specs": "16 units",
+       "massKg": 20,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 1.03,
+          "y": -0.6,
+          "z": -0.4
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.06,
+          "y": 0.08,
+          "z": 0.08
+         },
+         "material": "anodized_black",
+         "label": "Wing hold-down"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 1.03,
+          "y": -0.6,
+          "z": 0.9
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.06,
+          "y": 0.08,
+          "z": 0.08
+         },
+         "material": "anodized_black",
+         "label": "Wing hold-down"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 1.03,
+          "y": 0.6,
+          "z": -0.4
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.06,
+          "y": 0.08,
+          "z": 0.08
+         },
+         "material": "anodized_black",
+         "label": "Wing hold-down"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 1.03,
+          "y": 0.6,
+          "z": 0.9
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.06,
+          "y": 0.08,
+          "z": 0.08
+         },
+         "material": "anodized_black",
+         "label": "Wing hold-down"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -1.03,
+          "y": -0.6,
+          "z": -0.4
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.06,
+          "y": 0.08,
+          "z": 0.08
+         },
+         "material": "anodized_black",
+         "label": "Wing hold-down"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -1.03,
+          "y": -0.6,
+          "z": 0.9
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.06,
+          "y": 0.08,
+          "z": 0.08
+         },
+         "material": "anodized_black",
+         "label": "Wing hold-down"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -1.03,
+          "y": 0.6,
+          "z": -0.4
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.06,
+          "y": 0.08,
+          "z": 0.08
+         },
+         "material": "anodized_black",
+         "label": "Wing hold-down"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -1.03,
+          "y": 0.6,
+          "z": 0.9
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.06,
+          "y": 0.08,
+          "z": 0.08
+         },
+         "material": "anodized_black",
+         "label": "Wing hold-down"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.0,
+          "y": 1.23,
+          "z": -0.6
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.08,
+          "y": 0.06,
+          "z": 0.08
+         },
+         "material": "anodized_black",
+         "label": "Reflector hold-down"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.0,
+          "y": 1.23,
+          "z": 0.5
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.08,
+          "y": 0.06,
+          "z": 0.08
+         },
+         "material": "anodized_black",
+         "label": "Reflector hold-down"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.0,
+          "y": -1.23,
+          "z": -0.6
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.08,
+          "y": 0.06,
+          "z": 0.08
+         },
+         "material": "anodized_black",
+         "label": "Reflector hold-down"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.0,
+          "y": -1.23,
+          "z": 0.5
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.08,
+          "y": 0.06,
+          "z": 0.08
+         },
+         "material": "anodized_black",
+         "label": "Reflector hold-down"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    }
+   ]
+  },
+  {
+   "id": "payload",
+   "name": "Communications Payload",
+   "description": "The repeater: receives TV and data signals from the ground, filters them into channels, amplifies each one and sends it back to a whole continent.",
+   "slots": [
+    {
+     "id": "pl.antennas",
+     "name": "Reflectors + feeds",
+     "requirement": "mandatory",
+     "why": "Shape the coverage on Earth. Each offset dish focuses onto its feed horn on the Earth deck.",
+     "quantity": "2-4",
+     "variants": [
+      {
+       "id": "c_ku",
+       "name": "C-band (west) + Ku-band (east) reflectors",
+       "description": "Two 2.3 m deployable dishes with feeds and supports.",
+       "specs": "2 x 2.3 m",
+       "massKg": 80,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "reflector",
+         "label": "East Deployable Reflector (Ku-band)",
+         "position": {
+          "x": 0.0,
+          "y": 1.55,
+          "z": 0.7
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "diameter": 2.3,
+         "focalLength": 1.0,
+         "offsetHeight": 1.35,
+         "vertexOffset": {
+          "x": 0.0,
+          "y": -0.35,
+          "z": -0.35
+         },
+         "stowedAngle": -105,
+         "deployAngle": 0,
+         "deployStart": 0.55,
+         "deployEnd": 1.0
+        },
+        {
+         "type": "feed_horn",
+         "label": "East Feed Horn (Ku-band)",
+         "position": {
+          "x": 0.0,
+          "y": 0.8754,
+          "z": 1.4809
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.9274,
+          "z": -0.374
+         },
+         "up": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "radius": 0.12,
+         "length": 0.35
+        },
+        {
+         "type": "box",
+         "label": "East Feed Support",
+         "position": {
+          "x": 0.0,
+          "y": 0.8754,
+          "z": 1.3904
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.2,
+          "y": 0.2,
+          "z": 0.1809
+         },
+         "material": "aluminium"
+        },
+        {
+         "type": "reflector",
+         "label": "West Deployable Reflector (C-band)",
+         "position": {
+          "x": 0.0,
+          "y": -1.55,
+          "z": 0.7
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": -1.0,
+          "z": 0.0
+         },
+         "diameter": 2.3,
+         "focalLength": 1.0,
+         "offsetHeight": 1.35,
+         "vertexOffset": {
+          "x": 0.0,
+          "y": -0.35,
+          "z": -0.35
+         },
+         "stowedAngle": -105,
+         "deployAngle": 0,
+         "deployStart": 0.55,
+         "deployEnd": 1.0
+        },
+        {
+         "type": "feed_horn",
+         "label": "West Feed Horn (C-band)",
+         "position": {
+          "x": 0.0,
+          "y": -0.8754,
+          "z": 1.4809
+         },
+         "forward": {
+          "x": 0.0,
+          "y": -0.9274,
+          "z": -0.374
+         },
+         "up": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "radius": 0.12,
+         "length": 0.35
+        },
+        {
+         "type": "box",
+         "label": "West Feed Support",
+         "position": {
+          "x": 0.0,
+          "y": -0.8754,
+          "z": 1.3904
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.2,
+          "y": 0.2,
+          "z": 0.1809
+         },
+         "material": "aluminium"
+        }
+       ],
+       "parameters": []
+      },
+      {
+       "id": "c_only",
+       "name": "Single C-band reflector (west)",
+       "description": "One deployable dish.",
+       "specs": "1 x 2.3 m",
+       "massKg": 42,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "reflector",
+         "label": "West Deployable Reflector (C-band)",
+         "position": {
+          "x": 0.0,
+          "y": -1.55,
+          "z": 0.7
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": -1.0,
+          "z": 0.0
+         },
+         "diameter": 2.3,
+         "focalLength": 1.0,
+         "offsetHeight": 1.35,
+         "vertexOffset": {
+          "x": 0.0,
+          "y": -0.35,
+          "z": -0.35
+         },
+         "stowedAngle": -105,
+         "deployAngle": 0,
+         "deployStart": 0.55,
+         "deployEnd": 1.0
+        },
+        {
+         "type": "feed_horn",
+         "label": "West Feed Horn (C-band)",
+         "position": {
+          "x": 0.0,
+          "y": -0.8754,
+          "z": 1.4809
+         },
+         "forward": {
+          "x": 0.0,
+          "y": -0.9274,
+          "z": -0.374
+         },
+         "up": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "radius": 0.12,
+         "length": 0.35
+        },
+        {
+         "type": "box",
+         "label": "West Feed Support",
+         "position": {
+          "x": 0.0,
+          "y": -0.8754,
+          "z": 1.3904
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.2,
+          "y": 0.2,
+          "z": 0.1809
+         },
+         "material": "aluminium"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "pl.rx",
+     "name": "Receivers / down-converters",
+     "requirement": "mandatory",
+     "why": "Low-noise amplification of the weak uplink and conversion to the downlink frequency.",
+     "quantity": "6-for-4 ring",
+     "variants": [
+      {
+       "id": "rx6",
+       "name": "6 receivers (6-for-4 redundancy)",
+       "description": "Any 2 can fail without losing service.",
+       "specs": "6 units",
+       "massKg": 12,
+       "powerW": 60,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.93,
+          "y": -0.75,
+          "z": 1.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.12,
+          "y": 0.3,
+          "z": 0.18
+         },
+         "material": "aluminium",
+         "label": "Receiver"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.93,
+          "y": -0.4,
+          "z": 1.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.12,
+          "y": 0.3,
+          "z": 0.18
+         },
+         "material": "aluminium",
+         "label": "Receiver"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.93,
+          "y": -0.75,
+          "z": 1.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.12,
+          "y": 0.3,
+          "z": 0.18
+         },
+         "material": "aluminium",
+         "label": "Receiver"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.93,
+          "y": -0.4,
+          "z": 1.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.12,
+          "y": 0.3,
+          "z": 0.18
+         },
+         "material": "aluminium",
+         "label": "Receiver"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.93,
+          "y": 0.75,
+          "z": 1.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.12,
+          "y": 0.3,
+          "z": 0.18
+         },
+         "material": "aluminium",
+         "label": "Receiver"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.93,
+          "y": 0.75,
+          "z": 1.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.12,
+          "y": 0.3,
+          "z": 0.18
+         },
+         "material": "aluminium",
+         "label": "Receiver"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "pl.imux",
+     "name": "Input multiplexers",
+     "requirement": "mandatory",
+     "why": "Filters that split each band into individual channels.",
+     "quantity": "1 per band",
+     "variants": [
+      {
+       "id": "imux",
+       "name": "Input multiplexers",
+       "description": "",
+       "specs": "2 units",
+       "massKg": 20,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.915,
+          "y": 0.2,
+          "z": 1.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.15,
+          "y": 0.35,
+          "z": 0.2
+         },
+         "material": "gold_foil",
+         "label": "Input multiplexer"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.915,
+          "y": 0.2,
+          "z": 1.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.15,
+          "y": 0.35,
+          "z": 0.2
+         },
+         "material": "gold_foil",
+         "label": "Input multiplexer"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "pl.amps",
+     "name": "High-power amplifiers",
+     "requirement": "mandatory",
+     "why": "Give each channel its transmit power. Arranged in redundancy rings (e.g. 16-for-12) so failed tubes are switched out.",
+     "quantity": "channels + spares",
+     "variants": [
+      {
+       "id": "twta",
+       "name": "Travelling-wave tube amplifiers (TWTA)",
+       "description": "Efficient at high power; each tube needs a high-voltage power supply.",
+       "specs": "24 tubes",
+       "massKg": 48,
+       "powerW": 2700,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.915,
+          "y": -0.7,
+          "z": 0.65
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.15,
+          "y": 0.42,
+          "z": 0.25
+         },
+         "material": "white_paint",
+         "label": "TWTA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.915,
+          "y": -0.7,
+          "z": 0.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.15,
+          "y": 0.42,
+          "z": 0.25
+         },
+         "material": "white_paint",
+         "label": "TWTA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.915,
+          "y": -0.7,
+          "z": -0.05
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.15,
+          "y": 0.42,
+          "z": 0.25
+         },
+         "material": "white_paint",
+         "label": "TWTA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.915,
+          "y": -0.7,
+          "z": -0.4
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.15,
+          "y": 0.42,
+          "z": 0.25
+         },
+         "material": "white_paint",
+         "label": "TWTA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.915,
+          "y": 0.0,
+          "z": 0.65
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.15,
+          "y": 0.42,
+          "z": 0.25
+         },
+         "material": "white_paint",
+         "label": "TWTA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.915,
+          "y": 0.0,
+          "z": 0.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.15,
+          "y": 0.42,
+          "z": 0.25
+         },
+         "material": "white_paint",
+         "label": "TWTA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.915,
+          "y": 0.0,
+          "z": -0.05
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.15,
+          "y": 0.42,
+          "z": 0.25
+         },
+         "material": "white_paint",
+         "label": "TWTA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.915,
+          "y": 0.0,
+          "z": -0.4
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.15,
+          "y": 0.42,
+          "z": 0.25
+         },
+         "material": "white_paint",
+         "label": "TWTA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.915,
+          "y": 0.7,
+          "z": 0.65
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.15,
+          "y": 0.42,
+          "z": 0.25
+         },
+         "material": "white_paint",
+         "label": "TWTA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.915,
+          "y": 0.7,
+          "z": 0.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.15,
+          "y": 0.42,
+          "z": 0.25
+         },
+         "material": "white_paint",
+         "label": "TWTA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.915,
+          "y": 0.7,
+          "z": -0.05
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.15,
+          "y": 0.42,
+          "z": 0.25
+         },
+         "material": "white_paint",
+         "label": "TWTA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.915,
+          "y": 0.7,
+          "z": -0.4
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.15,
+          "y": 0.42,
+          "z": 0.25
+         },
+         "material": "white_paint",
+         "label": "TWTA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.915,
+          "y": -0.7,
+          "z": 0.65
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.15,
+          "y": 0.42,
+          "z": 0.25
+         },
+         "material": "white_paint",
+         "label": "TWTA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.915,
+          "y": -0.7,
+          "z": 0.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.15,
+          "y": 0.42,
+          "z": 0.25
+         },
+         "material": "white_paint",
+         "label": "TWTA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.915,
+          "y": -0.7,
+          "z": -0.05
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.15,
+          "y": 0.42,
+          "z": 0.25
+         },
+         "material": "white_paint",
+         "label": "TWTA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.915,
+          "y": -0.7,
+          "z": -0.4
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.15,
+          "y": 0.42,
+          "z": 0.25
+         },
+         "material": "white_paint",
+         "label": "TWTA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.915,
+          "y": 0.0,
+          "z": 0.65
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.15,
+          "y": 0.42,
+          "z": 0.25
+         },
+         "material": "white_paint",
+         "label": "TWTA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.915,
+          "y": 0.0,
+          "z": 0.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.15,
+          "y": 0.42,
+          "z": 0.25
+         },
+         "material": "white_paint",
+         "label": "TWTA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.915,
+          "y": 0.0,
+          "z": -0.05
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.15,
+          "y": 0.42,
+          "z": 0.25
+         },
+         "material": "white_paint",
+         "label": "TWTA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.915,
+          "y": 0.0,
+          "z": -0.4
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.15,
+          "y": 0.42,
+          "z": 0.25
+         },
+         "material": "white_paint",
+         "label": "TWTA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.915,
+          "y": 0.7,
+          "z": 0.65
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.15,
+          "y": 0.42,
+          "z": 0.25
+         },
+         "material": "white_paint",
+         "label": "TWTA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.915,
+          "y": 0.7,
+          "z": 0.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.15,
+          "y": 0.42,
+          "z": 0.25
+         },
+         "material": "white_paint",
+         "label": "TWTA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.915,
+          "y": 0.7,
+          "z": -0.05
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.15,
+          "y": 0.42,
+          "z": 0.25
+         },
+         "material": "white_paint",
+         "label": "TWTA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.915,
+          "y": 0.7,
+          "z": -0.4
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.15,
+          "y": 0.42,
+          "z": 0.25
+         },
+         "material": "white_paint",
+         "label": "TWTA"
+        }
+       ],
+       "parameters": [
+        {
+         "id": "ch",
+         "label": "Active channels",
+         "unit": "",
+         "min": 12,
+         "max": 24,
+         "defaultValue": 18,
+         "wholeNumbers": true,
+         "fields": [],
+         "partIndices": [],
+         "fieldMultiplier": 1.0,
+         "massPerUnit": 0.5,
+         "powerPerUnit": 150,
+         "powerGenPerUnit": 0.0,
+         "help": "Each active channel adds about 150 W of DC power."
+        }
+       ]
+      },
+      {
+       "id": "sspa",
+       "name": "Solid-state amplifiers (SSPA)",
+       "description": "Lighter and simpler, less efficient at high power.",
+       "specs": "24 units",
+       "massKg": 36,
+       "powerW": 2300,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.93,
+          "y": -0.7,
+          "z": 0.65
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.12,
+          "y": 0.4,
+          "z": 0.2
+         },
+         "material": "aluminium",
+         "label": "SSPA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.93,
+          "y": -0.7,
+          "z": 0.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.12,
+          "y": 0.4,
+          "z": 0.2
+         },
+         "material": "aluminium",
+         "label": "SSPA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.93,
+          "y": -0.7,
+          "z": -0.05
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.12,
+          "y": 0.4,
+          "z": 0.2
+         },
+         "material": "aluminium",
+         "label": "SSPA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.93,
+          "y": -0.7,
+          "z": -0.4
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.12,
+          "y": 0.4,
+          "z": 0.2
+         },
+         "material": "aluminium",
+         "label": "SSPA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.93,
+          "y": 0.0,
+          "z": 0.65
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.12,
+          "y": 0.4,
+          "z": 0.2
+         },
+         "material": "aluminium",
+         "label": "SSPA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.93,
+          "y": 0.0,
+          "z": 0.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.12,
+          "y": 0.4,
+          "z": 0.2
+         },
+         "material": "aluminium",
+         "label": "SSPA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.93,
+          "y": 0.0,
+          "z": -0.05
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.12,
+          "y": 0.4,
+          "z": 0.2
+         },
+         "material": "aluminium",
+         "label": "SSPA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.93,
+          "y": 0.0,
+          "z": -0.4
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.12,
+          "y": 0.4,
+          "z": 0.2
+         },
+         "material": "aluminium",
+         "label": "SSPA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.93,
+          "y": 0.7,
+          "z": 0.65
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.12,
+          "y": 0.4,
+          "z": 0.2
+         },
+         "material": "aluminium",
+         "label": "SSPA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.93,
+          "y": 0.7,
+          "z": 0.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.12,
+          "y": 0.4,
+          "z": 0.2
+         },
+         "material": "aluminium",
+         "label": "SSPA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.93,
+          "y": 0.7,
+          "z": -0.05
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.12,
+          "y": 0.4,
+          "z": 0.2
+         },
+         "material": "aluminium",
+         "label": "SSPA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.93,
+          "y": 0.7,
+          "z": -0.4
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.12,
+          "y": 0.4,
+          "z": 0.2
+         },
+         "material": "aluminium",
+         "label": "SSPA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.93,
+          "y": -0.7,
+          "z": 0.65
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.12,
+          "y": 0.4,
+          "z": 0.2
+         },
+         "material": "aluminium",
+         "label": "SSPA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.93,
+          "y": -0.7,
+          "z": 0.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.12,
+          "y": 0.4,
+          "z": 0.2
+         },
+         "material": "aluminium",
+         "label": "SSPA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.93,
+          "y": -0.7,
+          "z": -0.05
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.12,
+          "y": 0.4,
+          "z": 0.2
+         },
+         "material": "aluminium",
+         "label": "SSPA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.93,
+          "y": -0.7,
+          "z": -0.4
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.12,
+          "y": 0.4,
+          "z": 0.2
+         },
+         "material": "aluminium",
+         "label": "SSPA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.93,
+          "y": 0.0,
+          "z": 0.65
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.12,
+          "y": 0.4,
+          "z": 0.2
+         },
+         "material": "aluminium",
+         "label": "SSPA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.93,
+          "y": 0.0,
+          "z": 0.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.12,
+          "y": 0.4,
+          "z": 0.2
+         },
+         "material": "aluminium",
+         "label": "SSPA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.93,
+          "y": 0.0,
+          "z": -0.05
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.12,
+          "y": 0.4,
+          "z": 0.2
+         },
+         "material": "aluminium",
+         "label": "SSPA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.93,
+          "y": 0.0,
+          "z": -0.4
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.12,
+          "y": 0.4,
+          "z": 0.2
+         },
+         "material": "aluminium",
+         "label": "SSPA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.93,
+          "y": 0.7,
+          "z": 0.65
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.12,
+          "y": 0.4,
+          "z": 0.2
+         },
+         "material": "aluminium",
+         "label": "SSPA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.93,
+          "y": 0.7,
+          "z": 0.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.12,
+          "y": 0.4,
+          "z": 0.2
+         },
+         "material": "aluminium",
+         "label": "SSPA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.93,
+          "y": 0.7,
+          "z": -0.05
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.12,
+          "y": 0.4,
+          "z": 0.2
+         },
+         "material": "aluminium",
+         "label": "SSPA"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.93,
+          "y": 0.7,
+          "z": -0.4
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.12,
+          "y": 0.4,
+          "z": 0.2
+         },
+         "material": "aluminium",
+         "label": "SSPA"
+        }
+       ],
+       "parameters": [
+        {
+         "id": "ch",
+         "label": "Active channels",
+         "unit": "",
+         "min": 12,
+         "max": 24,
+         "defaultValue": 18,
+         "wholeNumbers": true,
+         "fields": [],
+         "partIndices": [],
+         "fieldMultiplier": 1.0,
+         "massPerUnit": 0.4,
+         "powerPerUnit": 128,
+         "powerGenPerUnit": 0.0,
+         "help": "Each active channel adds about 128 W of DC power."
+        }
+       ]
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "pl.omux",
+     "name": "Output multiplexers",
+     "requirement": "mandatory",
+     "why": "Combine the amplified channels into each antenna beam.",
+     "quantity": "1 per beam",
+     "variants": [
+      {
+       "id": "omux",
+       "name": "Output multiplexers",
+       "description": "",
+       "specs": "2 units",
+       "massKg": 30,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.915,
+          "y": 0.0,
+          "z": -0.72
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.15,
+          "y": 1.2,
+          "z": 0.15
+         },
+         "material": "gold_foil",
+         "label": "Output multiplexer"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.915,
+          "y": 0.0,
+          "z": -0.72
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.15,
+          "y": 1.2,
+          "z": 0.15
+         },
+         "material": "gold_foil",
+         "label": "Output multiplexer"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "pl.switch",
+     "name": "Switch networks + test couplers",
+     "requirement": "mandatory",
+     "why": "Waveguide and coaxial switches route signals around failed units; test couplers let engineers measure the payload.",
+     "quantity": "set",
+     "variants": [
+      {
+       "id": "sw",
+       "name": "Switch networks",
+       "description": "",
+       "specs": "set",
+       "massKg": 23,
+       "powerW": 5,
+       "powerGenW": 0.0,
+       "parts": [],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    }
+   ]
+  },
+  {
+   "id": "eps",
+   "name": "Electrical Power (EPS)",
+   "description": "Kilowatts of power: Sun-tracking wings in sunlight, batteries during the two eclipse seasons each year (longest eclipse about 72 minutes).",
+   "slots": [
+    {
+     "id": "eps.wings",
+     "name": "Solar wings",
+     "requirement": "mandatory",
+     "why": "Main power source; unfold accordion-style after separation.",
+     "quantity": "2",
+     "variants": [
+      {
+       "id": "w4",
+       "name": "2 wings x 4 panels",
+       "description": "",
+       "specs": "~5.8 kW",
+       "massKg": 120,
+       "powerW": 0,
+       "powerGenW": 5760,
+       "parts": [
+        {
+         "type": "solar_wing",
+         "position": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "panelCount": 4,
+         "width": 1.6,
+         "height": 1.8,
+         "thickness": 0.03,
+         "yokeLength": 0.3,
+         "yokeStowedAngle": -90,
+         "sadaLength": 0.3,
+         "sadaRadius": 0.1,
+         "cellRows": 16,
+         "cellColumns": 12,
+         "drawSada": false,
+         "deployStart": 0.0,
+         "deployEnd": 0.6
+        },
+        {
+         "type": "solar_wing",
+         "position": {
+          "x": -1.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": -1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "panelCount": 4,
+         "width": 1.6,
+         "height": 1.8,
+         "thickness": 0.03,
+         "yokeLength": 0.3,
+         "yokeStowedAngle": -90,
+         "sadaLength": 0.3,
+         "sadaRadius": 0.1,
+         "cellRows": 16,
+         "cellColumns": 12,
+         "drawSada": false,
+         "deployStart": 0.0,
+         "deployEnd": 0.6
+        }
+       ],
+       "parameters": [
+        {
+         "id": "L",
+         "label": "Panel length",
+         "unit": "m",
+         "min": 1.5,
+         "max": 1.8,
+         "defaultValue": 1.8,
+         "wholeNumbers": false,
+         "fields": [
+          "height"
+         ],
+         "partIndices": [],
+         "fieldMultiplier": 1.0,
+         "massPerUnit": 60,
+         "powerPerUnit": 0.0,
+         "powerGenPerUnit": 3200,
+         "help": "Longer panels give more power but must still fold onto the bus face."
+        }
+       ]
+      },
+      {
+       "id": "w3",
+       "name": "2 wings x 3 panels",
+       "description": "",
+       "specs": "~4.3 kW",
+       "massKg": 92,
+       "powerW": 0,
+       "powerGenW": 4320,
+       "parts": [
+        {
+         "type": "solar_wing",
+         "position": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "panelCount": 3,
+         "width": 1.6,
+         "height": 1.8,
+         "thickness": 0.03,
+         "yokeLength": 0.3,
+         "yokeStowedAngle": -90,
+         "sadaLength": 0.3,
+         "sadaRadius": 0.1,
+         "cellRows": 16,
+         "cellColumns": 12,
+         "drawSada": false,
+         "deployStart": 0.0,
+         "deployEnd": 0.6
+        },
+        {
+         "type": "solar_wing",
+         "position": {
+          "x": -1.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": -1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "panelCount": 3,
+         "width": 1.6,
+         "height": 1.8,
+         "thickness": 0.03,
+         "yokeLength": 0.3,
+         "yokeStowedAngle": -90,
+         "sadaLength": 0.3,
+         "sadaRadius": 0.1,
+         "cellRows": 16,
+         "cellColumns": 12,
+         "drawSada": false,
+         "deployStart": 0.0,
+         "deployEnd": 0.6
+        }
+       ],
+       "parameters": [
+        {
+         "id": "L",
+         "label": "Panel length",
+         "unit": "m",
+         "min": 1.5,
+         "max": 1.8,
+         "defaultValue": 1.8,
+         "wholeNumbers": false,
+         "fields": [
+          "height"
+         ],
+         "partIndices": [],
+         "fieldMultiplier": 1.0,
+         "massPerUnit": 45,
+         "powerPerUnit": 0.0,
+         "powerGenPerUnit": 2400,
+         "help": "Longer panels give more power but must still fold onto the bus face."
+        }
+       ]
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "eps.sada",
+     "name": "Solar array drive mechanisms",
+     "requirement": "mandatory",
+     "why": "Turn the wings once per day to follow the Sun.",
+     "quantity": "2",
+     "variants": [
+      {
+       "id": "sada",
+       "name": "2 drive mechanisms",
+       "description": "",
+       "specs": "2 units",
+       "massKg": 40,
+       "powerW": 20,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "sada",
+         "position": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "sadaLength": 0.3,
+         "sadaRadius": 0.1
+        },
+        {
+         "type": "sada",
+         "position": {
+          "x": -1.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": -1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "sadaLength": 0.3,
+         "sadaRadius": 0.1
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "eps.battery",
+     "name": "Li-ion batteries",
+     "requirement": "mandatory",
+     "why": "Carry the whole satellite through eclipses.",
+     "quantity": "2 (north + south)",
+     "variants": [
+      {
+       "id": "b2",
+       "name": "2 Li-ion batteries",
+       "description": "",
+       "specs": "2 x 7 kWh",
+       "massKg": 160,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.84,
+          "y": 0.0,
+          "z": -0.95
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.3,
+          "y": 0.8,
+          "z": 0.3
+         },
+         "material": "white_paint",
+         "label": "Li-ion battery"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.84,
+          "y": 0.0,
+          "z": -0.95
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.3,
+          "y": 0.8,
+          "z": 0.3
+         },
+         "material": "white_paint",
+         "label": "Li-ion battery"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "eps.pcu",
+     "name": "Power control unit",
+     "requirement": "mandatory",
+     "why": "Regulates the main bus: shunts excess power in sunlight, boosts battery power in eclipse.",
+     "quantity": "1 (internally redundant)",
+     "variants": [
+      {
+       "id": "pcu",
+       "name": "Power control unit",
+       "description": "",
+       "specs": "1 unit",
+       "massKg": 40,
+       "powerW": 60,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.0,
+          "y": -1.115,
+          "z": 0.65
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.6,
+          "y": 0.15,
+          "z": 0.25
+         },
+         "material": "anodized_black",
+         "label": "Power control unit"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "eps.pdu",
+     "name": "Power distribution units",
+     "requirement": "mandatory",
+     "why": "Fuse, switch and distribute power to bus and payload.",
+     "quantity": "2+",
+     "variants": [
+      {
+       "id": "pdu2",
+       "name": "2 distribution units",
+       "description": "",
+       "specs": "2 (redundant)",
+       "massKg": 30,
+       "powerW": 20,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": -0.45,
+          "y": -1.13,
+          "z": 0.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.35,
+          "y": 0.12,
+          "z": 0.2
+         },
+         "material": "anodized_black",
+         "label": "Power distribution unit"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.45,
+          "y": -1.13,
+          "z": 0.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.35,
+          "y": 0.12,
+          "z": 0.2
+         },
+         "material": "anodized_black",
+         "label": "Power distribution unit"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "eps.release",
+     "name": "Release-actuator firing unit",
+     "requirement": "mandatory",
+     "why": "Fires the hold-down releases in sequence.",
+     "quantity": "1",
+     "variants": [
+      {
+       "id": "rel",
+       "name": "Firing unit",
+       "description": "",
+       "specs": "1 unit",
+       "massKg": 5,
+       "powerW": 2,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.0,
+          "y": -1.14,
+          "z": 0.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.25,
+          "y": 0.1,
+          "z": 0.15
+         },
+         "material": "anodized_black",
+         "label": "Release firing unit"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "eps.ppu",
+     "name": "Electric-propulsion power units",
+     "requirement": "conditional",
+     "why": "Convert bus power to the high voltage electric thrusters need.",
+     "quantity": "2+",
+     "variants": [
+      {
+       "id": "ppu2",
+       "name": "2 power processing units",
+       "description": "",
+       "specs": "2 (redundant)",
+       "massKg": 40,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": -0.45,
+          "y": -1.115,
+          "z": -0.05
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.35,
+          "y": 0.15,
+          "z": 0.2
+         },
+         "material": "anodized_black",
+         "label": "PPU"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.45,
+          "y": -1.115,
+          "z": -0.05
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.35,
+          "y": 0.15,
+          "z": 0.2
+         },
+         "material": "anodized_black",
+         "label": "PPU"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": [
+      {
+       "slot": "prop.raising",
+       "variants": [
+        "electric"
+       ]
+      }
+     ],
+     "conditionText": "you chose electric orbit raising"
+    }
+   ]
+  },
+  {
+   "id": "obc",
+   "name": "On-board Computer (C&DH)",
+   "description": "Command and data handling with full redundancy: a hardware watchdog swaps to the backup computer automatically if the active one stops.",
+   "slots": [
+    {
+     "id": "obc.fc",
+     "name": "Flight computer",
+     "requirement": "mandatory",
+     "why": "Attitude control, fault handling, power and thermal management.",
+     "quantity": "2 sides",
+     "variants": [
+      {
+       "id": "fc",
+       "name": "Redundant flight computer",
+       "description": "",
+       "specs": "2 sides",
+       "massKg": 20,
+       "powerW": 30,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": -0.45,
+          "y": 1.13,
+          "z": 1.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.3,
+          "y": 0.12,
+          "z": 0.2
+         },
+         "material": "anodized_black",
+         "label": "Flight computer"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.1,
+          "y": 1.13,
+          "z": 1.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.3,
+          "y": 0.12,
+          "z": 0.2
+         },
+         "material": "anodized_black",
+         "label": "Flight computer"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "obc.bbe",
+     "name": "Command decoder / telemetry encoder",
+     "requirement": "mandatory",
+     "why": "Baseband unit between the radios and the computer.",
+     "quantity": "2 (redundant)",
+     "variants": [
+      {
+       "id": "bbe",
+       "name": "2 baseband units",
+       "description": "",
+       "specs": "2 (redundant)",
+       "massKg": 10,
+       "powerW": 15,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.25,
+          "y": 1.13,
+          "z": 1.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.25,
+          "y": 0.12,
+          "z": 0.18
+         },
+         "material": "anodized_black",
+         "label": "Baseband unit"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.6,
+          "y": 1.13,
+          "z": 1.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.25,
+          "y": 0.12,
+          "z": 0.18
+         },
+         "material": "anodized_black",
+         "label": "Baseband unit"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "obc.riu",
+     "name": "Remote interface units",
+     "requirement": "mandatory",
+     "why": "Drive heaters, switches, valves and read sensors.",
+     "quantity": "2-4",
+     "variants": [
+      {
+       "id": "riu4",
+       "name": "4 remote interface units",
+       "description": "",
+       "specs": "4 units",
+       "massKg": 20,
+       "powerW": 20,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": -0.6,
+          "y": 1.13,
+          "z": 0.65
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.25,
+          "y": 0.12,
+          "z": 0.18
+         },
+         "material": "anodized_black",
+         "label": "Remote interface unit"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.25,
+          "y": 1.13,
+          "z": 0.65
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.25,
+          "y": 0.12,
+          "z": 0.18
+         },
+         "material": "anodized_black",
+         "label": "Remote interface unit"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.25,
+          "y": 1.13,
+          "z": 0.65
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.25,
+          "y": 0.12,
+          "z": 0.18
+         },
+         "material": "anodized_black",
+         "label": "Remote interface unit"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.6,
+          "y": 1.13,
+          "z": 0.65
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.25,
+          "y": 0.12,
+          "z": 0.18
+         },
+         "material": "anodized_black",
+         "label": "Remote interface unit"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "obc.bus",
+     "name": "Data bus",
+     "requirement": "mandatory",
+     "why": "Dual-channel network between all units.",
+     "quantity": "1 (dual)",
+     "variants": [
+      {
+       "id": "1553",
+       "name": "MIL-STD-1553 data bus",
+       "description": "",
+       "specs": "dual channel",
+       "massKg": 8,
+       "powerW": 2,
+       "powerGenW": 0.0,
+       "parts": [],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "obc.wd",
+     "name": "Watchdog / automatic switchover",
+     "requirement": "mandatory",
+     "why": "Switches to the backup computer if the active one stops responding.",
+     "quantity": "1",
+     "variants": [
+      {
+       "id": "wd",
+       "name": "Computer monitor function",
+       "description": "",
+       "specs": "in baseband unit",
+       "massKg": 1,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "obc.crypto",
+     "name": "Command decryption",
+     "requirement": "mandatory",
+     "why": "Only authenticated, encrypted commands are executed.",
+     "quantity": "2 (redundant)",
+     "variants": [
+      {
+       "id": "cr",
+       "name": "2 decryption units",
+       "description": "",
+       "specs": "2 (redundant)",
+       "massKg": 4,
+       "powerW": 6,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": -0.6,
+          "y": 1.14,
+          "z": 0.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.2,
+          "y": 0.1,
+          "z": 0.15
+         },
+         "material": "anodized_black",
+         "label": "Decryption unit"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": -0.3,
+          "y": 1.14,
+          "z": 0.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.2,
+          "y": 0.1,
+          "z": 0.15
+         },
+         "material": "anodized_black",
+         "label": "Decryption unit"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    }
+   ]
+  },
+  {
+   "id": "ttc",
+   "name": "Communications (TT&C)",
+   "description": "Commands, telemetry and ranging. Omni and wide-coverage antennas keep contact during transfer orbit and emergencies; on station the link often uses the payload antennas.",
+   "slots": [
+    {
+     "id": "ttc.rx",
+     "name": "Command receivers",
+     "requirement": "mandatory",
+     "why": "Uplink.",
+     "quantity": "2 (redundant)",
+     "variants": [
+      {
+       "id": "rx",
+       "name": "2 command receivers",
+       "description": "",
+       "specs": "2 (redundant)",
+       "massKg": 6,
+       "powerW": 8,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.3,
+          "y": 1.14,
+          "z": 0.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.2,
+          "y": 0.1,
+          "z": 0.15
+         },
+         "material": "aluminium",
+         "label": "Command receiver"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.6,
+          "y": 1.14,
+          "z": 0.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.2,
+          "y": 0.1,
+          "z": 0.15
+         },
+         "material": "aluminium",
+         "label": "Command receiver"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "ttc.tx",
+     "name": "Telemetry transmitters",
+     "requirement": "mandatory",
+     "why": "Downlink and ranging.",
+     "quantity": "2 (redundant)",
+     "variants": [
+      {
+       "id": "tx",
+       "name": "2 telemetry transmitters",
+       "description": "",
+       "specs": "2 (redundant)",
+       "massKg": 6,
+       "powerW": 20,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": -0.4,
+          "y": 1.13,
+          "z": -0.05
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.25,
+          "y": 0.12,
+          "z": 0.15
+         },
+         "material": "aluminium",
+         "label": "Telemetry transmitter"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.0,
+          "y": 1.13,
+          "z": -0.05
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.25,
+          "y": 0.12,
+          "z": 0.15
+         },
+         "material": "aluminium",
+         "label": "Telemetry transmitter"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "ttc.omni",
+     "name": "Omni / wide-coverage antennas",
+     "requirement": "mandatory",
+     "why": "Contact in any attitude during transfer orbit and contingencies.",
+     "quantity": "2+",
+     "variants": [
+      {
+       "id": "omni",
+       "name": "Omni + wide-coverage horns",
+       "description": "",
+       "specs": "3 antennas",
+       "massKg": 4,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "antenna",
+         "position": {
+          "x": 0.7,
+          "y": -0.15,
+          "z": 1.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "style": "omni",
+         "length": 0.45
+        },
+        {
+         "type": "feed_horn",
+         "position": {
+          "x": 0.7,
+          "y": -0.6,
+          "z": 1.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "radius": 0.06,
+         "length": 0.15,
+         "label": "Wide-coverage horn (Rx)"
+        },
+        {
+         "type": "feed_horn",
+         "position": {
+          "x": 0.45,
+          "y": -0.75,
+          "z": 1.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "radius": 0.06,
+         "length": 0.15,
+         "label": "Wide-coverage horn (Tx)"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "ttc.rf",
+     "name": "RF switches, diplexers, filters",
+     "requirement": "mandatory",
+     "why": "Signal routing between radios and antennas.",
+     "quantity": "set",
+     "variants": [
+      {
+       "id": "rf",
+       "name": "RF switch assembly",
+       "description": "",
+       "specs": "set",
+       "massKg": 4,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.45,
+          "y": 1.14,
+          "z": -0.05
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.25,
+          "y": 0.1,
+          "z": 0.15
+         },
+         "material": "aluminium",
+         "label": "RF switch assembly"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "ttc.beacon",
+     "name": "Uplink power-control beacon",
+     "requirement": "conditional",
+     "why": "A steady beacon ground stations use to measure rain fade and adjust uplink power.",
+     "quantity": "2 (redundant)",
+     "variants": [
+      {
+       "id": "bcn",
+       "name": "Ku-band beacon + horn",
+       "description": "",
+       "specs": "2 (redundant)",
+       "massKg": 6,
+       "powerW": 15,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "feed_horn",
+         "position": {
+          "x": 0.75,
+          "y": 0.45,
+          "z": 1.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "radius": 0.05,
+         "length": 0.15,
+         "label": "Beacon horn"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.75,
+          "y": 1.14,
+          "z": -0.05
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.2,
+          "y": 0.1,
+          "z": 0.15
+         },
+         "material": "aluminium",
+         "label": "Beacon transmitter"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": [
+      {
+       "slot": "pl.antennas",
+       "variants": [
+        "c_ku"
+       ]
+      }
+     ],
+     "conditionText": "you have a Ku-band payload, which suffers rain fade"
+    }
+   ]
+  },
+  {
+   "id": "adcs",
+   "name": "Attitude Control (ADCS)",
+   "description": "Points the antennas at the Earth to a fraction of a degree, 24 hours a day. Thrusters unload the wheels.",
+   "slots": [
+    {
+     "id": "adcs.esa",
+     "name": "Earth sensors",
+     "requirement": "mandatory",
+     "why": "Roll/pitch reference for Earth pointing.",
+     "quantity": "2 (redundant)",
+     "variants": [
+      {
+       "id": "esa",
+       "name": "2 Earth sensors",
+       "description": "",
+       "specs": "2 (redundant)",
+       "massKg": 8,
+       "powerW": 8,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "sensor",
+         "position": {
+          "x": -0.65,
+          "y": 0.0,
+          "z": 1.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "style": "earth_sensor",
+         "size": {
+          "x": 0.22,
+          "y": 0.16,
+          "z": 0.14
+         }
+        },
+        {
+         "type": "sensor",
+         "position": {
+          "x": -0.65,
+          "y": -0.45,
+          "z": 1.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "style": "earth_sensor",
+         "size": {
+          "x": 0.22,
+          "y": 0.16,
+          "z": 0.14
+         }
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "adcs.ss",
+     "name": "Sun sensors",
+     "requirement": "mandatory",
+     "why": "Sun acquisition and safe mode.",
+     "quantity": "set",
+     "variants": [
+      {
+       "id": "ss",
+       "name": "Coarse + fine Sun sensors",
+       "description": "",
+       "specs": "set",
+       "massKg": 2,
+       "powerW": 1,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "sensor",
+         "position": {
+          "x": -0.75,
+          "y": 0.5,
+          "z": 1.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "style": "sun_sensor",
+         "size": {
+          "x": 0.1,
+          "y": 0.1,
+          "z": 0.05
+         }
+        },
+        {
+         "type": "sensor",
+         "position": {
+          "x": -0.75,
+          "y": 0.75,
+          "z": 1.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "style": "sun_sensor",
+         "size": {
+          "x": 0.1,
+          "y": 0.1,
+          "z": 0.05
+         }
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "adcs.iru",
+     "name": "Gyros / inertial reference unit",
+     "requirement": "mandatory",
+     "why": "Rate measurement.",
+     "quantity": "2+",
+     "variants": [
+      {
+       "id": "iru",
+       "name": "2 inertial reference units",
+       "description": "",
+       "specs": "2 (redundant)",
+       "massKg": 10,
+       "powerW": 20,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": -0.45,
+          "y": -1.13,
+          "z": 1.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.25,
+          "y": 0.12,
+          "z": 0.18
+         },
+         "material": "anodized_black",
+         "label": "Inertial reference unit"
+        },
+        {
+         "type": "box",
+         "position": {
+          "x": 0.45,
+          "y": -1.13,
+          "z": 1.0
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.25,
+          "y": 0.12,
+          "z": 0.18
+         },
+         "material": "anodized_black",
+         "label": "Inertial reference unit"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "adcs.wheels",
+     "name": "Reaction / momentum wheels",
+     "requirement": "mandatory",
+     "why": "Pointing control; one spare.",
+     "quantity": "3-4",
+     "variants": [
+      {
+       "id": "rw4",
+       "name": "4 reaction wheels",
+       "description": "Shown cut away.",
+       "specs": "4 wheels",
+       "massKg": 32,
+       "powerW": 60,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "reaction_wheel",
+         "position": {
+          "x": 0.62,
+          "y": 0.62,
+          "z": -1.05
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.89443,
+          "z": -0.44721
+         },
+         "up": {
+          "x": 0.40825,
+          "y": 0.40825,
+          "z": 0.8165
+         },
+         "radius": 0.15,
+         "wheelHeight": 0.0825,
+         "spinRpm": 30,
+         "openHousing": true
+        },
+        {
+         "type": "reaction_wheel",
+         "position": {
+          "x": -0.62,
+          "y": 0.62,
+          "z": -1.05
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.89443,
+          "z": -0.44721
+         },
+         "up": {
+          "x": -0.40825,
+          "y": 0.40825,
+          "z": 0.8165
+         },
+         "radius": 0.15,
+         "wheelHeight": 0.0825,
+         "spinRpm": 30,
+         "openHousing": true
+        },
+        {
+         "type": "reaction_wheel",
+         "position": {
+          "x": -0.62,
+          "y": -0.62,
+          "z": -1.05
+         },
+         "forward": {
+          "x": -0.0,
+          "y": 0.89443,
+          "z": 0.44721
+         },
+         "up": {
+          "x": -0.40825,
+          "y": -0.40825,
+          "z": 0.8165
+         },
+         "radius": 0.15,
+         "wheelHeight": 0.0825,
+         "spinRpm": 30,
+         "openHousing": true
+        },
+        {
+         "type": "reaction_wheel",
+         "position": {
+          "x": 0.62,
+          "y": -0.62,
+          "z": -1.05
+         },
+         "forward": {
+          "x": -0.0,
+          "y": 0.89443,
+          "z": 0.44721
+         },
+         "up": {
+          "x": 0.40825,
+          "y": -0.40825,
+          "z": 0.8165
+         },
+         "radius": 0.15,
+         "wheelHeight": 0.0825,
+         "spinRpm": 30,
+         "openHousing": true
+        }
+       ],
+       "parameters": [
+        {
+         "id": "r",
+         "label": "Flywheel radius",
+         "unit": "m",
+         "min": 0.12,
+         "max": 0.18,
+         "defaultValue": 0.15,
+         "wholeNumbers": false,
+         "fields": [
+          "radius"
+         ],
+         "partIndices": [],
+         "fieldMultiplier": 1.0,
+         "massPerUnit": 150,
+         "powerPerUnit": 100,
+         "powerGenPerUnit": 0.0,
+         "help": "Bigger wheels store more momentum."
+        }
+       ]
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "adcs.str",
+     "name": "Star trackers",
+     "requirement": "conditional",
+     "why": "Precise attitude without the Earth sensor; needed for electric orbit raising, when the satellite can't point at Earth.",
+     "quantity": "2 (redundant)",
+     "variants": [
+      {
+       "id": "st",
+       "name": "2 star trackers",
+       "description": "",
+       "specs": "2 (redundant)",
+       "massKg": 8,
+       "powerW": 20,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "sensor",
+         "position": {
+          "x": -0.35,
+          "y": 0.75,
+          "z": -1.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "style": "star_tracker",
+         "size": {
+          "x": 0.15,
+          "y": 0.15,
+          "z": 0.12
+         },
+         "length": 0.2
+        },
+        {
+         "type": "sensor",
+         "position": {
+          "x": 0.35,
+          "y": 0.75,
+          "z": -1.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "style": "star_tracker",
+         "size": {
+          "x": 0.15,
+          "y": 0.15,
+          "z": 0.12
+         },
+         "length": 0.2
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": [
+      {
+       "slot": "prop.raising",
+       "variants": [
+        "electric"
+       ]
+      }
+     ],
+     "conditionText": "you chose electric orbit raising"
+    }
+   ]
+  },
+  {
+   "id": "tcs",
+   "name": "Thermal Control",
+   "description": "The amplifiers turn kilowatts into heat. The north and south faces see the least Sun, so they carry the radiators; heat pipes carry the heat to them.",
+   "slots": [
+    {
+     "id": "tcs.rad",
+     "name": "North/south radiators",
+     "requirement": "mandatory",
+     "why": "Mirror-tile panels on the payload walls.",
+     "quantity": "2",
+     "variants": [
+      {
+       "id": "osr",
+       "name": "Mirror-tile radiators",
+       "description": "",
+       "specs": "2 panels",
+       "massKg": 60,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "radiator_panel",
+         "position": {
+          "x": 1.002,
+          "y": 0.0,
+          "z": 0.1
+         },
+         "forward": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "width": 2.2,
+         "height": 2.2,
+         "thickness": 0.02
+        },
+        {
+         "type": "radiator_panel",
+         "position": {
+          "x": -1.002,
+          "y": 0.0,
+          "z": 0.1
+         },
+         "forward": {
+          "x": -1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "width": 2.2,
+         "height": 2.2,
+         "thickness": 0.02
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "tcs.hp",
+     "name": "Embedded heat pipes",
+     "requirement": "mandatory",
+     "why": "Spread the heat from amplifiers across the radiators.",
+     "quantity": "many",
+     "variants": [
+      {
+       "id": "hp",
+       "name": "Heat-pipe network",
+       "description": "",
+       "specs": "network",
+       "massKg": 30,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "tcs.heaters",
+     "name": "Heaters + thermistors",
+     "requirement": "mandatory",
+     "why": "Survival and operating temperatures, controlled by the computer.",
+     "quantity": "hundreds",
+     "variants": [
+      {
+       "id": "h",
+       "name": "Heater network",
+       "description": "",
+       "specs": "~200 circuits",
+       "massKg": 10,
+       "powerW": 300,
+       "powerGenW": 0.0,
+       "parts": [],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "tcs.mli",
+     "name": "Multi-layer insulation",
+     "requirement": "mandatory",
+     "why": "The gold blankets on every other surface.",
+     "quantity": "-",
+     "variants": [
+      {
+       "id": "mli",
+       "name": "MLI blankets",
+       "description": "",
+       "specs": "whole bus",
+       "massKg": 25,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "tcs.deprad",
+     "name": "Deployable radiators",
+     "requirement": "optional",
+     "why": "Extra heat rejection for very high-power payloads.",
+     "quantity": "2",
+     "variants": [
+      {
+       "id": "dr",
+       "name": "2 deployable radiators",
+       "description": "",
+       "specs": "2 panels",
+       "massKg": 30,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "radiator_panel",
+         "position": {
+          "x": 1.002,
+          "y": 0.0,
+          "z": 1.8
+         },
+         "forward": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "width": 1.6,
+         "height": 1.0,
+         "thickness": 0.03
+        },
+        {
+         "type": "radiator_panel",
+         "position": {
+          "x": -1.002,
+          "y": 0.0,
+          "z": 1.8
+         },
+         "forward": {
+          "x": -1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "width": 1.6,
+         "height": 1.0,
+         "thickness": 0.03
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    }
+   ]
+  },
+  {
+   "id": "prop",
+   "name": "Propulsion",
+   "description": "Raises the orbit from transfer orbit to 35,786 km, keeps the satellite inside its slot (north-south and east-west), and finally boosts it to a graveyard orbit.",
+   "slots": [
+    {
+     "id": "prop.raising",
+     "name": "Orbit raising",
+     "requirement": "mandatory",
+     "why": "How the satellite climbs from transfer orbit to geostationary altitude.",
+     "quantity": "1",
+     "variants": [
+      {
+       "id": "chemical",
+       "name": "Chemical: liquid apogee engine",
+       "description": "A few burns of a ~450 N engine: reaches GEO in about a week.",
+       "specs": "1 engine",
+       "massKg": 5,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "thruster",
+         "position": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "scale": 22,
+         "throatRadius": 0.0012,
+         "nozzleExitRadius": 0.0055,
+         "nozzleLength": 0.012,
+         "label": "Liquid apogee engine"
+        }
+       ],
+       "parameters": []
+      },
+      {
+       "id": "electric",
+       "name": "Electric: Hall thrusters",
+       "description": "Very efficient but low thrust: reaching GEO takes months. Saves hundreds of kg of propellant.",
+       "specs": "4 thrusters + xenon tank",
+       "massKg": 52,
+       "powerW": 300,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "thruster",
+         "position": {
+          "x": 0.85,
+          "y": 0.55,
+          "z": -1.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "scale": 12,
+         "throatRadius": 0.002,
+         "nozzleExitRadius": 0.008,
+         "nozzleLength": 0.006,
+         "label": "Hall thruster"
+        },
+        {
+         "type": "thruster",
+         "position": {
+          "x": 0.85,
+          "y": -0.55,
+          "z": -1.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "scale": 12,
+         "throatRadius": 0.002,
+         "nozzleExitRadius": 0.008,
+         "nozzleLength": 0.006,
+         "label": "Hall thruster"
+        },
+        {
+         "type": "thruster",
+         "position": {
+          "x": -0.85,
+          "y": 0.55,
+          "z": -1.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "scale": 12,
+         "throatRadius": 0.002,
+         "nozzleExitRadius": 0.008,
+         "nozzleLength": 0.006,
+         "label": "Hall thruster"
+        },
+        {
+         "type": "thruster",
+         "position": {
+          "x": -0.85,
+          "y": -0.55,
+          "z": -1.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "scale": 12,
+         "throatRadius": 0.002,
+         "nozzleExitRadius": 0.008,
+         "nozzleLength": 0.006,
+         "label": "Hall thruster"
+        },
+        {
+         "type": "tank",
+         "position": {
+          "x": 0.0,
+          "y": 0.32,
+          "z": -0.75
+         },
+         "forward": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "radius": 0.18,
+         "length": 0.0,
+         "material": "titanium",
+         "label": "Xenon tank"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "prop.tanks",
+     "name": "Propellant tanks",
+     "requirement": "mandatory",
+     "why": "Fuel in the central tube, oxidiser beside it.",
+     "quantity": "2-4",
+     "variants": [
+      {
+       "id": "biprop",
+       "name": "Fuel + oxidiser tanks (bipropellant)",
+       "description": "",
+       "specs": "1 fuel + 2 oxidiser \u00b7 1800 kg propellant",
+       "massKg": 1875,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "tank",
+         "position": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.5
+         },
+         "forward": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "radius": 0.48,
+         "length": 0.5,
+         "material": "titanium",
+         "label": "Fuel tank"
+        },
+        {
+         "type": "tank",
+         "position": {
+          "x": 0.0,
+          "y": 0.85,
+          "z": -0.8
+         },
+         "forward": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "radius": 0.3,
+         "length": 0.0,
+         "material": "titanium",
+         "label": "Oxidiser tank"
+        },
+        {
+         "type": "tank",
+         "position": {
+          "x": 0.0,
+          "y": -0.85,
+          "z": -0.8
+         },
+         "forward": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "radius": 0.3,
+         "length": 0.0,
+         "material": "titanium",
+         "label": "Oxidiser tank"
+        }
+       ],
+       "parameters": [
+        {
+         "id": "prop",
+         "label": "Propellant load",
+         "unit": "kg",
+         "min": 1200,
+         "max": 2200,
+         "defaultValue": 1800,
+         "wholeNumbers": false,
+         "fields": [],
+         "partIndices": [],
+         "fieldMultiplier": 1.0,
+         "massPerUnit": 1.0,
+         "powerPerUnit": 0.0,
+         "powerGenPerUnit": 0.0,
+         "help": "Propellant is usually the heaviest single item: often half of the launch mass."
+        }
+       ]
+      },
+      {
+       "id": "mono",
+       "name": "Hydrazine tank only (monopropellant)",
+       "description": "Simpler, for electric orbit raising where chemical propellant is only for attitude control.",
+       "specs": "1 tank \u00b7 400 kg hydrazine",
+       "massKg": 440,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "tank",
+         "position": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.5
+         },
+         "forward": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "radius": 0.45,
+         "length": 0.3,
+         "material": "titanium",
+         "label": "Hydrazine tank"
+        }
+       ],
+       "parameters": [
+        {
+         "id": "prop",
+         "label": "Propellant load",
+         "unit": "kg",
+         "min": 200,
+         "max": 600,
+         "defaultValue": 400,
+         "wholeNumbers": false,
+         "fields": [],
+         "partIndices": [],
+         "fieldMultiplier": 1.0,
+         "massPerUnit": 1.0,
+         "powerPerUnit": 0.0,
+         "powerGenPerUnit": 0.0,
+         "help": "Hydrazine for attitude control and backup manoeuvres."
+        }
+       ]
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "prop.press",
+     "name": "Pressurant tanks + regulator",
+     "requirement": "mandatory",
+     "why": "Helium keeps the propellant tanks at constant pressure.",
+     "quantity": "1-2",
+     "variants": [
+      {
+       "id": "he",
+       "name": "2 helium tanks",
+       "description": "",
+       "specs": "2 tanks",
+       "massKg": 40,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "tank",
+         "position": {
+          "x": 0.3,
+          "y": 0.0,
+          "z": -0.8
+         },
+         "forward": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "radius": 0.2,
+         "length": 0.0,
+         "material": "titanium",
+         "label": "Helium tank"
+        },
+        {
+         "type": "tank",
+         "position": {
+          "x": -0.3,
+          "y": 0.0,
+          "z": -0.8
+         },
+         "forward": {
+          "x": 1.0,
+          "y": 0.0,
+          "z": 0.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "radius": 0.2,
+         "length": 0.0,
+         "material": "titanium",
+         "label": "Helium tank"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "prop.rea",
+     "name": "Attitude & stationkeeping thrusters",
+     "requirement": "mandatory",
+     "why": "Two independent branches of small thrusters.",
+     "quantity": "12-16",
+     "variants": [
+      {
+       "id": "rea12",
+       "name": "12 x 10 N thrusters",
+       "description": "",
+       "specs": "12 thrusters",
+       "massKg": 9,
+       "powerW": 0,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "thruster",
+         "position": {
+          "x": 0.74,
+          "y": 1.0,
+          "z": -1.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "scale": 5,
+         "throatRadius": 0.0012,
+         "nozzleExitRadius": 0.0055,
+         "nozzleLength": 0.012
+        },
+        {
+         "type": "thruster",
+         "position": {
+          "x": 0.86,
+          "y": 1.0,
+          "z": -1.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "scale": 5,
+         "throatRadius": 0.0012,
+         "nozzleExitRadius": 0.0055,
+         "nozzleLength": 0.012
+        },
+        {
+         "type": "thruster",
+         "position": {
+          "x": 0.74,
+          "y": -1.0,
+          "z": -1.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "scale": 5,
+         "throatRadius": 0.0012,
+         "nozzleExitRadius": 0.0055,
+         "nozzleLength": 0.012
+        },
+        {
+         "type": "thruster",
+         "position": {
+          "x": 0.86,
+          "y": -1.0,
+          "z": -1.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "scale": 5,
+         "throatRadius": 0.0012,
+         "nozzleExitRadius": 0.0055,
+         "nozzleLength": 0.012
+        },
+        {
+         "type": "thruster",
+         "position": {
+          "x": -0.86,
+          "y": 1.0,
+          "z": -1.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "scale": 5,
+         "throatRadius": 0.0012,
+         "nozzleExitRadius": 0.0055,
+         "nozzleLength": 0.012
+        },
+        {
+         "type": "thruster",
+         "position": {
+          "x": -0.74,
+          "y": 1.0,
+          "z": -1.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "scale": 5,
+         "throatRadius": 0.0012,
+         "nozzleExitRadius": 0.0055,
+         "nozzleLength": 0.012
+        },
+        {
+         "type": "thruster",
+         "position": {
+          "x": -0.86,
+          "y": -1.0,
+          "z": -1.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "scale": 5,
+         "throatRadius": 0.0012,
+         "nozzleExitRadius": 0.0055,
+         "nozzleLength": 0.012
+        },
+        {
+         "type": "thruster",
+         "position": {
+          "x": -0.74,
+          "y": -1.0,
+          "z": -1.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "scale": 5,
+         "throatRadius": 0.0012,
+         "nozzleExitRadius": 0.0055,
+         "nozzleLength": 0.012
+        },
+        {
+         "type": "thruster",
+         "position": {
+          "x": 0.85,
+          "y": 0.0,
+          "z": -1.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "scale": 5,
+         "throatRadius": 0.0012,
+         "nozzleExitRadius": 0.0055,
+         "nozzleLength": 0.012
+        },
+        {
+         "type": "thruster",
+         "position": {
+          "x": -0.85,
+          "y": 0.0,
+          "z": -1.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "scale": 5,
+         "throatRadius": 0.0012,
+         "nozzleExitRadius": 0.0055,
+         "nozzleLength": 0.012
+        },
+        {
+         "type": "thruster",
+         "position": {
+          "x": 0.0,
+          "y": 1.05,
+          "z": -1.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "scale": 5,
+         "throatRadius": 0.0012,
+         "nozzleExitRadius": 0.0055,
+         "nozzleLength": 0.012
+        },
+        {
+         "type": "thruster",
+         "position": {
+          "x": 0.0,
+          "y": -1.05,
+          "z": -1.3
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "scale": 5,
+         "throatRadius": 0.0012,
+         "nozzleExitRadius": 0.0055,
+         "nozzleLength": 0.012
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    },
+    {
+     "id": "prop.valves",
+     "name": "Valves, filters, pressure sensors",
+     "requirement": "mandatory",
+     "why": "Isolate, protect and measure the propellant system.",
+     "quantity": "set",
+     "variants": [
+      {
+       "id": "v",
+       "name": "Propellant control set",
+       "description": "",
+       "specs": "set",
+       "massKg": 15,
+       "powerW": 3,
+       "powerGenW": 0.0,
+       "parts": [
+        {
+         "type": "box",
+         "position": {
+          "x": 0.25,
+          "y": -0.25,
+          "z": -1.18
+         },
+         "forward": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 1.0
+         },
+         "up": {
+          "x": 0.0,
+          "y": 1.0,
+          "z": 0.0
+         },
+         "size": {
+          "x": 0.2,
+          "y": 0.2,
+          "z": 0.1
+         },
+         "material": "steel",
+         "label": "Valves & regulator"
+        }
+       ],
+       "parameters": []
+      }
+     ],
+     "conditions": []
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,414 @@
+{
+  "name": "NavStar-M",
+  "orbitClass": "MEO",
+  "orbitSummary": "Navigation satellite in medium Earth orbit, roughly 20,000-23,000 km up with a 12-14 hour period. Part of a constellation of about 24-30 satellites so that several are always visible from anywhere on Earth.",
+  "description": "Generic MEO navigation satellite (GPS/Galileo-style). Body frame: +Z = Earth deck. All dimensions are generic teaching values.",
+  "cameraDistance": 13.0,
+  "explodeDistance": 1.4,
+  "parts": [
+    {
+      "id": "BUS",
+      "type": "bus",
+      "label": "Spacecraft Bus",
+      "description": "Bus of a navigation satellite. Radiators on the +Y/-Y faces keep the atomic clocks at a very stable temperature, which matters because clock stability is what makes positioning accurate.",
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "forward": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 1.0
+      },
+      "up": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0
+      },
+      "size": {
+        "x": 1.3,
+        "y": 1.2,
+        "z": 2.4
+      },
+      "facePX": "gold_foil",
+      "faceNX": "gold_foil",
+      "facePY": "osr_radiator",
+      "faceNY": "osr_radiator",
+      "facePZ": "white_paint",
+      "faceNZ": "gold_foil",
+      "edgeBeams": true
+    },
+    {
+      "id": "EPS-WING-N",
+      "type": "solar_wing",
+      "label": "Solar Wing +X",
+      "description": "Two-panel wing. It folds against the bus for launch and unfolds after separation. The drive at the root turns it to follow the Sun.",
+      "position": {
+        "x": 0.65,
+        "y": 0.0,
+        "z": -1.0
+      },
+      "forward": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -1.0
+      },
+      "up": {
+        "x": 1.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "panelCount": 2,
+      "width": 1.0,
+      "height": 2.0,
+      "thickness": 0.025,
+      "yokeLength": 0.2,
+      "yokeStowedAngle": -90,
+      "sadaLength": 0.2,
+      "sadaRadius": 0.07,
+      "cellRows": 18,
+      "cellColumns": 8,
+      "deployStart": 0.0,
+      "deployEnd": 0.7
+    },
+    {
+      "id": "EPS-WING-S",
+      "type": "solar_wing",
+      "label": "Solar Wing -X",
+      "description": "Mirror image of the +X wing.",
+      "position": {
+        "x": -0.65,
+        "y": 0.0,
+        "z": -1.0
+      },
+      "forward": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -1.0
+      },
+      "up": {
+        "x": -1.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "panelCount": 2,
+      "width": 1.0,
+      "height": 2.0,
+      "thickness": 0.025,
+      "yokeLength": 0.2,
+      "yokeStowedAngle": -90,
+      "sadaLength": 0.2,
+      "sadaRadius": 0.07,
+      "cellRows": 18,
+      "cellColumns": 8,
+      "deployStart": 0.0,
+      "deployEnd": 0.7
+    },
+    {
+      "id": "PL-NAV",
+      "type": "antenna",
+      "style": "helix_array",
+      "label": "L-band Navigation Antenna",
+      "description": "Array of helical antennas broadcasting the navigation signals (time + orbit data) that phones and receivers on Earth use to compute their position.",
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 1.2
+      },
+      "forward": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 1.0
+      },
+      "up": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0
+      },
+      "elements": 12,
+      "arrayRadius": 0.36,
+      "helixRadius": 0.045,
+      "helixTurns": 6,
+      "length": 0.45
+    },
+    {
+      "id": "PL-SAR",
+      "type": "antenna",
+      "style": "helix",
+      "label": "Search & Rescue Antenna",
+      "description": "Relays distress-beacon signals from ships, aircraft and people to rescue centres.",
+      "position": {
+        "x": 0.47,
+        "y": 0.42,
+        "z": 1.2
+      },
+      "forward": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 1.0
+      },
+      "up": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0
+      },
+      "helixRadius": 0.05,
+      "helixTurns": 8,
+      "length": 0.38
+    },
+    {
+      "id": "PL-LRA",
+      "type": "retroreflector",
+      "label": "Laser Retroreflector Array",
+      "description": "Corner-cube mirrors that bounce ground laser pulses straight back, letting scientists measure the satellite's distance to centimetres and check its orbit.",
+      "position": {
+        "x": -0.47,
+        "y": -0.42,
+        "z": 1.2
+      },
+      "forward": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 1.0
+      },
+      "up": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0
+      },
+      "width": 0.24,
+      "height": 0.2,
+      "cellColumns": 6,
+      "cellRows": 5
+    },
+    {
+      "id": "PL-ULK",
+      "type": "feed_horn",
+      "label": "Uplink Horn",
+      "description": "Receives navigation-message and clock-correction uploads from ground stations.",
+      "position": {
+        "x": -0.47,
+        "y": 0.42,
+        "z": 1.2
+      },
+      "forward": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 1.0
+      },
+      "up": {
+        "x": 1.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "radius": 0.07,
+      "length": 0.2
+    },
+    {
+      "id": "ACS-ESA",
+      "type": "sensor",
+      "style": "earth_sensor",
+      "label": "Earth Sensor",
+      "description": "Keeps the navigation antenna pointed at the centre of the Earth.",
+      "position": {
+        "x": 0.47,
+        "y": -0.42,
+        "z": 1.2
+      },
+      "forward": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 1.0
+      },
+      "up": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0
+      },
+      "size": {
+        "x": 0.18,
+        "y": 0.13,
+        "z": 0.12
+      }
+    },
+    {
+      "id": "ACS-SSA",
+      "type": "sensor",
+      "style": "sun_sensor",
+      "label": "Sun Sensor",
+      "description": "Sun direction for attitude control and safe mode.",
+      "position": {
+        "x": 0.0,
+        "y": 0.6,
+        "z": 0.8
+      },
+      "forward": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0
+      },
+      "up": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 1.0
+      },
+      "size": {
+        "x": 0.08,
+        "y": 0.08,
+        "z": 0.04
+      }
+    },
+    {
+      "id": "ACS-STR",
+      "type": "sensor",
+      "style": "star_tracker",
+      "label": "Star Tracker",
+      "description": "Camera that recognises star patterns to give very precise attitude.",
+      "position": {
+        "x": 0.3,
+        "y": -0.6,
+        "z": -0.5
+      },
+      "forward": {
+        "x": 0.0,
+        "y": -1.0,
+        "z": 0.0
+      },
+      "up": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 1.0
+      },
+      "size": {
+        "x": 0.12,
+        "y": 0.12,
+        "z": 0.1
+      },
+      "length": 0.16
+    },
+    {
+      "id": "TTC-OMNI",
+      "type": "antenna",
+      "style": "omni",
+      "label": "TT&C Omni Antenna",
+      "description": "S-band antenna for commands and telemetry in any attitude.",
+      "position": {
+        "x": 0.4,
+        "y": 0.35,
+        "z": -1.2
+      },
+      "forward": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -1.0
+      },
+      "up": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0
+      },
+      "length": 0.3
+    },
+    {
+      "id": "PROP-THR-1",
+      "type": "thruster",
+      "label": "Hydrazine Thruster 1",
+      "description": "Small thruster for attitude control and occasional orbit corrections within the constellation.",
+      "position": {
+        "x": 0.45,
+        "y": -0.42,
+        "z": -1.2
+      },
+      "forward": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -1.0
+      },
+      "up": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0
+      },
+      "scale": 6,
+      "throatRadius": 0.0012,
+      "nozzleExitRadius": 0.0055,
+      "nozzleLength": 0.012
+    },
+    {
+      "id": "PROP-THR-2",
+      "type": "thruster",
+      "label": "Hydrazine Thruster 2",
+      "description": "Small thruster for attitude control and occasional orbit corrections within the constellation.",
+      "position": {
+        "x": -0.45,
+        "y": -0.42,
+        "z": -1.2
+      },
+      "forward": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -1.0
+      },
+      "up": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0
+      },
+      "scale": 6,
+      "throatRadius": 0.0012,
+      "nozzleExitRadius": 0.0055,
+      "nozzleLength": 0.012
+    },
+    {
+      "id": "PROP-THR-3",
+      "type": "thruster",
+      "label": "Hydrazine Thruster 3",
+      "description": "Small thruster for attitude control and occasional orbit corrections within the constellation.",
+      "position": {
+        "x": -0.45,
+        "y": 0.42,
+        "z": -1.2
+      },
+      "forward": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -1.0
+      },
+      "up": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0
+      },
+      "scale": 6,
+      "throatRadius": 0.0012,
+      "nozzleExitRadius": 0.0055,
+      "nozzleLength": 0.012
+    },
+    {
+      "id": "PROP-THR-4",
+      "type": "thruster",
+      "label": "Hydrazine Thruster 4",
+      "description": "Small thruster for attitude control and occasional orbit corrections within the constellation.",
+      "position": {
+        "x": 0.45,
+        "y": -0.05,
+        "z": -1.2
+      },
+      "forward": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -1.0
+      },
+      "up": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0
+      },
+      "scale": 6,
+      "throatRadius": 0.0012,
+      "nozzleExitRadius": 0.0055,
+      "nozzleLength": 0.012
+    }
+  ]
+}

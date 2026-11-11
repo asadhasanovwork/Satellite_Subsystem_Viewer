@@ -1,0 +1,118 @@
+{
+ "id": "meo_01_clock_warmup",
+ "title": "Navigation payload: into service",
+ "template": "meo_navsat",
+ "orbitClass": "MEO",
+ "level": "Intermediate",
+ "summary": "Bring the navigation payload of a MEO satellite into service after maintenance.",
+ "goals": [
+  "Learn the navigation payload chain: clocks, signal generator, amplifier, antenna",
+  "Understand atomic-clock warm-up",
+  "Check service availability"
+ ],
+ "prerequisites": [
+  "Satellite Builder: build NavStar-M"
+ ],
+ "situation": "The payload was switched off for maintenance. Navigation users need the signal back. The atomic clocks need about 30 minutes to warm up and lock before the signal is valid.",
+ "design": [],
+ "start": {
+  "utc": "",
+  "overrideOrbit": false,
+  "orbit": {
+   "periapsisAltKm": 500,
+   "apoapsisAltKm": 500,
+   "inclinationDeg": 97.4,
+   "raanDeg": 0,
+   "argPeriapsisDeg": 0,
+   "trueAnomalyDeg": 0,
+   "j2": true,
+   "geoLongitudeDeg": -999
+  },
+  "placement": "",
+  "placeStation": "",
+  "placeLeadDeg": 20,
+  "adcsMode": "NADIR",
+  "ratesDps": [
+   0,
+   0,
+   0
+  ],
+  "socPercent": -1,
+  "temperatureC": -999,
+  "stowed": false,
+  "alwaysInContact": true,
+  "timeWarp": 30,
+  "commands": [
+   "pl.clocks OFF",
+   "pl.nsgu OFF",
+   "pl.amp OFF"
+  ]
+ },
+ "faults": [],
+ "steps": [
+  {
+   "text": "Switch the atomic clocks on: pl.clocks ON.",
+   "hint": "Payload group.",
+   "check": {
+    "point": "pl.clocks.state",
+    "op": ">",
+    "value": 0.5,
+    "seconds": 0,
+    "command": ""
+   }
+  },
+  {
+   "text": "Wait for the clocks to lock.",
+   "hint": "'Atomic clocks lock' goes from WARMING UP to LOCKED. Use time warp.",
+   "check": {
+    "point": "pl.clocks.ready",
+    "op": ">",
+    "value": 0.5,
+    "seconds": 0,
+    "command": ""
+   }
+  },
+  {
+   "text": "Switch on the signal generator: pl.nsgu ON.",
+   "hint": "",
+   "check": {
+    "point": "pl.nsgu.state",
+    "op": ">",
+    "value": 0.5,
+    "seconds": 0,
+    "command": ""
+   }
+  },
+  {
+   "text": "Switch on the amplifier: pl.amp ON.",
+   "hint": "It is the biggest power user on board.",
+   "check": {
+    "point": "pl.amp.state",
+    "op": ">",
+    "value": 0.5,
+    "seconds": 0,
+    "command": ""
+   }
+  },
+  {
+   "text": "Keep the signal in service for 10 minutes.",
+   "hint": "Service needs every chain unit working, clocks locked and the antenna pointing at the Earth within 1 deg.",
+   "check": {
+    "point": "payload.service",
+    "op": ">",
+    "value": 0.5,
+    "seconds": 600,
+    "command": ""
+   }
+  }
+ ],
+ "failWhen": {
+  "point": "",
+  "op": ">",
+  "value": 0,
+  "seconds": 0,
+  "command": ""
+ },
+ "failText": "",
+ "successText": "Signal in service. Users on the ground can use this satellite again."
+}

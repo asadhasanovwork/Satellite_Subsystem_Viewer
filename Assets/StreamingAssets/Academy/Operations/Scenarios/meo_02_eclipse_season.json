@@ -1,0 +1,110 @@
+{
+ "id": "meo_02_eclipse_season",
+ "title": "Eclipse season with a weak battery",
+ "template": "meo_navsat",
+ "orbitClass": "MEO",
+ "level": "Advanced",
+ "summary": "The Sun is in the orbit plane: the longest eclipses of the year, and the battery has lost capacity.",
+ "goals": [
+  "Understand eclipse seasons (beta angle near zero)",
+  "Do an energy budget for one eclipse",
+  "Shed non-essential load to keep the main service"
+ ],
+ "prerequisites": [
+  "Navigation payload: into service"
+ ],
+ "situation": "60% of the battery capacity has been lost to failed cells. The satellite enters Earth's shadow in about 5 minutes and stays there almost an hour. If the battery falls to 35% the onboard rule switches the amplifier off and navigation users lose the signal. Do the energy budget and act before the shadow.",
+ "design": [
+  {
+   "slot": "pl.sar",
+   "variant": "sar"
+  }
+ ],
+ "start": {
+  "utc": "",
+  "overrideOrbit": false,
+  "orbit": {
+   "periapsisAltKm": 500,
+   "apoapsisAltKm": 500,
+   "inclinationDeg": 97.4,
+   "raanDeg": 0,
+   "argPeriapsisDeg": 0,
+   "trueAnomalyDeg": 0,
+   "j2": true,
+   "geoLongitudeDeg": -999
+  },
+  "placement": "eclipse",
+  "placeStation": "",
+  "placeLeadDeg": 2,
+  "adcsMode": "NADIR",
+  "ratesDps": [
+   0,
+   0,
+   0
+  ],
+  "socPercent": 86.5,
+  "temperatureC": -999,
+  "stowed": false,
+  "alwaysInContact": true,
+  "timeWarp": 10,
+  "commands": [
+   "SIM FAULT eps.battery CELL_FAIL 0.6"
+  ]
+ },
+ "faults": [],
+ "steps": [
+  {
+   "text": "Switch off the non-essential search-and-rescue payload: pl.sar OFF.",
+   "hint": "Energy needed = load (W) x eclipse time (h). Compare with the battery's usable capacity.",
+   "check": {
+    "point": "pl.sar.state",
+    "op": "<",
+    "value": 0.5,
+    "seconds": 0,
+    "command": ""
+   }
+  },
+  {
+   "text": "Wait for the eclipse to start.",
+   "hint": "'Sunlight' turns to ECLIPSE.",
+   "check": {
+    "point": "orbit.sun",
+    "op": "<",
+    "value": 0.5,
+    "seconds": 0,
+    "command": ""
+   }
+  },
+  {
+   "text": "Come out of the eclipse.",
+   "hint": "Use time warp, watch the battery.",
+   "check": {
+    "point": "orbit.sun",
+    "op": ">",
+    "value": 0.5,
+    "seconds": 10,
+    "command": ""
+   }
+  },
+  {
+   "text": "Keep navigation in service.",
+   "hint": "",
+   "check": {
+    "point": "payload.service",
+    "op": ">",
+    "value": 0.5,
+    "seconds": 60,
+    "command": ""
+   }
+  }
+ ],
+ "failWhen": {
+  "point": "eps.battery.soc",
+  "op": "<",
+  "value": 36,
+  "seconds": 0,
+  "command": ""
+ },
+ "failText": "The battery fell to the shedding limit: the amplifier would be switched off and users lose the signal.",
+ "successText": "You kept the service through the eclipse by shedding a secondary payload."
+}

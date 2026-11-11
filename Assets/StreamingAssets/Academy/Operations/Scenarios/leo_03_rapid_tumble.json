@@ -1,0 +1,102 @@
+{
+ "id": "leo_03_rapid_tumble",
+ "title": "Rapid tumbling: stuck thruster",
+ "template": "leo_cubesat",
+ "orbitClass": "LEO",
+ "level": "Intermediate",
+ "summary": "Without warning the satellite starts to spin up. Stop it before it spins too fast to control.",
+ "goals": [
+  "Recognise a propulsion fault from attitude telemetry",
+  "Isolate the fault (close the latch valve)",
+  "Recover with detumbling"
+ ],
+ "prerequisites": [
+  "Commissioning: first contact after separation"
+ ],
+ "situation": "The CubeSat carries a cold-gas propulsion module. A minute after the start a thruster valve sticks open. The reaction wheels fight it until they saturate, then the satellite tumbles.",
+ "design": [
+  {
+   "slot": "prop.module",
+   "variant": "coldgas"
+  }
+ ],
+ "start": {
+  "utc": "",
+  "overrideOrbit": false,
+  "orbit": {
+   "periapsisAltKm": 500,
+   "apoapsisAltKm": 500,
+   "inclinationDeg": 97.4,
+   "raanDeg": 0,
+   "argPeriapsisDeg": 0,
+   "trueAnomalyDeg": 0,
+   "j2": true,
+   "geoLongitudeDeg": -999
+  },
+  "placement": "",
+  "placeStation": "",
+  "placeLeadDeg": 20,
+  "adcsMode": "SUNSAFE",
+  "ratesDps": [
+   0,
+   0,
+   0
+  ],
+  "socPercent": -1,
+  "temperatureC": -999,
+  "stowed": false,
+  "alwaysInContact": true,
+  "timeWarp": 2,
+  "commands": []
+ },
+ "faults": [
+  {
+   "atSeconds": 60,
+   "command": "SIM FAULT prop.module STUCK_OPEN 1"
+  }
+ ],
+ "steps": [
+  {
+   "text": "Isolate the propulsion: prop.module OFF (closes the latch valve).",
+   "hint": "Look for 'Thrusters FIRING' and a falling propellant level, and wheels hitting saturation.",
+   "check": {
+    "point": "prop.module.state",
+    "op": "<",
+    "value": 0.5,
+    "seconds": 0,
+    "command": ""
+   }
+  },
+  {
+   "text": "Detumble until the rate is below 0.5 deg/s.",
+   "hint": "ADCS MODE DETUMBLE if the onboard rule has not already done it. Use time warp.",
+   "check": {
+    "point": "adcs.rate",
+    "op": "<",
+    "value": 0.5,
+    "seconds": 30,
+    "command": ""
+   }
+  },
+  {
+   "text": "Return to SUNSAFE.",
+   "hint": "The software does this automatically after detumbling.",
+   "check": {
+    "point": "adcs.mode",
+    "op": "==",
+    "value": 2,
+    "seconds": 60,
+    "command": ""
+   }
+  }
+ ],
+ "failWhen": {
+  "point": "",
+  "op": ">",
+  "value": 0,
+  "seconds": 0,
+  "command": ""
+ },
+ "failText": "",
+ "successText": "Recovered. Real missions keep a latch valve in front of the thrusters exactly for this failure."
+}
