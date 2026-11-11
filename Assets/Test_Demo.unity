@@ -354,14 +354,14 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 203844586}
   m_Enabled: 1
-  serializedVersion: 12
+  serializedVersion: 11
   m_Type: 1
   m_Color: {r: 1, g: 0.9785366, b: 0.92, a: 1}
   m_Intensity: 0.5
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
-  m_CookieSize2D: {x: 10, y: 10}
+  m_CookieSize: 10
   m_Shadows:
     m_Type: 2
     m_Resolution: -1
@@ -549,6 +549,7 @@ MonoBehaviour:
   visibility: {fileID: 0}
   viewMode: {fileID: 0}
   doubleClickThreshold: 0.35
+  addMeshCollidersForPicking: 1
 --- !u!114 &342971255
 MonoBehaviour:
   m_ObjectHideFlags: 0
