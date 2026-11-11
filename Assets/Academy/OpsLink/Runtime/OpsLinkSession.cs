@@ -69,9 +69,29 @@ namespace Academy.OpsLink
                 settings.SetInstalledHash(Dictionary.TargetName, hash);
             }
 
+            // Only this satellite's interface may use the simulator port: park every other Academy interface.
+            await ActivateOnlyAsync(api, settings.password, Dictionary.TargetName + "_INT");
+
             SetStatus("Ready");
             if (openBrowser) OpsBrowserScreen.Open(CommandSenderUrl(settings));
             return true;
+        }
+
+        static async Task ActivateOnlyAsync(Oc3Api api, string password, string ours)
+        {
+            try
+            {
+                string names = await api.RpcAsync("get_interface_names", "[]", password);
+                foreach (System.Text.RegularExpressions.Match m in
+                         System.Text.RegularExpressions.Regex.Matches(names, "\"(ACADEMY_[A-Z0-9_]+_INT)\""))
+                {
+                    string name = m.Groups[1].Value;
+                    if (name != ours)
+                        await api.RpcAsync("disconnect_interface", "[" + Oc3Api.Json(name) + "]", password);
+                }
+                await api.RpcAsync("connect_interface", "[" + Oc3Api.Json(ours) + "]", password);
+            }
+            catch (Exception e) { Debug.LogWarning("[OpsLink] Could not switch interfaces: " + e.Message); }
         }
 
         /// <summary>Hash of everything that defines the plugin (ignores the gem version stamp).</summary>

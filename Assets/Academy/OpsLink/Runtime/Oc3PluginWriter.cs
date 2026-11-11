@@ -72,6 +72,8 @@ TARGET {d.TargetName} {d.TargetName}
 INTERFACE {d.TargetName}_INT tcpip_client_interface.rb {o.LinkHost} {o.LinkPort} {o.LinkPort} 10.0 nil LENGTH 0 32 0 1 BIG_ENDIAN 0 nil nil true
   MAP_TARGET {d.TargetName}
   RECONNECT_DELAY 2.0
+  # Every Academy satellite uses the same simulator port; only the one being flown is connected (by OpsLink).
+  DONT_CONNECT
 ";
 
         static string TargetTxt() =>
