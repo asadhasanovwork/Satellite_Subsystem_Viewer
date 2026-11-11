@@ -115,10 +115,10 @@ namespace Academy.OpsLink
             rt.sizeDelta = new Vector2(132f, 30f);
 
             var bg = go.AddComponent<Image>();
-            bg.color = new Color(0.07f, 0.10f, 0.16f, 0.72f);
+            bg.color = new Color(0.263f, 0.627f, 0.278f, 0.92f);   // light green, same as the Academy buttons
             var btn = go.AddComponent<Button>();
             var colors = btn.colors;
-            colors.highlightedColor = new Color(1f, 1f, 1f, 1.25f);
+            colors.highlightedColor = new Color(1.15f, 1.15f, 1.15f, 1f);
             btn.colors = colors;
             btn.onClick.AddListener(Close);
 
@@ -130,7 +130,8 @@ namespace Academy.OpsLink
             text.text = "← Academy";
             text.fontSize = 14;
             text.alignment = TextAnchor.MiddleCenter;
-            text.color = new Color(0.95f, 0.78f, 0.36f); // sun-amber
+            text.color = Color.white;
+            text.fontStyle = FontStyle.Bold;
         }
 
         void Update()

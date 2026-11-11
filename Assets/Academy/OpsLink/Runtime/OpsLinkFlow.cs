@@ -245,8 +245,10 @@ namespace Academy.OpsLink
         static readonly Color CardC = new Color(0.07f, 0.10f, 0.16f, 1f);
         static readonly Color RowC = new Color(0.10f, 0.15f, 0.23f, 1f);
         static readonly Color RowLatest = new Color(0.13f, 0.20f, 0.29f, 1f);
-        static readonly Color BtnC = new Color(0.13f, 0.19f, 0.29f, 1f);
-        static readonly Color DangerC = new Color(0.42f, 0.13f, 0.14f, 1f);
+        static readonly Color BtnC = new Color(0.263f, 0.627f, 0.278f, 1f);      // light green #43A047
+        static readonly Color BtnHover = new Color(0.400f, 0.733f, 0.416f, 1f);  // #66BB6A
+        static readonly Color DangerC = new Color(0.827f, 0.184f, 0.184f, 1f);   // confirm-delete only
+        static readonly Color BtnText = Color.white;
         static readonly Color AmberC = new Color(0.95f, 0.78f, 0.36f);
         static readonly Color TealC = new Color(0.25f, 0.76f, 0.65f);
         static readonly Color TextC = new Color(0.9f, 0.93f, 0.97f);
@@ -375,7 +377,7 @@ namespace Academy.OpsLink
             if (canFly)
             {
                 DesignSave design = sat.IsLatest ? latest : OpsLinkSession.LoadDesign(sat.Target);
-                MakeButton(row.transform, "Fly", () => { if (design != null) Fly(design); }, new Color(0.12f, 0.36f, 0.32f, 1f), 110);
+                MakeButton(row.transform, "Fly", () => { if (design != null) Fly(design); }, BtnC, 110);
             }
             if (sat.PluginName != null || (!sat.IsLatest && !sat.Legacy))
             {
@@ -383,9 +385,16 @@ namespace Academy.OpsLink
                 bool armed = false;
                 del = MakeButton(row.transform, "Delete", () =>
                 {
-                    if (!armed) { armed = true; del.GetComponentInChildren<Text>().text = "Confirm"; return; }
+                    if (!armed)
+                    {
+                        armed = true;
+                        del.GetComponentInChildren<Text>().text = "Confirm";
+                        del.GetComponent<Image>().color = DangerC;   // red only while asking to confirm
+                        var cb = del.colors; cb.highlightedColor = cb.normalColor; del.colors = cb;
+                        return;
+                    }
                     Delete(sat);
-                }, DangerC, 120);
+                }, BtnC, 120);
             }
         }
 
@@ -429,8 +438,14 @@ namespace Academy.OpsLink
             le.preferredWidth = width > 0 ? width : Mathf.Max(170, text.Length * 12 + 48);
             le.minWidth = le.preferredWidth;
             var b = img.gameObject.AddComponent<Button>();
+            var colors = b.colors;
+            colors.normalColor = Color.white;
+            colors.highlightedColor = new Color(BtnHover.r / Mathf.Max(0.01f, color.r), BtnHover.g / Mathf.Max(0.01f, color.g), BtnHover.b / Mathf.Max(0.01f, color.b), 1f);
+            colors.pressedColor = new Color(0.85f, 0.85f, 0.85f, 1f);
+            colors.selectedColor = Color.white;
+            b.colors = colors;
             b.onClick.AddListener(() => onClick());
-            var t = Label(img.transform, text, 17, FontStyle.Bold, AmberC, TextAnchor.MiddleCenter);
+            var t = Label(img.transform, text, 17, FontStyle.Bold, BtnText, TextAnchor.MiddleCenter);
             Stretch(t.rectTransform);
             return b;
         }
